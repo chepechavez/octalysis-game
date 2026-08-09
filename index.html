@@ -936,7 +936,7 @@
       <!-- BOTÓN DE ANÁLISIS -->
       <div class="action-bar">
         <button class="btn-analyze" id="analyzeBtn" onclick="generateDiagnosis()" disabled>
-          🔍 Analizar diseño 
+          🔍 Analizar diseño
         </button>
       </div>
 
@@ -1158,9 +1158,9 @@
 
     /* MOCK STORAGE (Datos Simulados para el Dashboard si no hay Webhook) */
     let localSubmissionsStore = [
-      { estudiante: "Camila R.", fecha: "10:15 AM", CD1: 5, CD2: 10, CD3: 5, CD4: 0, CD5: 5, CD6: 0, CD7: 0, CD8: 0, pct_sombrero_blanco: 100, pct_sombrero_negro: 0, pct_intrinseca: 50, pct_extrinseca: 50, mecanicas_elegidas: ["Desafíos de comprensión escalonados", "Certificado de experto de la sesión", "Lectura en parejas (Buddy System)", "Rol de investigador secreto"] },
-      { estudiante: "Mateo S.", fecha: "10:22 AM", CD1: 0, CD2: 5, CD3: 0, CD4: 0, CD5: 0, CD6: 5, CD7: 5, CD8: 10, pct_sombrero_blanco: 20, pct_sombrero_negro: 80, pct_intrinseca: 25, pct_extrinseca: 75, mecanicas_elegidas: ["Pase de entrada (Pop quiz)", "Descuento de vidas de equipo", "Ventana de lectura limitada", "Ruleta de comprobación"] },
-      { estudiante: "Valeria M.", fecha: "10:35 AM", CD1: 5, CD2: 0, CD3: 10, CD4: 5, CD5: 5, CD6: 0, CD7: 0, CD8: 0, pct_sombrero_blanco: 100, pct_sombrero_negro: 0, pct_intrinseca: 80, pct_extrinseca: 20, mecanicas_elegidas: ["Rutas de lectura opcionales", "Creador de hipótesis libre", "Muro de citas y debates", "Misión de impacto real"] }
+      { submissionId: "sub_mock_1", estudiante: "Camila R.", fecha: "10:15 AM", CD1: 5, CD2: 10, CD3: 5, CD4: 0, CD5: 5, CD6: 0, CD7: 0, CD8: 0, pct_sombrero_blanco: 100, pct_sombrero_negro: 0, pct_intrinseca: 50, pct_extrinseca: 50, mecanicas_elegidas: ["Desafíos de comprensión escalonados", "Certificado de experto de la sesión", "Lectura en parejas (Buddy System)", "Rol de investigador secreto"] },
+      { submissionId: "sub_mock_2", estudiante: "Mateo S.", fecha: "10:22 AM", CD1: 0, CD2: 5, CD3: 0, CD4: 0, CD5: 0, CD6: 5, CD7: 5, CD8: 10, pct_sombrero_blanco: 20, pct_sombrero_negro: 80, pct_intrinseca: 25, pct_extrinseca: 75, mecanicas_elegidas: ["Pase de entrada (Pop quiz)", "Descuento de vidas de equipo", "Ventana de lectura limitada", "Ruleta de comprobación"] },
+      { submissionId: "sub_mock_3", estudiante: "Valeria M.", fecha: "10:35 AM", CD1: 5, CD2: 0, CD3: 10, CD4: 5, CD5: 5, CD6: 0, CD7: 0, CD8: 0, pct_sombrero_blanco: 100, pct_sombrero_negro: 0, pct_intrinseca: 80, pct_extrinseca: 20, mecanicas_elegidas: ["Rutas de lectura opcionales", "Creador de hipótesis libre", "Muro de citas y debates", "Misión de impacto real"] }
     ];
 
     /* ESTADO DE LA APLICACIÓN Y BARAJA DE CICLO COMPLETO */
@@ -1168,6 +1168,9 @@
     let currentDeck = [];
     let unseenPool = []; // Pila de mecánicas pendientes por mostrar en el ciclo actual
     let currentDiagnosis = null;
+
+    // Generar un ID único de sesión por pestaña de usuario para evitar duplicados en reintentos
+    const userSessionToken = 'session_' + Math.random().toString(36).substring(2, 9);
 
     /* ==================================================================
        2. INICIALIZACIÓN Y NAVEGACIÓN
@@ -1416,11 +1419,14 @@
       box.innerHTML = html;
     }
 
+    /* ENVÍO CON DESDUPLICACIÓN Y REINTENTO CON BACKOFF (RETRY CON RETRASO PROGRESIVO) */
     function sendPayloadToWebhook(cdTotals, pctWhite, pctBlack, pctIntrinsic, pctExtrinsic) {
       const userName = document.getElementById('userNameInput').value.trim() || `Diseñador #${Math.floor(Math.random() * 899 + 100)}`;
       const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const uniqueSubId = `${userSessionToken}_${Date.now()}`;
 
       const payload = {
+        submissionId: uniqueSubId,
         estudiante: userName,
         fecha: timestamp,
         CD1: cdTotals[1], CD2: cdTotals[2], CD3: cdTotals[3], CD4: cdTotals[4],
@@ -1432,18 +1438,35 @@
         mecanicas_elegidas: selectedMechanics.map(m => m.name)
       };
 
-      // Guardado local inmediato para visualización instantánea
-      localSubmissionsStore.unshift(payload);
-
-      // Si existe URL de Webhook, enviar vía POST fetch
-      if (WEBHOOK_URL && WEBHOOK_URL.trim() !== "") {
-        fetch(WEBHOOK_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        }).catch(err => console.log('Simulación fallback activa:', err));
+      // 1. Desduplicar localmente (Reemplazar intento previo del mismo estudiante si decide volver a enviar)
+      const existingIdx = localSubmissionsStore.findIndex(s => s.estudiante.toLowerCase().trim() === userName.toLowerCase().trim());
+      if (existingIdx >= 0) {
+        localSubmissionsStore[existingIdx] = payload;
+      } else {
+        localSubmissionsStore.unshift(payload);
       }
+
+      // 2. Si existe WEBHOOK_URL, enviar con reintento con backoff (máximo 3 intentos con 2s y 4s de retraso)
+      if (WEBHOOK_URL && WEBHOOK_URL.trim() !== "") {
+        postWithRetry(payload, 3, 2000);
+      }
+    }
+
+    function postWithRetry(payload, retriesLeft, delay) {
+      fetch(WEBHOOK_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      }).catch(err => {
+        if (retriesLeft > 1) {
+          setTimeout(() => {
+            postWithRetry(payload, retriesLeft - 1, delay * 2);
+          }, delay);
+        } else {
+          console.log('Fallaron los reintentos de red, conservando estado local:', err);
+        }
+      });
     }
 
     /* ==================================================================
@@ -1576,6 +1599,19 @@
       }, 5000);
     }
 
+    /* FILTRADO DE ÚLTIMA RESPUESTA ÚNICA POR ESTUDIANTE (EVITA DUPLICADOS) */
+    function getUniqueSubmissions(rawData) {
+      const latestMap = new Map();
+      rawData.forEach(item => {
+        const studentKey = (item.estudiante || 'Anonimo').toLowerCase().trim();
+        // Al estar la lista ordenada o procesada, conservar la entrada más reciente del mismo alumno
+        if (!latestMap.has(studentKey)) {
+          latestMap.set(studentKey, item);
+        }
+      });
+      return Array.from(latestMap.values());
+    }
+
     function fetchTeacherData() {
       if (WEBHOOK_URL && WEBHOOK_URL.trim() !== "") {
         fetch(WEBHOOK_URL)
@@ -1593,8 +1629,9 @@
     }
 
     function renderTeacherDashboard() {
-      const data = localSubmissionsStore;
-      const total = data.length;
+      // Desduplicar registros para mostrar la última respuesta de cada alumno
+      const uniqueData = getUniqueSubmissions(localSubmissionsStore);
+      const total = uniqueData.length;
 
       document.getElementById('kpiTotal').textContent = total;
 
@@ -1604,7 +1641,7 @@
       let avgWhite = 0, avgBlack = 0, avgIntrin = 0, avgExtrin = 0;
       const classCDs = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 };
 
-      data.forEach(item => {
+      uniqueData.forEach(item => {
         avgWhite += item.pct_sombrero_blanco || 0;
         avgBlack += item.pct_sombrero_negro || 0;
         avgIntrin += item.pct_intrinseca || 0;
@@ -1641,13 +1678,13 @@
       drawOctagonRadar('classRadarCanvas', classCDs, false);
 
       // Canvas Cuadrante 2D Scatter
-      drawQuadrantScatter('quadrantCanvas', data);
+      drawQuadrantScatter('quadrantCanvas', uniqueData);
 
       // Renderizar Preguntas de Debate Automatizadas
       renderDebateQuestions(avgWhite, avgBlack, avgIntrin, avgExtrin);
 
       // Tabla de Envíos
-      renderSubmissionsTable(data);
+      renderSubmissionsTable(uniqueData);
     }
 
     /* RENDERIZADO DEL CUADRANTE 2D */
