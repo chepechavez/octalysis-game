@@ -900,7 +900,7 @@
       <div class="challenge-banner">
         <div class="challenge-info">
           <h2>🎯 Reto pedagógico principal</h2>
-          <p>"Los estudiantes llegan a la clase sin haber revisado las lecturas previas asignadas, lo que dificulta el debate y la profundización en el aula."</p>
+          <p>"Los estudiantes llegan a la clase sin haber revisado las lecturas previas asignadas, dificultando el debate y la profundización en el aula."</p>
         </div>
         <div class="user-input-group">
           <label for="userNameInput">Diseñador / apodo:</label>
@@ -908,7 +908,7 @@
         </div>
       </div>
 
-      <!-- BANDEJA SUPERIOR DE SELECCIÓN (PRESUPUESTO MÁX 4) -->
+      <!-- BANDEJA SUPERIOR DE SELECCIÓN (PRESUPUESTO MÁX 6) -->
       <div class="selection-tray">
         <div class="tray-header">
           <div class="tray-title">
@@ -1470,14 +1470,13 @@
     }
 
     /* ==================================================================
-       5. RENDERIZADO DE CANVAS RADAR (RETINA DPI SCALED)
+       5. RENDERIZADO DE CANVAS RADAR (POSICIONAMIENTO EXACTO DE CORE DRIVES)
        ================================================================== */
     function drawOctagonRadar(canvasId, cdValues, isInteractive = false) {
       const canvas = document.getElementById(canvasId);
       if (!canvas) return;
       const ctx = canvas.getContext('2d');
 
-      // DPR Scaling para máxima nitidez visual
       const rect = canvas.parentElement.getBoundingClientRect();
       const dpr = window.devicePixelRatio || 1;
       const size = Math.min(rect.width, 420);
@@ -1488,9 +1487,27 @@
 
       const centerX = size / 2;
       const centerY = size / 2;
-      const radius = size * 0.35;
-      const numSides = 8;
-      const labels = ["CD1: Épico", "CD2: Logro", "CD3: Crear", "CD4: Poseer", "CD5: Social", "CD6: Escasez", "CD7: Curioso", "CD8: Pérdida"];
+      const radius = size * 0.33;
+
+      // Mapeo preciso de posiciones geométricas según modelo Octalysis:
+      // CD1: Arriba (-90°)
+      // CD3: Arriba Derecha (-45°)
+      // CD5: Centro Derecha (0°)
+      // CD7: Abajo Derecha (45°)
+      // CD8: Abajo (90°)
+      // CD6: Abajo Izquierda (135°)
+      // CD4: Centro Izquierda (180°)
+      // CD2: Arriba Izquierda (225°)
+      const vertexConfig = [
+        { angleRad: -Math.PI / 2,         cd: 1, label: "CD1: Épico" },
+        { angleRad: -Math.PI / 4,         cd: 3, label: "CD3: Crear" },
+        { angleRad: 0,                    cd: 5, label: "CD5: Social" },
+        { angleRad: Math.PI / 4,          cd: 7, label: "CD7: Curioso" },
+        { angleRad: Math.PI / 2,          cd: 8, label: "CD8: Pérdida" },
+        { angleRad: (3 * Math.PI) / 4,    cd: 6, label: "CD6: Escasez" },
+        { angleRad: Math.PI,              cd: 4, label: "CD4: Poseer" },
+        { angleRad: (-3 * Math.PI) / 4,   cd: 2, label: "CD2: Logro" }
+      ];
 
       ctx.clearRect(0, 0, size, size);
 
@@ -1499,13 +1516,12 @@
       for (let l = 1; l <= levels; l++) {
         const r = (radius / levels) * l;
         ctx.beginPath();
-        for (let i = 0; i < numSides; i++) {
-          const angle = (Math.PI * 2 / numSides) * i - Math.PI / 2;
-          const x = centerX + r * Math.cos(angle);
-          const y = centerY + r * Math.sin(angle);
-          if (i === 0) ctx.moveTo(x, y);
+        vertexConfig.forEach((v, idx) => {
+          const x = centerX + r * Math.cos(v.angleRad);
+          const y = centerY + r * Math.sin(v.angleRad);
+          if (idx === 0) ctx.moveTo(x, y);
           else ctx.lineTo(x, y);
-        }
+        });
         ctx.closePath();
         ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
         ctx.lineWidth = 1;
@@ -1514,10 +1530,9 @@
 
       // Ejes Radiantes y Etiquetas
       const pointPositions = [];
-      for (let i = 0; i < numSides; i++) {
-        const angle = (Math.PI * 2 / numSides) * i - Math.PI / 2;
-        const x = centerX + radius * Math.cos(angle);
-        const y = centerY + radius * Math.sin(angle);
+      vertexConfig.forEach(v => {
+        const x = centerX + radius * Math.cos(v.angleRad);
+        const y = centerY + radius * Math.sin(v.angleRad);
 
         ctx.beginPath();
         ctx.moveTo(centerX, centerY);
@@ -1526,22 +1541,22 @@
         ctx.stroke();
 
         // Texto Etiqueta
-        const lx = centerX + (radius + 24) * Math.cos(angle);
-        const ly = centerY + (radius + 24) * Math.sin(angle);
+        const lx = centerX + (radius + 26) * Math.cos(v.angleRad);
+        const ly = centerY + (radius + 26) * Math.sin(v.angleRad);
         ctx.font = '600 11px Inter, sans-serif';
         ctx.fillStyle = '#94a3b8';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText(labels[i], lx, ly);
+        ctx.fillText(v.label, lx, ly);
 
         // Posición del punto según valor (máximo valor esperado ~15)
-        const val = cdValues[i + 1] || 0;
+        const val = cdValues[v.cd] || 0;
         const maxVal = 15;
         const valR = (radius * Math.min(val, maxVal)) / maxVal;
-        const px = centerX + valR * Math.cos(angle);
-        const py = centerY + valR * Math.sin(angle);
-        pointPositions.push({ x: px, y: py, cd: i + 1 });
-      }
+        const px = centerX + valR * Math.cos(v.angleRad);
+        const py = centerY + valR * Math.sin(v.angleRad);
+        pointPositions.push({ x: px, y: py, cd: v.cd });
+      });
 
       // Dibujar Polígono del Perfil
       ctx.beginPath();
