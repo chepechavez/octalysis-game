@@ -1163,9 +1163,10 @@
       { estudiante: "Valeria M.", fecha: "10:35 AM", CD1: 5, CD2: 0, CD3: 10, CD4: 5, CD5: 5, CD6: 0, CD7: 0, CD8: 0, pct_sombrero_blanco: 100, pct_sombrero_negro: 0, pct_intrinseca: 80, pct_extrinseca: 20, mecanicas_elegidas: ["Rutas de lectura opcionales", "Creador de hipótesis libre", "Muro de citas y debates", "Misión de impacto real"] }
     ];
 
-    /* ESTADO DE LA APLICACIÓN */
+    /* ESTADO DE LA APLICACIÓN Y BARAJA DE CICLO COMPLETO */
     let selectedMechanics = [];
     let currentDeck = [];
+    let unseenPool = []; // Pila de mecánicas pendientes por mostrar en el ciclo actual
     let currentDiagnosis = null;
 
     /* ==================================================================
@@ -1186,7 +1187,7 @@
         switchView('student');
       }
 
-      renderDeck();
+      renderDeck(true);
       initTeacherPolling();
     });
 
@@ -1205,14 +1206,42 @@
     }
 
     /* ==================================================================
-       3. LÓGICA DE BARAJA DE MECÁNICAS (CERO SESGO, 6 ALEATORIAS)
+       3. LÓGICA DE BARAJA DE MECÁNICAS (CICLO DE COBERTURA COMPLETA SIN REPETICIÓN)
        ================================================================== */
-    function renderDeck() {
-      // Filtrar mecánicas no seleccionadas aún
-      const unselectedPool = MECHANICS_DB.filter(m => !selectedMechanics.some(s => s.id === m.id));
-      // Mezclar aleatoriamente
-      const shuffled = [...unselectedPool].sort(() => 0.5 - Math.random());
-      currentDeck = shuffled.slice(0, 6);
+    function getFreshUnselectedPool() {
+      return MECHANICS_DB.filter(m => !selectedMechanics.some(s => s.id === m.id));
+    }
+
+    function shuffleArray(arr) {
+      const newArr = [...arr];
+      for (let i = newArr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
+      }
+      return newArr;
+    }
+
+    function renderDeck(forceResetCycle = false) {
+      const availablePool = getFreshUnselectedPool();
+
+      // Limpiar la pila no vista eliminando mecánicas que hayan sido seleccionadas
+      unseenPool = unseenPool.filter(m => !selectedMechanics.some(s => s.id === m.id));
+
+      // Si la pila está vacía, le quedan menos de 6 tarjetas o se fuerza reinicio, se recarga con las no vistas
+      if (unseenPool.length < 6 || forceResetCycle) {
+        unseenPool = shuffleArray(availablePool);
+      }
+
+      // Extraer las siguientes 6 mecánicas del ciclo sin repetición
+      currentDeck = unseenPool.splice(0, 6);
+
+      // Si quedan pocas mecánicas disponibles en total y la mano tiene menos de 6, rellenar de forma segura
+      if (currentDeck.length < 6 && availablePool.length > currentDeck.length) {
+        const extraNeeded = Math.min(6 - currentDeck.length, availablePool.length - currentDeck.length);
+        const remainingToPickFrom = availablePool.filter(m => !currentDeck.some(c => c.id === m.id));
+        const extraPicked = shuffleArray(remainingToPickFrom).slice(0, extraNeeded);
+        currentDeck = [...currentDeck, ...extraPicked];
+      }
 
       const grid = document.getElementById('deckCardsGrid');
       grid.innerHTML = '';
@@ -1252,7 +1281,7 @@
       }
 
       updateTray();
-      renderDeck();
+      renderDeck(false);
     }
 
     function updateTray() {
