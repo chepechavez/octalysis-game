@@ -1745,15 +1745,15 @@
       ctx.fillText('Sombrero blanco (+Y)', centerX, margin - 12);
       ctx.fillText('Sombrero negro (-Y)', centerX, size - margin + 18);
 
-      ctx.textAlign = 'left';
-      ctx.fillText('Extrínseco (+X)', size - margin - 20, centerY - 8);
       ctx.textAlign = 'right';
-      ctx.fillText('Intrínseco (-X)', margin + 20, centerY - 8);
+      ctx.fillText('Intrínseco (+X)', size - margin - 10, centerY - 8);
+      ctx.textAlign = 'left';
+      ctx.fillText('Extrínseco (-X)', margin + 10, centerY - 8);
 
       // Graficar Puntos de Estudiantes
       submissions.forEach(sub => {
-        // Normalizar X (-1 a +1) -> Intrínseco a la izq (-), Extrínseco a la der (+)
-        const relX = ((sub.pct_extrinseca - sub.pct_intrinseca) / 100);
+        // Normalizar X (-1 a +1) -> Extrínseco a la izq (-), Intrínseco a la der (+)
+        const relX = ((sub.pct_intrinseca - sub.pct_extrinseca) / 100);
         // Normalizar Y (-1 a +1) -> Blanco arriba (+), Negro abajo (-)
         const relY = ((sub.pct_sombrero_blanco - sub.pct_sombrero_negro) / 100);
 
