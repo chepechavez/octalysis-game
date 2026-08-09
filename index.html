@@ -900,7 +900,7 @@
       <div class="challenge-banner">
         <div class="challenge-info">
           <h2>🎯 Reto pedagógico principal</h2>
-          <p>"Los estudiantes llegan a la clase sin haber revisado las lecturas previas asignadas, dificultando el debate y la profundización en el aula."</p>
+          <p>"Los estudiantes llegan a la clase sin haber revisado las lecturas previas asignadas, lo que dificulta el debate y la profundización en el aula."</p>
         </div>
         <div class="user-input-group">
           <label for="userNameInput">Diseñador / apodo:</label>
@@ -914,10 +914,10 @@
           <div class="tray-title">
             📥 Tus mecánicas seleccionadas
           </div>
-          <div class="budget-badge" id="budgetCounter">0 / 4 seleccionadas</div>
+          <div class="budget-badge" id="budgetCounter">0 / 6 seleccionadas</div>
         </div>
         <div class="tray-grid" id="pinnedTrayGrid">
-          <div class="empty-tray-msg">Selecciona mecánicas del catálogo inferior (máximo 4)...</div>
+          <div class="empty-tray-msg">Selecciona mecánicas del catálogo inferior (máximo 6)...</div>
         </div>
       </div>
 
@@ -1276,8 +1276,8 @@
       if (idx >= 0) {
         selectedMechanics.splice(idx, 1);
       } else {
-        if (selectedMechanics.length >= 4) {
-          alert("Límite alcanzado: Máximo 4 mecánicas por propuesta.");
+        if (selectedMechanics.length >= 6) {
+          alert("Límite alcanzado: Máximo 6 mecánicas por propuesta.");
           return;
         }
         selectedMechanics.push(mech);
@@ -1292,11 +1292,11 @@
       const counter = document.getElementById('budgetCounter');
       const analyzeBtn = document.getElementById('analyzeBtn');
 
-      counter.textContent = `${selectedMechanics.length} / 4 seleccionadas`;
+      counter.textContent = `${selectedMechanics.length} / 6 seleccionadas`;
       analyzeBtn.disabled = selectedMechanics.length === 0;
 
       if (selectedMechanics.length === 0) {
-        trayGrid.innerHTML = `<div class="empty-tray-msg">Selecciona mecánicas del catálogo inferior (máximo 4)...</div>`;
+        trayGrid.innerHTML = `<div class="empty-tray-msg">Selecciona mecánicas del catálogo inferior (máximo 6)...</div>`;
         return;
       }
 
