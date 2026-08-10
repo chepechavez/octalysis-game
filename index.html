@@ -1671,7 +1671,14 @@
         pct_intrinseca: pctIntrinsic,
         pct_extrinseca: pctExtrinsic,
         pct_efectividad: effectiveness,
-        mecanicas_elegidas: selectedMechanics.map(m => m.name)
+        mecanicas_elegidas: (() => {
+          const names = selectedMechanics.map(m => m.name);
+          const errs = Object.entries(classificationAttemptsMap)
+            .filter(([id, count]) => count > 0)
+            .map(([id, count]) => `${mechanicsDatabase.find(m => m.id == id).name}:${count}`);
+          if (errs.length > 0) names.push(`[Errores-> ${errs.join(" | ")}]`);
+          return names;
+        })()
       };
 
       // 1. Desduplicar localmente (Reemplazar intento previo del mismo estudiante si decide volver a enviar)
@@ -1928,7 +1935,43 @@
       document.getElementById('kpiMotivSub').textContent = `${avgIntrin}% Intrínseca vs ${avgExtrin}% Extrínseca`;
 
       document.getElementById('kpiEffectiveness').textContent = `${avgEffect}%`;
-      document.getElementById('kpiHardestCard').textContent = `Precisión diagnóstica del grupo`;
+      
+      // Agregar lógica de la carta más difícil
+      const errorMap = {};
+      uniqueData.forEach(item => {
+        if (Array.isArray(item.mecanicas_elegidas)) {
+          const errStr = item.mecanicas_elegidas.find(m => typeof m === 'string' && m.includes('[Errores->'));
+          if (errStr) {
+            const content = errStr.substring(errStr.indexOf('->') + 2, errStr.lastIndexOf(']')).trim();
+            if (content) {
+              const pairs = content.split(' | ');
+              pairs.forEach(pair => {
+                const [mechName, count] = pair.split(':');
+                if (mechName && count) {
+                  errorMap[mechName.trim()] = (errorMap[mechName.trim()] || 0) + parseInt(count, 10);
+                }
+              });
+            }
+          }
+        }
+      });
+      
+      let hardestCard = 'N/A';
+      let maxErrors = 0;
+      Object.entries(errorMap).forEach(([name, count]) => {
+        if (count > maxErrors) {
+          maxErrors = count;
+          hardestCard = name;
+        }
+      });
+      
+      if (maxErrors > 0) {
+        document.getElementById('kpiHardestCard').textContent = `${hardestCard} (${maxErrors} err)`;
+        document.getElementById('kpiHardestCard').style.color = 'var(--black-hat)';
+      } else {
+        document.getElementById('kpiHardestCard').textContent = `Precisión diagnóstica del grupo`;
+        document.getElementById('kpiHardestCard').style.color = '#94a3b8';
+      }
 
       // Canvas Radar Colectivo
       drawOctagonRadar('classRadarCanvas', classCDs, false);
