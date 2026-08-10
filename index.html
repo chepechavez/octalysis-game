@@ -1029,10 +1029,10 @@
         </div>
       </div>
 
-      <!-- FASE 3: EJERCICIO DE CALIBRACIÓN PSICOPEDAGÓGICA (METACOGNICIÓN) -->
+      <!-- FASE 3: EJERCICIO DE CALIBRACIÓN (METACOGNICIÓN) -->
       <div class="diagnosis-container" id="classificationBox" style="margin-top: 1.5rem;">
         <div class="diag-header">
-          <h3>🎯 Ejercicio de calibración psicopedagógica</h3>
+          <h3>🎯 Ejercicio de calibración</h3>
           <p style="font-size: 0.9rem; color: var(--white-hat); font-weight: 600; margin-top: 0.25rem;">"Afina tu diferenciación de los motivadores realizando el siguiente ejercicio de calibración."</p>
         </div>
 
@@ -1543,13 +1543,21 @@
       classificationAttemptsMap = {};
 
       // Crear un lote de calibración estandarizado de EXACTAMENTE 6 TARJETAS:
-      // Incluye las mecánicas elegidas por el alumno + completa con mecánicas no elegidas al azar
+      // Si el alumno eligió 5 o 6, se incluyen 4 de sus elecciones y 2 tarjetas no elegidas para garantizar mezcla
       const selected = [...selectedMechanics];
       const unselected = MECHANICS_DB.filter(m => !selected.some(s => s.id === m.id));
-      const neededExtra = Math.max(0, 6 - selected.length);
+      
+      let chosenToInclude = [];
+      if (selected.length <= 4) {
+        chosenToInclude = selected;
+      } else {
+        chosenToInclude = shuffleArray(selected).slice(0, 4);
+      }
+
+      const neededExtra = 6 - chosenToInclude.length;
       const extraPicked = shuffleArray(unselected).slice(0, neededExtra);
       
-      const calibrationBatch = shuffleArray([...selected, ...extraPicked]);
+      const calibrationBatch = shuffleArray([...chosenToInclude, ...extraPicked]);
       window.currentCalibrationBatch = calibrationBatch;
 
       calibrationBatch.forEach(mech => {
