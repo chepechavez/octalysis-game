@@ -1689,29 +1689,20 @@
     }
 
     function postWithRetry(payload, retriesLeft, delay) {
-      const jsonString = JSON.stringify(payload);
-      const targetUrl = `${WEBHOOK_URL}?action=submit&payload=${encodeURIComponent(jsonString)}`;
-
-      fetch(targetUrl)
-        .then(res => res.json())
-        .then(resData => {
-          console.log('Sincronizado con Google Sheets:', resData);
-        })
-        .catch(err => {
-          // Fallback a POST no-cors si la URL es bloqueada
-          fetch(WEBHOOK_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'text/plain' },
-            body: jsonString
-          }).catch(postErr => {
-            if (retriesLeft > 1) {
-              setTimeout(() => postWithRetry(payload, retriesLeft - 1, delay * 2), delay);
-            } else {
-              console.log('Fallaron los reintentos de red, conservando estado local:', postErr);
-            }
-          });
-        });
+      fetch(WEBHOOK_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify(payload)
+      }).catch(err => {
+        if (retriesLeft > 1) {
+          setTimeout(() => {
+            postWithRetry(payload, retriesLeft - 1, delay * 2);
+          }, delay);
+        } else {
+          console.log('Fallaron los reintentos de red, conservando estado local:', err);
+        }
+      });
     }
 
     /* ==================================================================
