@@ -859,6 +859,35 @@
       color: var(--text-muted);
       line-height: 1.6;
     }
+
+    /* ESTILOS DE LA FASE 3 DE CLASIFICACIÓN */
+    .classif-card {
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .classif-select {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      outline: none;
+      width: 100%;
+      cursor: pointer;
+    }
+
+    .classif-select:focus {
+      border-color: var(--white-hat);
+    }
   </style>
 </head>
 <body>
@@ -995,6 +1024,34 @@
           </div>
         </div>
       </div>
+
+      <!-- FASE 3: DESAFÍO DE CLASIFICACIÓN PSICOPEDAGÓGICA (METACOGNICIÓN) -->
+      <div class="diagnosis-container" id="classificationBox" style="margin-top: 1.5rem;">
+        <div class="diag-header">
+          <h3>🧠 Desafío de metacognición: Clasifica tu diseño</h3>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">Asocia cada mecánica de tu propuesta con el impulsador (CD1 a CD8) que crees que activa.</p>
+        </div>
+
+        <div style="background: rgba(6, 182, 212, 0.08); border: 1px solid var(--white-hat); border-radius: var(--radius-md); padding: 0.85rem 1.1rem; margin-bottom: 1.25rem; font-size: 0.85rem; color: var(--text-main);">
+          💡 <strong>Pista pedagógica:</strong> Si tienes dudas, puedes hacer clic en los vértices del gráfico de octágono superior para repasar la definición de cada impulsador psicológico.
+        </div>
+
+        <div id="classificationCardsGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.25rem; margin-bottom: 1.5rem;">
+          <!-- Tarjetas de clasificación dinámicas -->
+        </div>
+
+        <div style="text-align: center;">
+          <button class="btn-analyze" id="validateClassifBtn" onclick="validateClassification()">
+            ✅ Validar mi clasificación
+          </button>
+        </div>
+
+        <div id="classificationResultBox" style="margin-top: 1.5rem; display: none; background: var(--bg-input); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; text-align: center;">
+          <h4 style="font-size: 1.1rem; color: var(--text-main); margin-bottom: 0.5rem;">Tu efectividad de deducción</h4>
+          <div id="effectivenessScore" style="font-family: var(--font-heading); font-size: 2.2rem; font-weight: 800; color: var(--success);">100%</div>
+          <p id="effectivenessMsg" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;"></p>
+        </div>
+      </div>
     </section>
 
     <!-- ===================================================================
@@ -1018,6 +1075,11 @@
           <span class="kpi-value" id="kpiMotivTrend" style="color: var(--intrinsic);">Intrínseca</span>
           <span class="kpi-subtext" id="kpiMotivSub">58% vs 42% Extrínseca</span>
         </div>
+        <div class="kpi-card">
+          <span class="kpi-title">Efectividad promedio</span>
+          <span class="kpi-value" id="kpiEffectiveness" style="color: var(--success);">100%</span>
+          <span class="kpi-subtext" id="kpiHardestCard">Mecánica más difícil: N/A</span>
+        </div>
       </div>
 
       <!-- CUADRANTE 2D Y RADAR COLECTIVO -->
@@ -1037,7 +1099,7 @@
         <div class="dash-card">
           <div class="dash-card-header">
             <h3>🗺️ Cuadrante de diseños (mapa colectivo)</h3>
-            <p>Eje X: Intrínseco/Extrínseco | Eje Y: Blanco/Negro</p>
+            <p>Eje X: Extrínseco (-X) / Intrínseco (+X) | Eje Y: Negro (-Y) / Blanco (+Y)</p>
           </div>
           <div class="canvas-wrapper">
             <canvas id="quadrantCanvas"></canvas>
@@ -1065,6 +1127,7 @@
                 <th>Fecha/hora</th>
                 <th>Estudiante</th>
                 <th>Mecánicas elegidas</th>
+                <th>Efectividad</th>
                 <th>Sombrero</th>
                 <th>Motivación</th>
               </tr>
@@ -1158,9 +1221,9 @@
 
     /* MOCK STORAGE (Datos Simulados para el Dashboard si no hay Webhook) */
     let localSubmissionsStore = [
-      { submissionId: "sub_mock_1", estudiante: "Camila R.", fecha: "10:15 AM", CD1: 5, CD2: 10, CD3: 5, CD4: 0, CD5: 5, CD6: 0, CD7: 0, CD8: 0, pct_sombrero_blanco: 100, pct_sombrero_negro: 0, pct_intrinseca: 50, pct_extrinseca: 50, mecanicas_elegidas: ["Desafíos de comprensión escalonados", "Certificado de experto de la sesión", "Lectura en parejas (Buddy System)", "Rol de investigador secreto"] },
-      { submissionId: "sub_mock_2", estudiante: "Mateo S.", fecha: "10:22 AM", CD1: 0, CD2: 5, CD3: 0, CD4: 0, CD5: 0, CD6: 5, CD7: 5, CD8: 10, pct_sombrero_blanco: 20, pct_sombrero_negro: 80, pct_intrinseca: 25, pct_extrinseca: 75, mecanicas_elegidas: ["Pase de entrada (Pop quiz)", "Descuento de vidas de equipo", "Ventana de lectura limitada", "Ruleta de comprobación"] },
-      { submissionId: "sub_mock_3", estudiante: "Valeria M.", fecha: "10:35 AM", CD1: 5, CD2: 0, CD3: 10, CD4: 5, CD5: 5, CD6: 0, CD7: 0, CD8: 0, pct_sombrero_blanco: 100, pct_sombrero_negro: 0, pct_intrinseca: 80, pct_extrinseca: 20, mecanicas_elegidas: ["Rutas de lectura opcionales", "Creador de hipótesis libre", "Muro de citas y debates", "Misión de impacto real"] }
+      { submissionId: "sub_mock_1", estudiante: "Camila R.", fecha: "10:15 AM", CD1: 5, CD2: 10, CD3: 5, CD4: 0, CD5: 5, CD6: 0, CD7: 0, CD8: 0, pct_sombrero_blanco: 100, pct_sombrero_negro: 0, pct_intrinseca: 50, pct_extrinseca: 50, pct_efectividad: 100, mecanicas_elegidas: ["Desafíos de comprensión escalonados", "Certificado de experto de la sesión", "Lectura en parejas (Buddy System)", "Rol de investigador secreto"] },
+      { submissionId: "sub_mock_2", estudiante: "Mateo S.", fecha: "10:22 AM", CD1: 0, CD2: 5, CD3: 0, CD4: 0, CD5: 0, CD6: 5, CD7: 5, CD8: 10, pct_sombrero_blanco: 20, pct_sombrero_negro: 80, pct_intrinseca: 25, pct_extrinseca: 75, pct_efectividad: 65, mecanicas_elegidas: ["Pase de entrada (Pop quiz)", "Descuento de vidas de equipo", "Ventana de lectura limitada", "Ruleta de comprobación"] },
+      { submissionId: "sub_mock_3", estudiante: "Valeria M.", fecha: "10:35 AM", CD1: 5, CD2: 0, CD3: 10, CD4: 5, CD5: 5, CD6: 0, CD7: 0, CD8: 0, pct_sombrero_blanco: 100, pct_sombrero_negro: 0, pct_intrinseca: 80, pct_extrinseca: 20, pct_efectividad: 90, mecanicas_elegidas: ["Rutas de lectura opcionales", "Creador de hipótesis libre", "Muro de citas y debates", "Misión de impacto real"] }
     ];
 
     /* ESTADO DE LA APLICACIÓN Y BARAJA DE CICLO COMPLETO */
@@ -1168,6 +1231,7 @@
     let currentDeck = [];
     let unseenPool = []; // Pila de mecánicas pendientes por mostrar en el ciclo actual
     let currentDiagnosis = null;
+    let classificationAttemptsMap = {}; // Intentos fallidos por mecánica
 
     // Generar un ID único de sesión por pestaña de usuario para evitar duplicados en reintentos
     const userSessionToken = 'session_' + Math.random().toString(36).substring(2, 9);
@@ -1364,11 +1428,14 @@
       // Renderizar Canvas Radar del Estudiante
       drawOctagonRadar('studentRadarCanvas', cdTotals, true);
 
+      // Renderizar Fase 3: Desafío de Clasificación Psicopedagógica
+      renderClassificationChallenge();
+
       // Desplazar suavemente hasta el resultado
       document.getElementById('diagnosisBox').scrollIntoView({ behavior: 'smooth' });
 
       // Enviar datos por Webhook / Guardar localmente
-      sendPayloadToWebhook(cdTotals, pctWhite, pctBlack, pctIntrinsic, pctExtrinsic);
+      sendPayloadToWebhook(cdTotals, pctWhite, pctBlack, pctIntrinsic, pctExtrinsic, 100);
     }
 
     function renderQualitativeReport(white, black, intrin, extrin) {
@@ -1419,8 +1486,106 @@
       box.innerHTML = html;
     }
 
-    /* ENVÍO CON DESDUPLICACIÓN Y REINTENTO CON BACKOFF (RETRY CON RETRASO PROGRESIVO) */
-    function sendPayloadToWebhook(cdTotals, pctWhite, pctBlack, pctIntrinsic, pctExtrinsic) {
+    /* ==================================================================
+       FASE 3: RENDERIZADO Y VALIDACIÓN DEL DESAFÍO DE CLASIFICACIÓN
+       ================================================================== */
+    function renderClassificationChallenge() {
+      const container = document.getElementById('classificationCardsGrid');
+      const box = document.getElementById('classificationBox');
+      box.style.display = 'block';
+      container.innerHTML = '';
+      classificationAttemptsMap = {};
+
+      selectedMechanics.forEach(mech => {
+        classificationAttemptsMap[mech.id] = 0; // Inicializar intentos por tarjeta
+
+        const card = document.createElement('div');
+        card.className = 'classif-card';
+        card.innerHTML = `
+          <div>
+            <h4 style="font-size: 0.95rem; color: var(--text-main); margin-bottom: 0.35rem;">${mech.name}</h4>
+            <p style="font-size: 0.8rem; color: var(--text-muted);">${mech.desc}</p>
+          </div>
+          <div>
+            <label style="font-size: 0.75rem; color: var(--text-dim); font-weight: 600; display: block; margin-bottom: 4px;">¿A qué Core Drive pertenece?</label>
+            <select class="classif-select" id="select_cd_${mech.id}">
+              <option value="0">-- Selecciona un impulsador --</option>
+              <option value="1">CD1: Significado épico y vocación</option>
+              <option value="2">CD2: Desarrollo y logro</option>
+              <option value="3">CD3: Empoderamiento de la creatividad</option>
+              <option value="4">CD4: Propiedad y posesión</option>
+              <option value="5">CD5: Influencia social y afinidad</option>
+              <option value="6">CD6: Escasez e impaciencia</option>
+              <option value="7">CD7: Impredecibilidad y curiosidad</option>
+              <option value="8">CD8: Pérdida y evitación</option>
+            </select>
+            <div id="feedback_cd_${mech.id}" style="font-size: 0.75rem; font-weight: 600; margin-top: 4px;"></div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+
+      document.getElementById('classificationResultBox').style.display = 'none';
+    }
+
+    function validateClassification() {
+      let correctCount = 0;
+      let totalMechanics = selectedMechanics.length;
+      let extraWrongAttempts = 0;
+
+      selectedMechanics.forEach(mech => {
+        const select = document.getElementById(`select_cd_${mech.id}`);
+        const feedback = document.getElementById(`feedback_cd_${mech.id}`);
+        const val = parseInt(select.value, 10);
+
+        if (val === mech.cd) {
+          correctCount++;
+          feedback.style.color = 'var(--success)';
+          feedback.textContent = '✓ ¡Correcto!';
+          select.style.borderColor = 'var(--success)';
+        } else {
+          classificationAttemptsMap[mech.id]++;
+          extraWrongAttempts++;
+          feedback.style.color = 'var(--black-hat)';
+          feedback.textContent = '✗ Incorrecto, intenta de nuevo.';
+          select.style.borderColor = 'var(--black-hat)';
+        }
+      });
+
+      // Cálculo de Efectividad (%)
+      let penalty = extraWrongAttempts * (100 / (totalMechanics * 2));
+      let effectiveness = Math.max(10, Math.round(100 - penalty));
+
+      const resBox = document.getElementById('classificationResultBox');
+      const scoreElem = document.getElementById('effectivenessScore');
+      const msgElem = document.getElementById('effectivenessMsg');
+
+      resBox.style.display = 'block';
+      scoreElem.textContent = `${effectiveness}%`;
+
+      if (correctCount === totalMechanics) {
+        scoreElem.style.color = 'var(--success)';
+        msgElem.textContent = '🎉 ¡Felicitaciones! Has clasificado correctamente todas las mecánicas de tu diseño.';
+      } else {
+        scoreElem.style.color = 'var(--black-hat-alt)';
+        msgElem.textContent = `Has acertado ${correctCount} de ${totalMechanics} mecánicas. Ajusta tus elecciones e intenta nuevamente.`;
+      }
+
+      // Re-enviar actualización al Webhook incluyendo la efectividad calculada
+      if (currentDiagnosis) {
+        sendPayloadToWebhook(
+          currentDiagnosis.cdTotals,
+          currentDiagnosis.pctWhite,
+          currentDiagnosis.pctBlack,
+          currentDiagnosis.pctIntrinsic,
+          currentDiagnosis.pctExtrinsic,
+          effectiveness
+        );
+      }
+    }
+
+    /* ENVÍO CON DESDUPLICACIÓN Y REINTENTO CON BACKOFF */
+    function sendPayloadToWebhook(cdTotals, pctWhite, pctBlack, pctIntrinsic, pctExtrinsic, effectiveness = 100) {
       const userName = document.getElementById('userNameInput').value.trim() || `Diseñador #${Math.floor(Math.random() * 899 + 100)}`;
       const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
       const uniqueSubId = `${userSessionToken}_${Date.now()}`;
@@ -1435,6 +1600,7 @@
         pct_sombrero_negro: pctBlack,
         pct_intrinseca: pctIntrinsic,
         pct_extrinseca: pctExtrinsic,
+        pct_efectividad: effectiveness,
         mecanicas_elegidas: selectedMechanics.map(m => m.name)
       };
 
@@ -1446,7 +1612,7 @@
         localSubmissionsStore.unshift(payload);
       }
 
-      // 2. Si existe WEBHOOK_URL, enviar con reintento con backoff (máximo 3 intentos con 2s y 4s de retraso)
+      // 2. Si existe WEBHOOK_URL, enviar con reintento con backoff
       if (WEBHOOK_URL && WEBHOOK_URL.trim() !== "") {
         postWithRetry(payload, 3, 2000);
       }
@@ -1653,7 +1819,7 @@
       if (total === 0) return;
 
       // Promedios Colectivos
-      let avgWhite = 0, avgBlack = 0, avgIntrin = 0, avgExtrin = 0;
+      let avgWhite = 0, avgBlack = 0, avgIntrin = 0, avgExtrin = 0, avgEffect = 0;
       const classCDs = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 };
 
       uniqueData.forEach(item => {
@@ -1661,6 +1827,7 @@
         avgBlack += item.pct_sombrero_negro || 0;
         avgIntrin += item.pct_intrinseca || 0;
         avgExtrin += item.pct_extrinseca || 0;
+        avgEffect += item.pct_efectividad || 100;
 
         for (let i = 1; i <= 8; i++) {
           classCDs[i] += (item[`CD${i}`] || 0);
@@ -1671,6 +1838,7 @@
       avgBlack = Math.round(avgBlack / total);
       avgIntrin = Math.round(avgIntrin / total);
       avgExtrin = Math.round(avgExtrin / total);
+      avgEffect = Math.round(avgEffect / total);
 
       for (let i = 1; i <= 8; i++) {
         classCDs[i] = Math.round((classCDs[i] / total) * 10) / 10;
@@ -1688,6 +1856,9 @@
       document.getElementById('kpiMotivTrend').textContent = motivTrend;
       document.getElementById('kpiMotivTrend').style.color = motivColor;
       document.getElementById('kpiMotivSub').textContent = `${avgIntrin}% Intrínseca vs ${avgExtrin}% Extrínseca`;
+
+      document.getElementById('kpiEffectiveness').textContent = `${avgEffect}%`;
+      document.getElementById('kpiHardestCard').textContent = `Precisión diagnóstica del grupo`;
 
       // Canvas Radar Colectivo
       drawOctagonRadar('classRadarCanvas', classCDs, false);
@@ -1816,11 +1987,13 @@
       data.forEach(sub => {
         const tr = document.createElement('tr');
         const mecs = Array.isArray(sub.mecanicas_elegidas) ? sub.mecanicas_elegidas.join(', ') : 'Varios';
+        const eff = sub.pct_efectividad !== undefined ? `${sub.pct_efectividad}%` : '100%';
 
         tr.innerHTML = `
           <td>${sub.fecha || 'Reciente'}</td>
           <td><strong>${sub.estudiante}</strong></td>
           <td style="max-width: 250px; font-size: 0.8rem; color: var(--text-muted);">${mecs}</td>
+          <td><strong style="color: var(--success);">${eff}</strong></td>
           <td><span style="color: ${sub.pct_sombrero_blanco >= sub.pct_sombrero_negro ? 'var(--white-hat)' : 'var(--black-hat)'}">Blanco: ${sub.pct_sombrero_blanco}% / Negro: ${sub.pct_sombrero_negro}%</span></td>
           <td><span style="color: ${sub.pct_intrinseca >= sub.pct_extrinseca ? 'var(--intrinsic)' : 'var(--extrinsic)'}">Intrínseca: ${sub.pct_intrinseca}%</span></td>
         `;
