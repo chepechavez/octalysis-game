@@ -1025,24 +1025,24 @@
         </div>
       </div>
 
-      <!-- FASE 3: DESAFÍO DE CLASIFICACIÓN PSICOPEDAGÓGICA (METACOGNICIÓN) -->
+      <!-- FASE 3: EJERCICIO DE CALIBRACIÓN PSICOPEDAGÓGICA (METACOGNICIÓN) -->
       <div class="diagnosis-container" id="classificationBox" style="margin-top: 1.5rem;">
         <div class="diag-header">
-          <h3>🧠 Desafío de metacognición: Clasifica tu diseño</h3>
-          <p style="font-size: 0.85rem; color: var(--text-muted);">Asocia cada mecánica de tu propuesta con el impulsador (CD1 a CD8) que crees que activa.</p>
+          <h3>🎯 Ejercicio de calibración psicopedagógica</h3>
+          <p style="font-size: 0.9rem; color: var(--white-hat); font-weight: 600; margin-top: 0.25rem;">"Afina tu diferenciación de los motivadores realizando el siguiente ejercicio de calibración."</p>
         </div>
 
         <div style="background: rgba(6, 182, 212, 0.08); border: 1px solid var(--white-hat); border-radius: var(--radius-md); padding: 0.85rem 1.1rem; margin-bottom: 1.25rem; font-size: 0.85rem; color: var(--text-main);">
-          💡 <strong>Pista pedagógica:</strong> Si tienes dudas, puedes hacer clic en los vértices del gráfico de octágono superior para repasar la definición de cada impulsador psicológico.
+          💡 <strong>Pista pedagógica:</strong> Evaluarás un lote calibrado estandarizado de 6 mecánicas (tus elecciones + tarjetas complementarias no elegidas). Si tienes dudas, puedes hacer clic en los vértices del gráfico de octágono superior para repasar la definición de cada impulsador psicológico.
         </div>
 
         <div id="classificationCardsGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.25rem; margin-bottom: 1.5rem;">
-          <!-- Tarjetas de clasificación dinámicas -->
+          <!-- Tarjetas de clasificación dinámicas (siempre 6) -->
         </div>
 
         <div style="text-align: center;">
           <button class="btn-analyze" id="validateClassifBtn" onclick="validateClassification()">
-            ✅ Validar mi clasificación
+            ✅ Validar mi calibración
           </button>
         </div>
 
@@ -1078,7 +1078,7 @@
         <div class="kpi-card">
           <span class="kpi-title">Efectividad promedio</span>
           <span class="kpi-value" id="kpiEffectiveness" style="color: var(--success);">100%</span>
-          <span class="kpi-subtext" id="kpiHardestCard">Mecánica más difícil: N/A</span>
+          <span class="kpi-subtext" id="kpiHardestCard">Precisión diagnóstica del grupo</span>
         </div>
       </div>
 
@@ -1232,6 +1232,7 @@
     let unseenPool = []; // Pila de mecánicas pendientes por mostrar en el ciclo actual
     let currentDiagnosis = null;
     let classificationAttemptsMap = {}; // Intentos fallidos por mecánica
+    window.currentCalibrationBatch = [];
 
     // Generar un ID único de sesión por pestaña de usuario para evitar duplicados en reintentos
     const userSessionToken = 'session_' + Math.random().toString(36).substring(2, 9);
@@ -1428,13 +1429,13 @@
       // Renderizar Canvas Radar del Estudiante
       drawOctagonRadar('studentRadarCanvas', cdTotals, true);
 
-      // Renderizar Fase 3: Desafío de Clasificación Psicopedagógica
+      // Renderizar Fase 3: Ejercicio de Calibración Psicopedagógica
       renderClassificationChallenge();
 
       // Desplazar suavemente hasta el resultado
       document.getElementById('diagnosisBox').scrollIntoView({ behavior: 'smooth' });
 
-      // Enviar datos por Webhook / Guardar localmente
+      // Enviar datos iniciales por Webhook / Guardar localmente
       sendPayloadToWebhook(cdTotals, pctWhite, pctBlack, pctIntrinsic, pctExtrinsic, 100);
     }
 
@@ -1487,7 +1488,7 @@
     }
 
     /* ==================================================================
-       FASE 3: RENDERIZADO Y VALIDACIÓN DEL DESAFÍO DE CLASIFICACIÓN
+       FASE 3: LOTE CALIBRADO ESTANDARIZADO DE 6 TARJETAS (ELEGIDAS + NO ELEGIDAS)
        ================================================================== */
     function renderClassificationChallenge() {
       const container = document.getElementById('classificationCardsGrid');
@@ -1496,14 +1497,29 @@
       container.innerHTML = '';
       classificationAttemptsMap = {};
 
-      selectedMechanics.forEach(mech => {
-        classificationAttemptsMap[mech.id] = 0; // Inicializar intentos por tarjeta
+      // Crear un lote de calibración estandarizado de EXACTAMENTE 6 TARJETAS:
+      // Incluye las mecánicas elegidas por el alumno + completa con mecánicas no elegidas al azar
+      const selected = [...selectedMechanics];
+      const unselected = MECHANICS_DB.filter(m => !selected.some(s => s.id === m.id));
+      const neededExtra = Math.max(0, 6 - selected.length);
+      const extraPicked = shuffleArray(unselected).slice(0, neededExtra);
+      
+      const calibrationBatch = shuffleArray([...selected, ...extraPicked]);
+      window.currentCalibrationBatch = calibrationBatch;
+
+      calibrationBatch.forEach(mech => {
+        classificationAttemptsMap[mech.id] = 0;
+
+        const isChosen = selected.some(s => s.id === mech.id);
 
         const card = document.createElement('div');
         card.className = 'classif-card';
         card.innerHTML = `
           <div>
-            <h4 style="font-size: 0.95rem; color: var(--text-main); margin-bottom: 0.35rem;">${mech.name}</h4>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+              <h4 style="font-size: 0.95rem; color: var(--text-main);">${mech.name}</h4>
+              ${isChosen ? '<span style="font-size: 0.7rem; background: rgba(6, 182, 212, 0.15); color: var(--white-hat); padding: 2px 6px; border-radius: 4px; font-weight: 600;">Elegida en tu diseño</span>' : '<span style="font-size: 0.7rem; background: rgba(148, 163, 184, 0.15); color: var(--text-muted); padding: 2px 6px; border-radius: 4px;">Tarjeta de calibración</span>'}
+            </div>
             <p style="font-size: 0.8rem; color: var(--text-muted);">${mech.desc}</p>
           </div>
           <div>
@@ -1529,11 +1545,12 @@
     }
 
     function validateClassification() {
+      const batch = window.currentCalibrationBatch || selectedMechanics;
       let correctCount = 0;
-      let totalMechanics = selectedMechanics.length;
+      let totalMechanics = batch.length;
       let extraWrongAttempts = 0;
 
-      selectedMechanics.forEach(mech => {
+      batch.forEach(mech => {
         const select = document.getElementById(`select_cd_${mech.id}`);
         const feedback = document.getElementById(`feedback_cd_${mech.id}`);
         const val = parseInt(select.value, 10);
@@ -1552,7 +1569,7 @@
         }
       });
 
-      // Cálculo de Efectividad (%)
+      // Cálculo de Efectividad (%) Estandarizado sobre 6 Tarjetas
       let penalty = extraWrongAttempts * (100 / (totalMechanics * 2));
       let effectiveness = Math.max(10, Math.round(100 - penalty));
 
@@ -1565,10 +1582,10 @@
 
       if (correctCount === totalMechanics) {
         scoreElem.style.color = 'var(--success)';
-        msgElem.textContent = '🎉 ¡Felicitaciones! Has clasificado correctamente todas las mecánicas de tu diseño.';
+        msgElem.textContent = '🎉 ¡Felicitaciones! Has clasificado correctamente todas las mecánicas del lote de calibración.';
       } else {
         scoreElem.style.color = 'var(--black-hat-alt)';
-        msgElem.textContent = `Has acertado ${correctCount} de ${totalMechanics} mecánicas. Ajusta tus elecciones e intenta nuevamente.`;
+        msgElem.textContent = `Has acertado ${correctCount} de ${totalMechanics} mecánicas. Revisa las sugerencias e intenta nuevamente.`;
       }
 
       // Re-enviar actualización al Webhook incluyendo la efectividad calculada
@@ -1827,7 +1844,7 @@
         avgBlack += item.pct_sombrero_negro || 0;
         avgIntrin += item.pct_intrinseca || 0;
         avgExtrin += item.pct_extrinseca || 0;
-        avgEffect += item.pct_efectividad || 100;
+        avgEffect += item.pct_efectividad !== undefined ? item.pct_efectividad : 100;
 
         for (let i = 1; i <= 8; i++) {
           classCDs[i] += (item[`CD${i}`] || 0);
