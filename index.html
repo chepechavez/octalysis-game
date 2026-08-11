@@ -1607,6 +1607,8 @@
     }
 
     function validateClassification() {
+      const btn = document.getElementById('validateClassifBtn');
+      if (btn) btn.disabled = true;
       const batch = window.currentCalibrationBatch || selectedMechanics;
       let correctCount = 0;
       let totalMechanics = batch.length;
@@ -1698,29 +1700,17 @@
         localSubmissionsStore.unshift(payload);
       }
 
-      // 2. Si existe WEBHOOK_URL, enviar con reintento con backoff
+      // 2. Si existe WEBHOOK_URL, enviar sin reintentos
       if (WEBHOOK_URL && WEBHOOK_URL.trim() !== "") {
-        postWithRetry(payload, 3, 2000);
+        fetch(WEBHOOK_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain' },
+          body: JSON.stringify(payload)
+        }).catch(err => {
+          console.log('Error de red en el envío al webhook:', err);
+        });
       }
-    }
-
-    function postWithRetry(payload, retriesLeft, delay) {
-      const bodyStr = JSON.stringify(payload);
-      
-      fetch(WEBHOOK_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'text/plain' },
-        body: bodyStr
-      }).catch(err => {
-        if (retriesLeft > 1) {
-          setTimeout(() => {
-            postWithRetry(payload, retriesLeft - 1, delay * 2);
-          }, delay);
-        } else {
-          console.log('Fallaron los reintentos de red, conservando estado local:', err);
-        }
-      });
     }
 
     /* ==================================================================
@@ -1903,7 +1893,10 @@
 
       document.getElementById('kpiTotal').textContent = total;
 
-      if (total === 0) return;
+      if (total === 0) {
+        renderSubmissionsTable([]);
+        return;
+      }
 
       // Promedios Colectivos
       let avgWhite = 0, avgBlack = 0, avgIntrin = 0, avgExtrin = 0, avgEffectSum = 0, avgEffectCount = 0;
