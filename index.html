@@ -1630,9 +1630,8 @@
         }
       });
 
-      // Cálculo de Efectividad (%) Estandarizado sobre 6 Tarjetas
-      let penalty = extraWrongAttempts * (100 / (totalMechanics * 2));
-      let effectiveness = Math.max(10, Math.round(100 - penalty));
+      // Cálculo de Efectividad basado en el intento actual (Aciertos / Total)
+      let effectiveness = Math.round((correctCount / totalMechanics) * 100);
       currentCalibrationEffectiveness = effectiveness;
 
       const resBox = document.getElementById('classificationResultBox');
@@ -2127,6 +2126,7 @@
           ? `<strong style="color: ${sub.pct_efectividad >= 70 ? 'var(--success)' : 'var(--black-hat-alt)'}">${sub.pct_efectividad}%</strong>` 
           : `<span style="color: #eab308; font-size: 0.8rem; font-style: italic;">⏳ Pendiente</span>`;
 
+        const mecs = Array.isArray(sub.mecanicas_elegidas) ? sub.mecanicas_elegidas.join(', ') : (sub.mecanicas_elegidas || 'No reportado');
         tr.innerHTML = `
           <td>${sub.fecha || 'Reciente'}</td>
           <td><strong>${sub.estudiante}</strong></td>
