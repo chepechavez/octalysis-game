@@ -1257,6 +1257,7 @@
     let currentDeck = [];
     let unseenPool = []; // Pila de mecánicas pendientes por mostrar en el ciclo actual
     let currentDiagnosis = null;
+    let currentCalibrationEffectiveness = null;
     let classificationAttemptsMap = {}; // Intentos fallidos por mecánica
     window.currentCalibrationBatch = [];
 
@@ -1480,8 +1481,15 @@
       // Desplazar suavemente hasta el resultado
       document.getElementById('diagnosisBox').scrollIntoView({ behavior: 'smooth' });
 
-      // Enviar datos iniciales por Webhook / Guardar localmente
-      sendPayloadToWebhook(cdTotals, pctWhite, pctBlack, pctIntrinsic, pctExtrinsic, 100);
+      // Enviar datos por Webhook / Guardar localmente
+      sendPayloadToWebhook(
+        cdTotals,
+        pctWhite,
+        pctBlack,
+        pctIntrinsic,
+        pctExtrinsic,
+        currentCalibrationEffectiveness !== null ? currentCalibrationEffectiveness : 100
+      );
     }
 
     function renderQualitativeReport(white, black, intrin, extrin) {
@@ -1625,6 +1633,7 @@
       // Cálculo de Efectividad (%) Estandarizado sobre 6 Tarjetas
       let penalty = extraWrongAttempts * (100 / (totalMechanics * 2));
       let effectiveness = Math.max(10, Math.round(100 - penalty));
+      currentCalibrationEffectiveness = effectiveness;
 
       const resBox = document.getElementById('classificationResultBox');
       const scoreElem = document.getElementById('effectivenessScore');
@@ -1649,7 +1658,7 @@
           currentDiagnosis.pctBlack,
           currentDiagnosis.pctIntrinsic,
           currentDiagnosis.pctExtrinsic,
-          effectiveness
+          currentCalibrationEffectiveness
         );
       }
     }
