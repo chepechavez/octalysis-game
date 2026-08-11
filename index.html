@@ -1706,14 +1706,6 @@
     function postWithRetry(payload, retriesLeft, delay) {
       const bodyStr = JSON.stringify(payload);
       
-      // Utilizar sendBeacon en móviles para garantizar entrega instantánea incluso en segundo plano
-      if (navigator.sendBeacon) {
-        try {
-          const blob = new Blob([bodyStr], { type: 'text/plain' });
-          navigator.sendBeacon(WEBHOOK_URL, blob);
-        } catch(e) {}
-      }
-
       fetch(WEBHOOK_URL, {
         method: 'POST',
         mode: 'no-cors',
@@ -1875,15 +1867,14 @@
       }, 5000);
     }
 
-    /* FILTRADO DE ÚLTIMA RESPUESTA ÚNICA POR ESTUDIANTE (EVITA DUPLICADOS) */
+    /* FILTRADO DE ÚLTIMA RESPUESTA ÚNICA POR ESTUDIANTE (EVITA DUPLICADOS - CONSERVA LA MÁS RECIENTE) */
     function getUniqueSubmissions(rawData) {
       const latestMap = new Map();
       rawData.forEach(item => {
-        const studentKey = (item.estudiante || 'Anonimo').toLowerCase().trim();
-        // Al estar la lista ordenada o procesada, conservar la entrada más reciente del mismo alumno
-        if (!latestMap.has(studentKey)) {
-          latestMap.set(studentKey, item);
-        }
+        if (!item || !item.estudiante) return;
+        const studentKey = item.estudiante.toLowerCase().trim();
+        // Sobrescribir siempre para mantener la última entrada recibida del mismo estudiante
+        latestMap.set(studentKey, item);
       });
       return Array.from(latestMap.values());
     }
@@ -1918,18 +1909,25 @@
       const classCDs = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 };
 
       uniqueData.forEach(item => {
-        avgWhite += item.pct_sombrero_blanco || 0;
-        avgBlack += item.pct_sombrero_negro || 0;
-        avgIntrin += item.pct_intrinseca || 0;
-        avgExtrin += item.pct_extrinseca || 0;
+        avgWhite += Number(item.pct_sombrero_blanco) || 0;
+        avgBlack += Number(item.pct_sombrero_negro) || 0;
+        avgIntrin += Number(item.pct_intrinseca) || 0;
+        avgExtrin += Number(item.pct_extrinseca) || 0;
         
+        let effNum = null;
         if (typeof item.pct_efectividad === 'number' && !isNaN(item.pct_efectividad)) {
-          avgEffectSum += item.pct_efectividad;
+          effNum = item.pct_efectividad;
+        } else if (typeof item.pct_efectividad === 'string' && item.pct_efectividad !== '' && item.pct_efectividad !== 'Pendiente' && !isNaN(Number(item.pct_efectividad))) {
+          effNum = Number(item.pct_efectividad);
+        }
+
+        if (effNum !== null) {
+          avgEffectSum += effNum;
           avgEffectCount++;
         }
 
         for (let i = 1; i <= 8; i++) {
-          classCDs[i] += (item[`CD${i}`] || 0);
+          classCDs[i] += (Number(item[`CD${i}`]) || 0);
         }
       });
 
@@ -2117,23 +2115,43 @@
 
     function renderSubmissionsTable(data) {
       const tbody = document.getElementById('submissionsTableBody');
+      if (!tbody) return;
       tbody.innerHTML = '';
+
+      if (!data || data.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 1.5rem;">No hay respuestas registradas aún.</td></tr>`;
+        return;
+      }
 
       data.forEach(sub => {
         const tr = document.createElement('tr');
-        const hasEffect = typeof sub.pct_efectividad === 'number' && !isNaN(sub.pct_efectividad);
-        const effDisplay = hasEffect 
-          ? `<strong style="color: ${sub.pct_efectividad >= 70 ? 'var(--success)' : 'var(--black-hat-alt)'}">${sub.pct_efectividad}%</strong>` 
+
+        let effNum = null;
+        if (typeof sub.pct_efectividad === 'number' && !isNaN(sub.pct_efectividad)) {
+          effNum = sub.pct_efectividad;
+        } else if (typeof sub.pct_efectividad === 'string' && sub.pct_efectividad !== '' && sub.pct_efectividad !== 'Pendiente' && !isNaN(Number(sub.pct_efectividad))) {
+          effNum = Number(sub.pct_efectividad);
+        }
+
+        const effDisplay = (effNum !== null) 
+          ? `<strong style="color: ${effNum >= 70 ? 'var(--success)' : 'var(--black-hat-alt)'}">${effNum}%</strong>` 
           : `<span style="color: #eab308; font-size: 0.8rem; font-style: italic;">⏳ Pendiente</span>`;
 
-        const mecs = Array.isArray(sub.mecanicas_elegidas) ? sub.mecanicas_elegidas.join(', ') : (sub.mecanicas_elegidas || 'No reportado');
+        const mecs = Array.isArray(sub.mecanicas_elegidas) 
+          ? sub.mecanicas_elegidas.join(', ') 
+          : (sub.mecanicas_elegidas || 'No reportado');
+
+        const white = Number(sub.pct_sombrero_blanco) || 0;
+        const black = Number(sub.pct_sombrero_negro) || 0;
+        const intrin = Number(sub.pct_intrinseca) || 0;
+
         tr.innerHTML = `
           <td>${sub.fecha || 'Reciente'}</td>
           <td><strong>${sub.estudiante}</strong></td>
           <td style="max-width: 250px; font-size: 0.8rem; color: var(--text-muted);">${mecs}</td>
           <td>${effDisplay}</td>
-          <td><span style="color: ${sub.pct_sombrero_blanco >= sub.pct_sombrero_negro ? 'var(--white-hat)' : 'var(--black-hat)'}">Blanco: ${sub.pct_sombrero_blanco}% / Negro: ${sub.pct_sombrero_negro}%</span></td>
-          <td><span style="color: ${sub.pct_intrinseca >= sub.pct_extrinseca ? 'var(--intrinsic)' : 'var(--extrinsic)'}">Intrínseca: ${sub.pct_intrinseca}%</span></td>
+          <td><span style="color: ${white >= black ? 'var(--white-hat)' : 'var(--black-hat)'}">Blanco: ${white}% / Negro: ${black}%</span></td>
+          <td><span style="color: ${intrin >= 50 ? 'var(--intrinsic)' : 'var(--extrinsic)'}">Intrínseca: ${intrin}%</span></td>
         `;
         tbody.appendChild(tr);
       });
