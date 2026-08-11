@@ -1488,7 +1488,7 @@
         pctBlack,
         pctIntrinsic,
         pctExtrinsic,
-        currentCalibrationEffectiveness !== null ? currentCalibrationEffectiveness : 100
+        currentCalibrationEffectiveness
       );
     }
 
@@ -1664,7 +1664,7 @@
     }
 
     /* ENVÍO CON DESDUPLICACIÓN Y REINTENTO CON BACKOFF */
-    function sendPayloadToWebhook(cdTotals, pctWhite, pctBlack, pctIntrinsic, pctExtrinsic, effectiveness = 100) {
+    function sendPayloadToWebhook(cdTotals, pctWhite, pctBlack, pctIntrinsic, pctExtrinsic, effectiveness = null) {
       const userName = document.getElementById('userNameInput').value.trim() || `Diseñador #${Math.floor(Math.random() * 899 + 100)}`;
       const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
       const uniqueSubId = `${userSessionToken}_${Date.now()}`;
@@ -1705,11 +1705,21 @@
     }
 
     function postWithRetry(payload, retriesLeft, delay) {
+      const bodyStr = JSON.stringify(payload);
+      
+      // Utilizar sendBeacon en móviles para garantizar entrega instantánea incluso en segundo plano
+      if (navigator.sendBeacon) {
+        try {
+          const blob = new Blob([bodyStr], { type: 'text/plain' });
+          navigator.sendBeacon(WEBHOOK_URL, blob);
+        } catch(e) {}
+      }
+
       fetch(WEBHOOK_URL, {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'text/plain' },
-        body: JSON.stringify(payload)
+        body: bodyStr
       }).catch(err => {
         if (retriesLeft > 1) {
           setTimeout(() => {
@@ -1905,7 +1915,7 @@
       if (total === 0) return;
 
       // Promedios Colectivos
-      let avgWhite = 0, avgBlack = 0, avgIntrin = 0, avgExtrin = 0, avgEffect = 0;
+      let avgWhite = 0, avgBlack = 0, avgIntrin = 0, avgExtrin = 0, avgEffectSum = 0, avgEffectCount = 0;
       const classCDs = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 };
 
       uniqueData.forEach(item => {
@@ -1913,7 +1923,11 @@
         avgBlack += item.pct_sombrero_negro || 0;
         avgIntrin += item.pct_intrinseca || 0;
         avgExtrin += item.pct_extrinseca || 0;
-        avgEffect += item.pct_efectividad !== undefined ? item.pct_efectividad : 100;
+        
+        if (typeof item.pct_efectividad === 'number' && !isNaN(item.pct_efectividad)) {
+          avgEffectSum += item.pct_efectividad;
+          avgEffectCount++;
+        }
 
         for (let i = 1; i <= 8; i++) {
           classCDs[i] += (item[`CD${i}`] || 0);
@@ -1924,7 +1938,7 @@
       avgBlack = Math.round(avgBlack / total);
       avgIntrin = Math.round(avgIntrin / total);
       avgExtrin = Math.round(avgExtrin / total);
-      avgEffect = Math.round(avgEffect / total);
+      const avgEffect = avgEffectCount > 0 ? Math.round(avgEffectSum / avgEffectCount) : 0;
 
       for (let i = 1; i <= 8; i++) {
         classCDs[i] = Math.round((classCDs[i] / total) * 10) / 10;
@@ -2108,14 +2122,16 @@
 
       data.forEach(sub => {
         const tr = document.createElement('tr');
-        const mecs = Array.isArray(sub.mecanicas_elegidas) ? sub.mecanicas_elegidas.join(', ') : 'Varios';
-        const eff = sub.pct_efectividad !== undefined ? `${sub.pct_efectividad}%` : '100%';
+        const hasEffect = typeof sub.pct_efectividad === 'number' && !isNaN(sub.pct_efectividad);
+        const effDisplay = hasEffect 
+          ? `<strong style="color: ${sub.pct_efectividad >= 70 ? 'var(--success)' : 'var(--black-hat-alt)'}">${sub.pct_efectividad}%</strong>` 
+          : `<span style="color: #eab308; font-size: 0.8rem; font-style: italic;">⏳ Pendiente</span>`;
 
         tr.innerHTML = `
           <td>${sub.fecha || 'Reciente'}</td>
           <td><strong>${sub.estudiante}</strong></td>
           <td style="max-width: 250px; font-size: 0.8rem; color: var(--text-muted);">${mecs}</td>
-          <td><strong style="color: var(--success);">${eff}</strong></td>
+          <td>${effDisplay}</td>
           <td><span style="color: ${sub.pct_sombrero_blanco >= sub.pct_sombrero_negro ? 'var(--white-hat)' : 'var(--black-hat)'}">Blanco: ${sub.pct_sombrero_blanco}% / Negro: ${sub.pct_sombrero_negro}%</span></td>
           <td><span style="color: ${sub.pct_intrinseca >= sub.pct_extrinseca ? 'var(--intrinsic)' : 'var(--extrinsic)'}">Intrínseca: ${sub.pct_intrinseca}%</span></td>
         `;
