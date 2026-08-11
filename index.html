@@ -1430,6 +1430,7 @@
        ================================================================== */
     function generateDiagnosis() {
       if (selectedMechanics.length === 0) return;
+      document.getElementById('analyzeBtn').disabled = true;
 
       // Resetear vectores de CD1 a CD8
       const cdTotals = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 };
@@ -1683,7 +1684,7 @@
           const names = selectedMechanics.map(m => m.name);
           const errs = Object.entries(classificationAttemptsMap)
             .filter(([id, count]) => count > 0)
-            .map(([id, count]) => `${mechanicsDatabase.find(m => m.id == id).name}:${count}`);
+            .map(([id, count]) => `${MECHANICS_DB.find(m => m.id == id).name}:${count}`);
           if (errs.length > 0) names.push(`[Errores-> ${errs.join(" | ")}]`);
           return names;
         })()
