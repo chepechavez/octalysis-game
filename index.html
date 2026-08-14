@@ -2142,6 +2142,25 @@
       container.innerHTML = html;
     }
 
+    /* FORMATEADOR DE FECHA Y HORA (CONVIERTE TIMESTAMPS ISO DE GOOGLE SHEETS A HORA LOCAL) */
+    function formatTimestamp(raw) {
+      if (!raw) return 'Reciente';
+      const str = String(raw).trim();
+
+      // Si ya es un formato de hora legible (ej. "10:15 AM", "16:01")
+      if (/^\d{1,2}:\d{2}(:\d{2})?(\s?[APap][Mm])?$/.test(str)) {
+        return str;
+      }
+
+      // Si es una cadena ISO de fecha/hora devuelta por Google Apps Script (ej. 1899-12-30T21:01:16.000Z)
+      const d = new Date(str);
+      if (!isNaN(d.getTime())) {
+        return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      }
+
+      return str;
+    }
+
     function renderSubmissionsTable(data) {
       const tbody = document.getElementById('submissionsTableBody');
       if (!tbody) return;
@@ -2175,7 +2194,7 @@
         const intrin = Number(sub.pct_intrinseca) || 0;
 
         tr.innerHTML = `
-          <td>${sub.fecha || 'Reciente'}</td>
+          <td><strong>${formatTimestamp(sub.fecha)}</strong></td>
           <td><strong>${sub.estudiante}</strong></td>
           <td style="max-width: 250px; font-size: 0.8rem; color: var(--text-muted);">${mecs}</td>
           <td>${effDisplay}</td>
