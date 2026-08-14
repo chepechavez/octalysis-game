@@ -1238,7 +1238,7 @@
       1: { title: "CD1: Significado épico y vocación", hat: "Sombrero blanco", type: "Intrínseca / trascendente", desc: "El estudiante actúa impulsado por sentir que su trabajo sirve a una misión más grande que sí mismo." },
       2: { title: "CD2: Desarrollo y logro", hat: "Sombrero blanco", type: "Extrínseca / metas", desc: "Enfocado en superar desafíos, ganar reconocimientos y visualizar su progreso continuo." },
       3: { title: "CD3: Empoderamiento y feedback", hat: "Sombrero blanco", type: "Intrínseca / autonomía", desc: "Libertad para experimentar, crear alternativas y recibir retroalimentación rápida de sus ideas." },
-      4: { title: "CD4: Propiedad y posesión", hat: "Sombrero neutro", type: "Intrínseca / acumulación", desc: "Motivado por acumular artefactos de conocimiento, apuntes personalizados y recursos propios." },
+      4: { title: "CD4: Propiedad y posesión", hat: "Sombrero neutro", type: "Extrínseca / acumulación", desc: "Motivado por acumular artefactos de conocimiento, apuntes personalizados y recursos propios." },
       5: { title: "CD5: Influencia social y afinidad", hat: "Sombrero neutro", type: "Intrínseca / relacional", desc: "Impulsado por el trabajo en equipo, la tutoría entre pares, la validación y el debate abierto." },
       6: { title: "CD6: Escasez e impaciencia", hat: "Sombrero negro", type: "Extrínseca / urgencia", desc: "La exclusividad y el tiempo limitado generan un impulso inmediato de acción por oportunidad." },
       7: { title: "CD7: Impredecibilidad y curiosidad", hat: "Sombrero negro", type: "Intrínseca / suspenso", desc: "La incertidumbre y la sorpresa mantienen viva la atención y el deseo constante de descubrir." },
@@ -1248,8 +1248,8 @@
     /* MOCK STORAGE (Datos Simulados para el Dashboard si no hay Webhook) */
     let localSubmissionsStore = [
       { submissionId: "sub_mock_1", estudiante: "Camila R.", fecha: "10:15 AM", CD1: 5, CD2: 10, CD3: 5, CD4: 0, CD5: 5, CD6: 0, CD7: 0, CD8: 0, pct_sombrero_blanco: 100, pct_sombrero_negro: 0, pct_intrinseca: 50, pct_extrinseca: 50, pct_efectividad: 100, mecanicas_elegidas: ["Desafíos de comprensión escalonados", "Certificado de experto de la sesión", "Lectura en parejas (Buddy System)", "Rol de investigador secreto"] },
-      { submissionId: "sub_mock_2", estudiante: "Mateo S.", fecha: "10:22 AM", CD1: 0, CD2: 5, CD3: 0, CD4: 0, CD5: 0, CD6: 5, CD7: 5, CD8: 10, pct_sombrero_blanco: 20, pct_sombrero_negro: 80, pct_intrinseca: 25, pct_extrinseca: 75, pct_efectividad: 65, mecanicas_elegidas: ["Pase de entrada (Pop quiz)", "Descuento de vidas de equipo", "Ventana de lectura limitada", "Ruleta de comprobación"] },
-      { submissionId: "sub_mock_3", estudiante: "Valeria M.", fecha: "10:35 AM", CD1: 5, CD2: 0, CD3: 10, CD4: 5, CD5: 5, CD6: 0, CD7: 0, CD8: 0, pct_sombrero_blanco: 100, pct_sombrero_negro: 0, pct_intrinseca: 80, pct_extrinseca: 20, pct_efectividad: 90, mecanicas_elegidas: ["Rutas de lectura opcionales", "Creador de hipótesis libre", "Muro de citas y debates", "Misión de impacto real"] }
+      { submissionId: "sub_mock_2", estudiante: "Mateo S.", fecha: "10:22 AM", CD1: 0, CD2: 5, CD3: 0, CD4: 0, CD5: 0, CD6: 5, CD7: 5, CD8: 10, pct_sombrero_blanco: 20, pct_sombrero_negro: 80, pct_intrinseca: 33, pct_extrinseca: 67, pct_efectividad: 65, mecanicas_elegidas: ["Pase de entrada (Pop quiz)", "Descuento de vidas de equipo", "Ventana de lectura limitada", "Ruleta de comprobación"] },
+      { submissionId: "sub_mock_3", estudiante: "Valeria M.", fecha: "10:35 AM", CD1: 5, CD2: 0, CD3: 10, CD4: 5, CD5: 5, CD6: 0, CD7: 0, CD8: 0, pct_sombrero_blanco: 100, pct_sombrero_negro: 0, pct_intrinseca: 75, pct_extrinseca: 25, pct_efectividad: 90, mecanicas_elegidas: ["Rutas de lectura opcionales", "Creador de hipótesis libre", "Muro de citas y debates", "Misión de impacto real"] }
     ];
 
     /* ESTADO DE LA APLICACIÓN Y BARAJA DE CICLO COMPLETO */
@@ -1445,9 +1445,9 @@
       const pctWhite = totHat > 0 ? Math.round((whiteHat / totHat) * 100) : 50;
       const pctBlack = totHat > 0 ? Math.round((blackHat / totHat) * 100) : 50;
 
-      // Cálculo Motivación (Intrínseca = CD3+CD4+CD5 | Extrínseca = CD2+CD6+CD8)
-      const intrinsic = cdTotals[3] + cdTotals[4] + cdTotals[5];
-      const extrinsic = cdTotals[2] + cdTotals[6] + cdTotals[8];
+      // Cálculo Motivación (Intrínseca = CD3+CD5+CD7 | Extrínseca = CD2+CD4+CD6)
+      const intrinsic = cdTotals[3] + cdTotals[5] + cdTotals[7];
+      const extrinsic = cdTotals[2] + cdTotals[4] + cdTotals[6];
       const totMotiv = intrinsic + extrinsic;
       const pctIntrinsic = totMotiv > 0 ? Math.round((intrinsic / totMotiv) * 100) : 50;
       const pctExtrinsic = totMotiv > 0 ? Math.round((extrinsic / totMotiv) * 100) : 50;
@@ -1526,14 +1526,21 @@
         html += `
           <div class="report-block">
             <span class="tag-pro">Enfoque intrínseco predominante (${intrin}%):</span>
-            La actividad se disfruta por sí misma. El debate en aula florecerá de forma genuina.
+            La actividad se disfruta por sí misma. El debate en aula florecerá de forma genuina por curiosidad, autonomía y conexión social.
           </div>
         `;
       } else if (extrin > intrin + 15) {
         html += `
           <div class="report-block">
             <span class="tag-con">Enfoque extrínseco predominante (${extrin}%):</span>
-            Los alumnos responden principalmente a los premios o penalizaciones. Si se retira la recompensa, la lectura cesará.
+            Los alumnos responden principalmente a los premios, acumulación o urgencia. Si se retira la recompensa o la condición, la lectura podría cesar.
+          </div>
+        `;
+      } else {
+        html += `
+          <div class="report-block">
+            <strong style="color: var(--intrinsic);">Motivación equilibrada (${intrin}% Intrínseca / ${extrin}% Extrínseca):</strong>
+            Diseño armónico: combina la tracción de metas y progreso tangible (Extrínseca) con el disfrute autónomo, colaborativo y curioso (Intrínseca).
           </div>
         `;
       }
@@ -1936,14 +1943,28 @@
       }
 
       // Actualizar KPIs
-      const hatTrend = avgWhite >= avgBlack ? 'Sombrero blanco' : 'Sombrero negro';
-      const hatColor = avgWhite >= avgBlack ? 'var(--white-hat)' : 'var(--black-hat)';
+      let hatTrend = 'Equilibrado';
+      let hatColor = '#94a3b8';
+      if (avgWhite > avgBlack + 10) {
+        hatTrend = 'Sombrero blanco';
+        hatColor = 'var(--white-hat)';
+      } else if (avgBlack > avgWhite + 10) {
+        hatTrend = 'Sombrero negro';
+        hatColor = 'var(--black-hat)';
+      }
       document.getElementById('kpiHatTrend').textContent = hatTrend;
       document.getElementById('kpiHatTrend').style.color = hatColor;
       document.getElementById('kpiHatSub').textContent = `${avgWhite}% Blanco vs ${avgBlack}% Negro`;
 
-      const motivTrend = avgIntrin >= avgExtrin ? 'Intrínseca' : 'Extrínseca';
-      const motivColor = avgIntrin >= avgExtrin ? 'var(--intrinsic)' : 'var(--extrinsic)';
+      let motivTrend = 'Equilibrada';
+      let motivColor = '#94a3b8';
+      if (avgIntrin > avgExtrin + 10) {
+        motivTrend = 'Intrínseca';
+        motivColor = 'var(--intrinsic)';
+      } else if (avgExtrin > avgIntrin + 10) {
+        motivTrend = 'Extrínseca';
+        motivColor = 'var(--extrinsic)';
+      }
       document.getElementById('kpiMotivTrend').textContent = motivTrend;
       document.getElementById('kpiMotivTrend').style.color = motivColor;
       document.getElementById('kpiMotivSub').textContent = `${avgIntrin}% Intrínseca vs ${avgExtrin}% Extrínseca`;
@@ -2072,18 +2093,25 @@
       const container = document.getElementById('debateQuestionsContainer');
       let html = '';
 
-      if (black > 50) {
+      if (black > 55) {
         html += `
           <div class="question-item">
-            ⚠️ <strong>Alerta de sesgo Sombrero negro (${black}%):</strong> El grupo confía en el miedo a perder notas o sanciones. 
+            ⚠️ <strong>Alerta de sesgo Sombrero negro (${black}%):</strong> El grupo confía fuertemente en la urgencia, escasez o miedo a perder puntos. 
             <em>¿Cómo podemos transformar este sentido de urgencia en un verdadero sentido de propósito colectivo (CD1)?</em>
+          </div>
+        `;
+      } else if (white > 55) {
+        html += `
+          <div class="question-item">
+            🌱 <strong>Alta autonomía Sombrero blanco (${white}%):</strong> Los estudiantes buscan propósito, maestría y autonomía. 
+            <em>¿Cómo garantizar que mantengan la disciplina de lectura sin confiarse excesivamente?</em>
           </div>
         `;
       } else {
         html += `
           <div class="question-item">
-            🌱 <strong>Alta autonomía Sombrero blanco (${white}%):</strong> Los estudiantes buscan propósito y logro. 
-            <em>¿Cómo garantizar que mantengan la disciplina de lectura sin confiarse excesivamente?</em>
+            ⚖️ <strong>Equilibrio de Sombreros (${white}% Blanco / ${black}% Negro):</strong> Combina la satisfacción y trascendencia con el ritmo y la disciplina. 
+            <em>¿Cómo calibrar este balance para que la urgencia impulse la acción sin generar fatiga innecesaria?</em>
           </div>
         `;
       }
@@ -2091,15 +2119,22 @@
       if (extrin > 55) {
         html += `
           <div class="question-item">
-            🎯 <strong>Orientación a recompensas (${extrin}%):</strong> Predominan las mecánicas de insignias o puntos. 
+            🎯 <strong>Orientación a metas y recompensas (${extrin}%):</strong> Predominan las mecánicas de insignias, progreso o urgencia. 
             <em>¿Qué ocurrirá con el debate en clase el día que no otorguemos décimas o medallas?</em>
+          </div>
+        `;
+      } else if (intrin > 55) {
+        html += `
+          <div class="question-item">
+            💡 <strong>Motivación intrínseca dominante (${intrin}%):</strong> Alta creatividad, curiosidad y conexión social. 
+            <em>¿De qué forma podemos conectar sus preguntas críticas directamente con la primera hora de clase?</em>
           </div>
         `;
       } else {
         html += `
           <div class="question-item">
-            💡 <strong>Motivación intrínseca dominante (${intrin}%):</strong> Alta creatividad y conexión social. 
-            <em>¿De qué forma podemos conectar sus preguntas críticas directamente con la primera hora de clase?</em>
+            ⚖️ <strong>Equilibrio intrínseco-extrínseco (${intrin}% / ${extrin}%):</strong> Coexistencia armónica de metas claras y autonomía lúdica. 
+            <em>¿Cómo asegurar que los incentivos externos mantengan viva la curiosidad natural del grupo?</em>
           </div>
         `;
       }
