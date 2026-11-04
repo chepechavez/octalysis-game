@@ -1029,6 +1029,34 @@
         </div>
       </div>
 
+      <!-- BLOQUEO DE TRANSICIÓN DE FASE (ACTIVADO POR PALABRA CLAVE DEL DOCENTE) -->
+      <div class="diagnosis-container" id="phaseGateBox" style="margin-top: 1.5rem; text-align: center; border: 1px dashed var(--white-hat); background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.98));">
+        <div style="max-width: 560px; margin: 0 auto;">
+          <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔒</div>
+          <h3 style="font-family: var(--font-heading); font-size: 1.3rem; color: var(--text-main); margin-bottom: 0.5rem;">
+            Siguiente fase: Ejercicio de calibración
+          </h3>
+          <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+            Explora primero tu perfil octagonal (haz clic en los vértices del gráfico superior) y atiende la explicación general del taller. Cuando el docente lo indique, ingresa la palabra clave para habilitar el miniquiz.
+          </p>
+          <form onsubmit="unlockPhase2(event)" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem; align-items: center;">
+            <input
+              type="text"
+              id="phaseUnlockInput"
+              class="input-field"
+              placeholder="Palabra clave del docente..."
+              autocomplete="off"
+              style="min-width: 220px; padding: 10px 14px; font-size: 0.95rem; text-align: center;"
+              oninput="document.getElementById('phaseUnlockFeedback').style.display='none'; this.style.borderColor='var(--border-color)';"
+            >
+            <button type="submit" class="btn-analyze" style="padding: 10px 24px; font-size: 0.95rem;">
+              🔓 Desbloquear miniquiz
+            </button>
+          </form>
+          <p id="phaseUnlockFeedback" style="display: none; font-size: 0.82rem; font-weight: 600; color: var(--black-hat); margin-top: 0.75rem;"></p>
+        </div>
+      </div>
+
       <!-- FASE 3: EJERCICIO DE CALIBRACIÓN (METACOGNICIÓN) -->
       <div class="diagnosis-container" id="classificationBox" style="margin-top: 1.5rem;">
         <div class="diag-header">
@@ -1189,6 +1217,7 @@
        1. CONFIGURACIÓN Y CONSTANTE GLOBAL WEBHOOK
        ================================================================== */
     const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbwQKFT_RblW0AnN8qv5Kik7wwpQ5IR6WtYp7nr-6zap2dh-BIAU08j4D7KkziAHIXpLuQ/exec"; // Pegar la URL de Google Apps Script si está disponible.
+    const PHASE2_UNLOCK_CODES = ["octalysis", "calibrar", "8"]; // Códigos válidos (insensibles a mayúsculas, minúsculas y tildes)
 
     /* BASE DE DATOS DE 24 MECÁNICAS (3 por cada Core Drive) */
     const MECHANICS_DB = [
@@ -1551,10 +1580,35 @@
     /* ==================================================================
        FASE 3: LOTE CALIBRADO ESTANDARIZADO DE 6 TARJETAS (ELEGIDAS + NO ELEGIDAS)
        ================================================================== */
+    function unlockPhase2(e) {
+      if (e) e.preventDefault();
+      const input = document.getElementById('phaseUnlockInput');
+      const feedback = document.getElementById('phaseUnlockFeedback');
+      const normalized = (input.value || '')
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .trim();
+
+      if (PHASE2_UNLOCK_CODES.includes(normalized)) {
+        document.getElementById('phaseGateBox').style.display = 'none';
+        const box = document.getElementById('classificationBox');
+        box.style.display = 'block';
+        feedback.style.display = 'none';
+        box.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        feedback.style.display = 'block';
+        feedback.textContent = '⚠️ Palabra clave incorrecta. Espera la indicación del docente.';
+        input.style.borderColor = 'var(--black-hat)';
+      }
+    }
+
     function renderClassificationChallenge() {
       const container = document.getElementById('classificationCardsGrid');
       const box = document.getElementById('classificationBox');
-      box.style.display = 'block';
+      const gateBox = document.getElementById('phaseGateBox');
+      if (gateBox) gateBox.style.display = 'block';
+      box.style.display = 'none';
       container.innerHTML = '';
       classificationAttemptsMap = {};
 
