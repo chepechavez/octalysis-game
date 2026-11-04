@@ -57,6 +57,7 @@
       display: flex;
       flex-direction: column;
       overflow-x: hidden;
+      overscroll-behavior-y: contain;
     }
 
     /* HEADER & NAVIGATION */
@@ -116,6 +117,7 @@
 
     .view-switcher {
       display: flex;
+      flex-wrap: wrap;
       background-color: var(--bg-input);
       padding: 4px;
       border-radius: var(--radius-md);
@@ -233,6 +235,7 @@
 
     .user-input-group {
       display: flex;
+      flex-wrap: wrap;
       align-items: center;
       gap: 0.5rem;
     }
@@ -270,8 +273,10 @@
 
     .tray-header {
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
+      gap: 0.5rem;
       margin-bottom: 1rem;
     }
 
@@ -297,7 +302,7 @@
 
     .tray-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));
       gap: 0.75rem;
       min-height: 80px;
     }
@@ -383,7 +388,7 @@
 
     .cards-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
       gap: 1.25rem;
       margin-bottom: 2rem;
     }
@@ -1079,6 +1084,221 @@
       color: var(--black-hat);
       border: 1px solid rgba(239, 68, 68, 0.35);
     }
+
+    .classif-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+      gap: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .btn-reset-inline {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #fca5a5;
+      padding: 7px 11px;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-heading);
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .btn-reset-inline:hover {
+      background: rgba(239, 68, 68, 0.2);
+      border-color: var(--black-hat);
+      color: #ffffff;
+    }
+
+    .resume-summary-box {
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      border-left: 3px solid var(--white-hat);
+      border-radius: var(--radius-sm);
+      padding: 0.9rem 1rem;
+      margin-bottom: 1.25rem;
+      text-align: left;
+      font-size: 0.85rem;
+    }
+
+    .resume-summary-box div + div {
+      margin-top: 0.35rem;
+    }
+
+    .btn-secondary-outline {
+      background: transparent;
+      border: 1px solid var(--border-accent);
+      color: var(--text-muted);
+      padding: 11px 16px;
+      font-family: var(--font-heading);
+      font-size: 0.92rem;
+      font-weight: 600;
+      border-radius: 50px;
+      cursor: pointer;
+      width: 100%;
+      transition: all 0.2s ease;
+    }
+
+    .btn-secondary-outline:hover {
+      border-color: var(--black-hat);
+      color: #fca5a5;
+      background: rgba(239, 68, 68, 0.08);
+    }
+
+    /* ==========================================================================
+       RESPONSIVE BREAKPOINTS (TABLETS & MOBILE DEVICES)
+       ========================================================================== */
+    @media (max-width: 768px) {
+      header {
+        padding: 0.75rem 1rem;
+      }
+
+      .header-container {
+        gap: 0.65rem;
+      }
+
+      .brand-title h1 {
+        font-size: 1.05rem;
+      }
+
+      .brand-title p {
+        font-size: 0.7rem;
+      }
+
+      .view-switcher {
+        width: 100%;
+        order: 3;
+      }
+
+      .tab-btn {
+        flex: 1;
+        justify-content: center;
+        padding: 7px 10px;
+        font-size: 0.8rem;
+        text-align: center;
+      }
+
+      .status-badge {
+        padding: 4px 10px;
+        font-size: 0.7rem;
+      }
+
+      main {
+        padding: 1.25rem 1rem;
+      }
+
+      .challenge-banner {
+        padding: 1rem 1.15rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .user-input-group {
+        width: 100%;
+      }
+
+      .user-input-group .input-field {
+        flex: 1;
+        min-width: 160px;
+      }
+
+      .selection-tray {
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .diagnosis-container {
+        padding: 1.25rem 1rem;
+        border-radius: var(--radius-md);
+      }
+
+      .radar-card,
+      .balance-box,
+      .qualitative-report,
+      .dash-card,
+      .debate-box {
+        padding: 1.1rem;
+      }
+
+      .diag-header h3 {
+        font-size: 1.2rem;
+      }
+
+      .modal-backdrop {
+        padding: 1rem;
+      }
+
+      .modal-content {
+        padding: 1.35rem 1.15rem;
+        max-height: 90vh;
+        overflow-y: auto;
+      }
+    }
+
+    @media (max-width: 480px) {
+      main {
+        padding: 1rem 0.75rem;
+      }
+
+      .brand-icon {
+        width: 34px;
+        height: 34px;
+      }
+
+      .brand-title h1 {
+        font-size: 0.95rem;
+      }
+
+      .tab-btn {
+        font-size: 0.75rem;
+        padding: 6px 8px;
+      }
+
+      .deck-section-header {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .shuffle-btn {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .diagnosis-container {
+        padding: 1rem 0.75rem;
+      }
+
+      .radar-card {
+        padding: 0.85rem 0.5rem;
+      }
+
+      .axis-labels {
+        flex-wrap: wrap;
+        gap: 4px;
+        font-size: 0.75rem;
+      }
+
+      .btn-analyze,
+      .btn-next-batch {
+        width: 100%;
+        padding: 12px 18px;
+        font-size: 0.92rem;
+        justify-content: center;
+      }
+
+      #phaseGateBox form {
+        flex-direction: column;
+        align-items: stretch !important;
+      }
+
+      #phaseUnlockInput {
+        width: 100%;
+        min-width: 0 !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -1128,7 +1348,10 @@
         </div>
         <div class="user-input-group">
           <label for="userNameInput">Diseñador / apodo:</label>
-          <input type="text" id="userNameInput" class="input-field" placeholder="Ej. ProfeAlex #104" value="">
+          <input type="text" id="userNameInput" class="input-field" placeholder="Ej. ProfeAlex #104" value="" oninput="saveSessionProgress()">
+          <button type="button" class="btn-reset-inline" onclick="confirmResetSession()" title="Borrar el progreso actual y empezar de cero">
+            🔄 Reiniciar
+          </button>
         </div>
       </div>
 
@@ -1269,7 +1492,7 @@
           </div>
         </div>
 
-        <div id="classificationCardsGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.25rem; margin-bottom: 1.25rem;">
+        <div id="classificationCardsGrid" class="classif-cards-grid">
           <!-- Tarjetas de clasificación dinámicas (siempre 6 por lote) -->
         </div>
 
@@ -1418,7 +1641,7 @@
     </div>
   </div>
 
-  <!-- MODAL INICIAL DE ONBOARDING / REGISTRO DE APODO -->
+  <!-- MODAL INICIAL DE ONBOARDING / REGISTRO DE APODO Y RECUPERACIÓN DE SESIÓN -->
   <div class="modal-backdrop active" id="onboardingModal" style="z-index: 300;">
     <div class="modal-content" style="text-align: center; max-width: 480px; border-top: 4px solid var(--white-hat);">
       <div class="brand-icon" style="margin: 0 auto 1rem auto; width: 52px; height: 52px;">
@@ -1426,17 +1649,42 @@
           <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"/>
         </svg>
       </div>
-      <h2 style="font-family: var(--font-heading); font-size: 1.35rem; color: var(--text-main); margin-bottom: 0.5rem;">¡Bienvenido al simulador!</h2>
-      <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">Ingresa tu apodo o nombre para iniciar la sesión y comenzar a diseñar tu propuesta gamificada.</p>
-      
-      <form onsubmit="submitOnboardingNick(event)">
-        <div style="margin-bottom: 1.25rem;">
-          <input type="text" id="onboardingNickInput" class="input-field" style="width: 100%; padding: 12px 16px; font-size: 1rem; text-align: center;" placeholder="Ej. DiseñadorAlex #104" required autofocus>
+
+      <!-- VISTA A: NUEVO REGISTRO DE APODO -->
+      <div id="onboardingNewSessionBox">
+        <h2 style="font-family: var(--font-heading); font-size: 1.35rem; color: var(--text-main); margin-bottom: 0.5rem;">¡Bienvenido al simulador!</h2>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">Ingresa tu apodo o nombre para iniciar la sesión y comenzar a diseñar tu propuesta gamificada.</p>
+        
+        <form onsubmit="submitOnboardingNick(event)">
+          <div style="margin-bottom: 1.25rem;">
+            <input type="text" id="onboardingNickInput" class="input-field" style="width: 100%; padding: 12px 16px; font-size: 1rem; text-align: center;" placeholder="Ej. DiseñadorAlex #104" required autofocus>
+          </div>
+          <button type="submit" class="btn-analyze" style="width: 100%; padding: 12px; font-size: 1rem;">
+            🚀 Comenzar la experiencia
+          </button>
+        </form>
+      </div>
+
+      <!-- VISTA B: RECUPERACIÓN AUTOMÁTICA TRAS ACTUALIZAR LA PÁGINA -->
+      <div id="onboardingResumeBox" style="display: none;">
+        <h2 style="font-family: var(--font-heading); font-size: 1.35rem; color: var(--text-main); margin-bottom: 0.4rem;">🔄 Sesión en curso encontrada</h2>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.1rem;">Detectamos progreso guardado en este navegador. ¿Deseas continuar por donde estabas o empezar de cero?</p>
+
+        <div class="resume-summary-box">
+          <div>👤 <strong>Participante:</strong> <span id="resumeNickLabel" style="color: var(--white-hat); font-weight: 700;">--</span></div>
+          <div>📍 <strong>Avance guardado:</strong> <span id="resumeStageLabel" style="color: var(--text-main);">--</span></div>
+          <div>🎴 <strong>Mecánicas elegidas:</strong> <span id="resumeMecsLabel" style="color: var(--text-muted);">--</span></div>
         </div>
-        <button type="submit" class="btn-analyze" style="width: 100%; padding: 12px; font-size: 1rem;">
-          🚀 Comenzar la experiencia
-        </button>
-      </form>
+
+        <div style="display: flex; flex-direction: column; gap: 0.7rem;">
+          <button type="button" class="btn-analyze" style="width: 100%; padding: 12px; font-size: 0.98rem;" onclick="resumeSavedSession()">
+            ▶️ Continuar por donde estaba
+          </button>
+          <button type="button" class="btn-secondary-outline" onclick="startFreshSessionFromModal()">
+            🆕 Empezar de cero
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1533,7 +1781,267 @@
     };
 
     // Generar un ID único de sesión por pestaña de usuario para evitar duplicados en reintentos
-    const userSessionToken = 'session_' + Math.random().toString(36).substring(2, 9);
+    let userSessionToken = 'session_' + Math.random().toString(36).substring(2, 9);
+    const SESSION_STORAGE_KEY = 'octalysis_sim_session_v1';
+
+    /* ==================================================================
+       PERSISTENCIA LOCAL Y RECUPERACIÓN DE SESIÓN (ANTI-RECARGA ACCIDENTAL)
+       ================================================================== */
+    function saveSessionProgress() {
+      try {
+        const userNameEl = document.getElementById('userNameInput');
+        const diagBox = document.getElementById('diagnosisBox');
+        const userName = userNameEl ? userNameEl.value.trim() : '';
+        const diagnosisGenerated = diagBox ? diagBox.classList.contains('active') : false;
+
+        const serializedBatches = (calibrationState.batches || []).map(b => ({
+          batchNumber: b.batchNumber,
+          cardIds: (b.cards || []).map(c => c.id),
+          attempts: b.attempts,
+          firstAttemptCorrect: b.firstAttemptCorrect,
+          currentCorrect: b.currentCorrect,
+          completed: b.completed,
+          lockedCardIds: b.lockedCardIds || [],
+          selections: b.selections || {},
+          needsModification: Boolean(b.needsModification)
+        }));
+
+        const snapshot = {
+          savedAt: Date.now(),
+          userSessionToken,
+          userName,
+          selectedMechanicIds: selectedMechanics.map(m => m.id),
+          diagnosisGenerated,
+          currentDiagnosis,
+          currentCalibrationEffectiveness,
+          classificationAttemptsMap,
+          calibrationState: {
+            unlocked: Boolean(calibrationState.unlocked),
+            usedMechIds: calibrationState.usedMechIds || [],
+            batches: serializedBatches,
+            currentBatchIdx: calibrationState.currentBatchIdx,
+            attemptsByMechId: calibrationState.attemptsByMechId || {},
+            evaluatedMechIds: calibrationState.evaluatedMechIds || [],
+            firstTryErrorMechIds: calibrationState.firstTryErrorMechIds || []
+          }
+        };
+
+        localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(snapshot));
+      } catch (err) {
+        console.warn('No se pudo guardar la sesión en localStorage:', err);
+      }
+    }
+
+    function loadSavedSessionProgress() {
+      try {
+        const raw = localStorage.getItem(SESSION_STORAGE_KEY);
+        if (!raw) return null;
+        const data = JSON.parse(raw);
+        if (!data || typeof data !== 'object') return null;
+        const hasProgress = Boolean(
+          (data.userName && data.userName.trim() !== '') ||
+          (Array.isArray(data.selectedMechanicIds) && data.selectedMechanicIds.length > 0) ||
+          data.diagnosisGenerated
+        );
+        return hasProgress ? data : null;
+      } catch (err) {
+        return null;
+      }
+    }
+
+    function checkAndOfferSessionRecovery() {
+      const saved = loadSavedSessionProgress();
+      const newBox = document.getElementById('onboardingNewSessionBox');
+      const resumeBox = document.getElementById('onboardingResumeBox');
+      if (!newBox || !resumeBox) return false;
+
+      if (!saved) {
+        newBox.style.display = 'block';
+        resumeBox.style.display = 'none';
+        return false;
+      }
+
+      const nickLabel = document.getElementById('resumeNickLabel');
+      const stageLabel = document.getElementById('resumeStageLabel');
+      const mecsLabel = document.getElementById('resumeMecsLabel');
+
+      if (nickLabel) nickLabel.textContent = saved.userName || 'Sin apodo';
+      if (mecsLabel) {
+        const count = Array.isArray(saved.selectedMechanicIds) ? saved.selectedMechanicIds.length : 0;
+        mecsLabel.textContent = `${count} / 6 seleccionadas`;
+      }
+      if (stageLabel) {
+        if (saved.diagnosisGenerated && saved.calibrationState && saved.calibrationState.unlocked) {
+          const batchesCount = (saved.calibrationState.batches || []).length || 1;
+          stageLabel.textContent = `Fase 2: Ejercicio de calibración (Lote ${batchesCount})`;
+        } else if (saved.diagnosisGenerated) {
+          stageLabel.textContent = 'Fase 1 enviada (Diagnóstico octagonal activo)';
+        } else if (Array.isArray(saved.selectedMechanicIds) && saved.selectedMechanicIds.length > 0) {
+          stageLabel.textContent = 'Fase 1 en curso (Selección de mecánicas)';
+        } else {
+          stageLabel.textContent = 'Sesión iniciada';
+        }
+      }
+
+      newBox.style.display = 'none';
+      resumeBox.style.display = 'block';
+      document.getElementById('onboardingModal').classList.add('active');
+      return true;
+    }
+
+    function resumeSavedSession() {
+      const saved = loadSavedSessionProgress();
+      if (!saved) {
+        startFreshSessionFromModal();
+        return;
+      }
+
+      if (saved.userSessionToken) {
+        userSessionToken = saved.userSessionToken;
+      }
+
+      const userNameEl = document.getElementById('userNameInput');
+      if (userNameEl && saved.userName) {
+        userNameEl.value = saved.userName;
+      }
+
+      selectedMechanics = (saved.selectedMechanicIds || [])
+        .map(id => MECHANICS_DB.find(m => m.id === id))
+        .filter(Boolean);
+
+      updateTray();
+      renderDeck(true);
+
+      if (saved.diagnosisGenerated && saved.currentDiagnosis) {
+        currentDiagnosis = saved.currentDiagnosis;
+        currentCalibrationEffectiveness = saved.currentCalibrationEffectiveness ?? null;
+        classificationAttemptsMap = saved.classificationAttemptsMap || {};
+
+        const { cdTotals, pctWhite, pctBlack, pctIntrinsic, pctExtrinsic } = currentDiagnosis;
+        document.getElementById('analyzeBtn').disabled = true;
+        document.getElementById('diagnosisBox').classList.add('active');
+        document.getElementById('valWhiteHat').textContent = `${pctWhite}%`;
+        document.getElementById('valBlackHat').textContent = `${pctBlack}%`;
+        document.getElementById('barWhiteHat').style.width = `${pctWhite}%`;
+        document.getElementById('barBlackHat').style.width = `${pctBlack}%`;
+
+        document.getElementById('valIntrinsic').textContent = `${pctIntrinsic}%`;
+        document.getElementById('valExtrinsic').textContent = `${pctExtrinsic}%`;
+        document.getElementById('barIntrinsic').style.width = `${pctIntrinsic}%`;
+        document.getElementById('barExtrinsic').style.width = `${pctExtrinsic}%`;
+
+        renderQualitativeReport(pctWhite, pctBlack, pctIntrinsic, pctExtrinsic);
+        drawOctagonRadar('studentRadarCanvas', cdTotals, true);
+
+        if (saved.calibrationState && Array.isArray(saved.calibrationState.batches) && saved.calibrationState.batches.length > 0) {
+          calibrationState = {
+            unlocked: Boolean(saved.calibrationState.unlocked),
+            usedMechIds: saved.calibrationState.usedMechIds || [],
+            batches: saved.calibrationState.batches.map(b => ({
+              batchNumber: b.batchNumber,
+              cards: (b.cardIds || []).map(id => MECHANICS_DB.find(m => m.id === id)).filter(Boolean),
+              attempts: b.attempts || 0,
+              firstAttemptCorrect: b.firstAttemptCorrect ?? null,
+              currentCorrect: b.currentCorrect || 0,
+              completed: Boolean(b.completed),
+              lockedCardIds: b.lockedCardIds || [],
+              selections: b.selections || {},
+              needsModification: Boolean(b.needsModification)
+            })),
+            currentBatchIdx: saved.calibrationState.currentBatchIdx ?? 0,
+            attemptsByMechId: saved.calibrationState.attemptsByMechId || {},
+            evaluatedMechIds: saved.calibrationState.evaluatedMechIds || [],
+            firstTryErrorMechIds: saved.calibrationState.firstTryErrorMechIds || []
+          };
+
+          const activeBatch = calibrationState.batches[calibrationState.currentBatchIdx] || calibrationState.batches[0];
+          window.currentCalibrationBatch = activeBatch ? activeBatch.cards : [];
+
+          const gateBox = document.getElementById('phaseGateBox');
+          const classifBox = document.getElementById('classificationBox');
+          if (calibrationState.unlocked) {
+            if (gateBox) gateBox.style.display = 'none';
+            if (classifBox) classifBox.style.display = 'block';
+          } else {
+            if (gateBox) gateBox.style.display = 'block';
+            if (classifBox) classifBox.style.display = 'none';
+          }
+          renderActiveCalibrationBatch();
+        } else {
+          renderClassificationChallenge();
+        }
+      }
+
+      document.getElementById('onboardingModal').classList.remove('active');
+
+      setTimeout(() => {
+        if (saved.diagnosisGenerated) {
+          const targetEl = (calibrationState.unlocked && document.getElementById('classificationBox'))
+            ? document.getElementById('classificationBox')
+            : document.getElementById('diagnosisBox');
+          if (targetEl) targetEl.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 150);
+    }
+
+    function resetStateToBlank() {
+      try {
+        localStorage.removeItem(SESSION_STORAGE_KEY);
+      } catch (e) {}
+
+      userSessionToken = 'session_' + Math.random().toString(36).substring(2, 9);
+      selectedMechanics = [];
+      currentDiagnosis = null;
+      currentCalibrationEffectiveness = null;
+      classificationAttemptsMap = {};
+      calibrationState = {
+        unlocked: false,
+        usedMechIds: [],
+        batches: [],
+        currentBatchIdx: -1,
+        attemptsByMechId: {},
+        evaluatedMechIds: [],
+        firstTryErrorMechIds: []
+      };
+
+      const userNameEl = document.getElementById('userNameInput');
+      if (userNameEl) userNameEl.value = '';
+      const nickModalInput = document.getElementById('onboardingNickInput');
+      if (nickModalInput) nickModalInput.value = '';
+      const unlockInput = document.getElementById('phaseUnlockInput');
+      if (unlockInput) unlockInput.value = '';
+
+      document.getElementById('diagnosisBox').classList.remove('active');
+      const gateBox = document.getElementById('phaseGateBox');
+      if (gateBox) gateBox.style.display = 'none';
+      const classifBox = document.getElementById('classificationBox');
+      if (classifBox) classifBox.style.display = 'none';
+      const resBox = document.getElementById('classificationResultBox');
+      if (resBox) resBox.style.display = 'none';
+
+      updateTray();
+      renderDeck(true);
+    }
+
+    function startFreshSessionFromModal() {
+      resetStateToBlank();
+      const newBox = document.getElementById('onboardingNewSessionBox');
+      const resumeBox = document.getElementById('onboardingResumeBox');
+      if (newBox) newBox.style.display = 'block';
+      if (resumeBox) resumeBox.style.display = 'none';
+      const nickInput = document.getElementById('onboardingNickInput');
+      if (nickInput) nickInput.focus();
+    }
+
+    function confirmResetSession() {
+      const hasWork = selectedMechanics.length > 0 || document.getElementById('diagnosisBox').classList.contains('active');
+      if (hasWork && !confirm('¿Deseas borrar el progreso actual y comenzar un nuevo diseño desde cero?')) {
+        return;
+      }
+      startFreshSessionFromModal();
+      document.getElementById('onboardingModal').classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 
     /* ==================================================================
        2. INICIALIZACIÓN Y NAVEGACIÓN
@@ -1544,23 +2052,28 @@
       const mode = urlParams.get('mode');
       const urlNick = urlParams.get('nick') || urlParams.get('name');
 
-      if (urlNick) {
-        document.getElementById('userNameInput').value = urlNick;
-        document.getElementById('onboardingModal').classList.remove('active');
+      renderDeck(true);
+      initTeacherPolling();
+
+      if (mode === 'teacher') {
+        document.getElementById('viewSwitcherNav').style.display = 'none';
+        switchView('teacher');
+        return;
       }
 
       if (mode === 'student') {
         document.getElementById('viewSwitcherNav').style.display = 'none';
-        switchView('student');
-      } else if (mode === 'teacher') {
-        document.getElementById('viewSwitcherNav').style.display = 'none';
-        switchView('teacher');
-      } else {
-        switchView('student');
       }
 
-      renderDeck(true);
-      initTeacherPolling();
+      if (urlNick) {
+        document.getElementById('userNameInput').value = urlNick;
+        document.getElementById('onboardingModal').classList.remove('active');
+        switchView('student');
+        saveSessionProgress();
+      } else {
+        switchView('student');
+        checkAndOfferSessionRecovery();
+      }
     });
 
     function submitOnboardingNick(e) {
@@ -1570,6 +2083,7 @@
 
       document.getElementById('userNameInput').value = nick;
       document.getElementById('onboardingModal').classList.remove('active');
+      saveSessionProgress();
     }
 
     function switchView(viewName) {
@@ -1667,6 +2181,7 @@
 
       updateTray();
       renderDeck(false);
+      saveSessionProgress();
     }
 
     function updateTray() {
@@ -1749,6 +2264,9 @@
 
       // Renderizar Fase 3: Ejercicio de Calibración Psicopedagógica
       renderClassificationChallenge();
+
+      // Guardar sesión localmente para proteger contra recargas accidentales
+      saveSessionProgress();
 
       // Desplazar suavemente hasta el resultado
       document.getElementById('diagnosisBox').scrollIntoView({ behavior: 'smooth' });
@@ -1838,6 +2356,7 @@
         const box = document.getElementById('classificationBox');
         box.style.display = 'block';
         feedback.style.display = 'none';
+        saveSessionProgress();
         box.scrollIntoView({ behavior: 'smooth' });
       } else {
         feedback.style.display = 'block';
@@ -1986,11 +2505,13 @@
 
       const btn = document.getElementById('validateClassifBtn');
       if (btn) btn.disabled = false;
+      saveSessionProgress();
     }
 
     function renderActiveCalibrationBatch() {
       const batch = calibrationState.batches[calibrationState.currentBatchIdx];
       if (!batch) return;
+      saveSessionProgress();
 
       // 1. Renderizar píldoras de lotes (1 a 4)
       const pillsContainer = document.getElementById('batchPillsContainer');
@@ -2431,15 +2952,17 @@
 
       const rect = canvas.parentElement.getBoundingClientRect();
       const dpr = window.devicePixelRatio || 1;
-      const size = Math.min(rect.width, 420);
-      
+      const size = Math.min(rect.width || 320, 420);
+      const isCompact = size < 330;
+
       canvas.width = size * dpr;
       canvas.height = size * dpr;
       ctx.scale(dpr, dpr);
 
       const centerX = size / 2;
       const centerY = size / 2;
-      const radius = size * 0.33;
+      const radius = size * (isCompact ? 0.29 : 0.33);
+      const labelOffset = isCompact ? 20 : 26;
 
       // Mapeo preciso de posiciones geométricas según modelo Octalysis:
       // CD1: Arriba (-90°)
@@ -2492,10 +3015,14 @@
         ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
         ctx.stroke();
 
-        // Texto Etiqueta
-        const lx = centerX + (radius + 26) * Math.cos(v.angleRad);
-        const ly = centerY + (radius + 26) * Math.sin(v.angleRad);
-        ctx.font = '600 11px Inter, sans-serif';
+        // Texto Etiqueta con límite horizontal para evitar recortes en móviles
+        const rawLx = centerX + (radius + labelOffset) * Math.cos(v.angleRad);
+        const rawLy = centerY + (radius + labelOffset) * Math.sin(v.angleRad);
+        const horizontalPad = isCompact ? 32 : 36;
+        const lx = Math.max(horizontalPad, Math.min(size - horizontalPad, rawLx));
+        const ly = Math.max(14, Math.min(size - 14, rawLy));
+
+        ctx.font = isCompact ? '600 9.5px Inter, sans-serif' : '600 11px Inter, sans-serif';
         ctx.fillStyle = '#94a3b8';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
@@ -2539,22 +3066,41 @@
         ctx.stroke();
       });
 
-      // Click Event en Vértices para Exploración Contemplativa
+      canvas._radarPoints = pointPositions;
+      canvas._logicalSize = size;
+
+      // Click Event en Vértices para Exploración Contemplativa (escalado dinámico y táctil)
       if (isInteractive) {
         canvas.onclick = (e) => {
-          const rect = canvas.getBoundingClientRect();
-          const clickX = (e.clientX - rect.left);
-          const clickY = (e.clientY - rect.top);
+          const currentRect = canvas.getBoundingClientRect();
+          const scale = (canvas._logicalSize || currentRect.width) / (currentRect.width || 1);
+          const clickX = (e.clientX - currentRect.left) * scale;
+          const clickY = (e.clientY - currentRect.top) * scale;
+          const hitRadius = window.innerWidth < 640 ? 24 : 18;
 
-          pointPositions.forEach(pt => {
+          (canvas._radarPoints || []).forEach(pt => {
             const dist = Math.hypot(clickX - pt.x, clickY - pt.y);
-            if (dist < 18) {
+            if (dist < hitRadius) {
               openModal(pt.cd);
             }
           });
         };
       }
     }
+
+    // Redibujar gráficos Canvas automáticamente al rotar el móvil o cambiar el tamaño de ventana
+    let resizeCanvasTimer = null;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeCanvasTimer);
+      resizeCanvasTimer = setTimeout(() => {
+        if (currentDiagnosis && document.getElementById('diagnosisBox').classList.contains('active')) {
+          drawOctagonRadar('studentRadarCanvas', currentDiagnosis.cdTotals, true);
+        }
+        if (document.getElementById('teacherView').classList.contains('active')) {
+          renderTeacherDashboard();
+        }
+      }, 150);
+    });
 
     /* ==================================================================
        6. TEACHER DASHBOARD (MÉTRICAS COLECTIVAS EN VIVO Y POLLED)
@@ -2897,13 +3443,13 @@
 
       const rect = canvas.parentElement.getBoundingClientRect();
       const dpr = window.devicePixelRatio || 1;
-      const size = Math.min(rect.width, 420);
+      const size = Math.min(rect.width || 320, 420);
 
       canvas.width = size * dpr;
       canvas.height = size * dpr;
       ctx.scale(dpr, dpr);
 
-      const margin = 40;
+      const margin = size < 330 ? 30 : 40;
       const w = size - margin * 2;
       const h = size - margin * 2;
       const centerX = margin + w / 2;
