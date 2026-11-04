@@ -665,7 +665,7 @@
     /* TEACHER DASHBOARD STYLES */
     .kpi-row {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
       gap: 1.25rem;
       margin-bottom: 2rem;
     }
@@ -870,6 +870,17 @@
       flex-direction: column;
       justify-content: space-between;
       gap: 1rem;
+      transition: all 0.25s ease;
+    }
+
+    .classif-card.locked-correct {
+      border-color: rgba(16, 185, 129, 0.55);
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), var(--bg-input));
+    }
+
+    .classif-card.has-error {
+      border-color: rgba(239, 68, 68, 0.65);
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.07), var(--bg-input));
     }
 
     .classif-select {
@@ -883,10 +894,190 @@
       outline: none;
       width: 100%;
       cursor: pointer;
+      transition: all 0.2s ease;
     }
 
     .classif-select:focus {
       border-color: var(--white-hat);
+    }
+
+    .classif-select:disabled {
+      cursor: not-allowed;
+      opacity: 0.9;
+      background: rgba(16, 185, 129, 0.12);
+      border-color: var(--success);
+      color: #a7f3d0;
+      font-weight: 600;
+    }
+
+    .batch-progress-strip {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 0.85rem 1.1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .batch-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .batch-pill {
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 5px 11px;
+      border-radius: 20px;
+      border: 1px solid var(--border-color);
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text-dim);
+      cursor: default;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.2s ease;
+    }
+
+    .batch-pill.clickable {
+      cursor: pointer;
+    }
+
+    .batch-pill.clickable:hover {
+      border-color: var(--white-hat);
+      color: var(--text-main);
+    }
+
+    .batch-pill.active {
+      border-color: var(--white-hat);
+      background: rgba(6, 182, 212, 0.15);
+      color: var(--text-main);
+      box-shadow: 0 0 12px rgba(6, 182, 212, 0.2);
+    }
+
+    .batch-pill.done {
+      border-color: rgba(16, 185, 129, 0.5);
+      background: rgba(16, 185, 129, 0.12);
+      color: var(--success);
+    }
+
+    .batch-pill.done.active {
+      border-color: var(--white-hat);
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.3);
+    }
+
+    .calib-actions-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    .btn-next-batch {
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+      border: 1px solid var(--white-hat);
+      color: var(--white-hat);
+      padding: 12px 24px;
+      font-family: var(--font-heading);
+      font-size: 0.95rem;
+      font-weight: 700;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-next-batch:hover:not(:disabled) {
+      background: rgba(6, 182, 212, 0.15);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(6, 182, 212, 0.25);
+    }
+
+    .btn-next-batch:disabled {
+      border-color: var(--border-color);
+      color: var(--text-dim);
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .calib-metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .calib-metric-box {
+      background: rgba(30, 41, 59, 0.7);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 0.9rem 1rem;
+    }
+
+    .calib-metric-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .calib-metric-val {
+      font-family: var(--font-heading);
+      font-size: 1.75rem;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    .calib-metric-sub {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      margin-top: 0.25rem;
+    }
+
+    .profile-badge {
+      display: inline-block;
+      padding: 3px 9px;
+      border-radius: 12px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      margin-top: 3px;
+    }
+
+    .profile-directo {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--success);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+    }
+
+    .profile-reflexivo {
+      background: rgba(6, 182, 212, 0.15);
+      color: var(--white-hat);
+      border: 1px solid rgba(6, 182, 212, 0.35);
+    }
+
+    .profile-tanteo {
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--black-hat-alt);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+    }
+
+    .profile-incompleto {
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--black-hat);
+      border: 1px solid rgba(239, 68, 68, 0.35);
     }
   </style>
 </head>
@@ -1064,24 +1255,58 @@
           <p style="font-size: 0.9rem; color: var(--white-hat); font-weight: 600; margin-top: 0.25rem;">"Afina tu diferenciación de los motivadores realizando el siguiente ejercicio de calibración."</p>
         </div>
 
-        <div style="background: rgba(6, 182, 212, 0.08); border: 1px solid var(--white-hat); border-radius: var(--radius-md); padding: 0.85rem 1.1rem; margin-bottom: 1.25rem; font-size: 0.85rem; color: var(--text-main);">
-          💡 <strong>Pista pedagógica:</strong> Evaluarás un lote calibrado estandarizado de 6 mecánicas (tus elecciones + tarjetas complementarias no elegidas). Si tienes dudas, puedes hacer clic en los vértices del gráfico de octágono superior para repasar la definición de cada impulsador psicológico.
+        <div style="background: rgba(6, 182, 212, 0.08); border: 1px solid var(--white-hat); border-radius: var(--radius-md); padding: 0.85rem 1.1rem; margin-bottom: 1rem; font-size: 0.85rem; color: var(--text-main);">
+          💡 <strong>Pista pedagógica:</strong> Comenzarás con un lote calibrado de 6 mecánicas (tus elecciones + tarjetas complementarias). Al validar el lote, tus aciertos quedarán fijados en verde y podrás reintentar las pendientes hasta lograr el <strong>100% de dominio</strong>. Una vez completado el lote, podrás practicar opcionalmente con nuevos lotes sin repetir tarjetas.
         </div>
 
-        <div id="classificationCardsGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.25rem; margin-bottom: 1.5rem;">
-          <!-- Tarjetas de clasificación dinámicas (siempre 6) -->
+        <!-- BARRA DE PROGRESO DE LOTES (1 A 4 SIN REPETICIÓN) -->
+        <div class="batch-progress-strip">
+          <div class="batch-pills" id="batchPillsContainer">
+            <!-- Píldoras dinámicas Lote 1..4 -->
+          </div>
+          <div id="batchCoverageText" style="font-size: 0.78rem; color: var(--text-muted); font-weight: 600;">
+            Cobertura: 6 / 24 mecánicas
+          </div>
         </div>
 
-        <div style="text-align: center;">
+        <div id="classificationCardsGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.25rem; margin-bottom: 1.25rem;">
+          <!-- Tarjetas de clasificación dinámicas (siempre 6 por lote) -->
+        </div>
+
+        <p id="classificationValidationWarn" style="display: none; text-align: center; font-size: 0.85rem; font-weight: 600; color: var(--black-hat-alt); background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.35); border-radius: var(--radius-sm); padding: 0.65rem 1rem; margin-bottom: 1rem;"></p>
+
+        <div class="calib-actions-bar">
           <button class="btn-analyze" id="validateClassifBtn" onclick="validateClassification()">
-            ✅ Validar mi calibración
+            ✅ Validar lote de calibración
+          </button>
+          <button class="btn-next-batch" id="nextBatchBtn" onclick="loadNextCalibrationBatch()" disabled>
+            🔒 Completa el lote al 100% para desbloquear otro
           </button>
         </div>
 
         <div id="classificationResultBox" style="margin-top: 1.5rem; display: none; background: var(--bg-input); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; text-align: center;">
-          <h4 style="font-size: 1.1rem; color: var(--text-main); margin-bottom: 0.5rem;">Tu efectividad de deducción</h4>
-          <div id="effectivenessScore" style="font-family: var(--font-heading); font-size: 2.2rem; font-weight: 800; color: var(--success);">100%</div>
-          <p id="effectivenessMsg" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;"></p>
+          <h4 style="font-size: 1.05rem; color: var(--text-main); margin-bottom: 0.9rem;">📊 Tu desempeño y persistencia en la calibración</h4>
+          <div class="calib-metrics-grid">
+            <div class="calib-metric-box">
+              <div class="calib-metric-label">Precisión al 1.er intento</div>
+              <div class="calib-metric-val" id="studentFirstTryScore" style="color: var(--white-hat);">100%</div>
+              <div class="calib-metric-sub" id="studentFirstTrySub">6 de 6 en el primer intento</div>
+            </div>
+            <div class="calib-metric-box">
+              <div class="calib-metric-label">Dominio final (Mastery)</div>
+              <div class="calib-metric-val" id="studentMasteryScore" style="color: var(--success);">100%</div>
+              <div class="calib-metric-sub" id="studentMasterySub">1 lote dominado al 100%</div>
+            </div>
+            <div class="calib-metric-box">
+              <div class="calib-metric-label">Persistencia y esfuerzo</div>
+              <div class="calib-metric-val" id="studentEffortScore" style="color: var(--intrinsic); font-size: 1.4rem;">1 intento</div>
+              <div id="studentEffortBadgeWrap"><span class="profile-badge profile-directo" id="studentEffortBadge">🌟 Dominio directo</span></div>
+              <div class="calib-metric-sub" id="studentEffortSub">Sin errores iniciales</div>
+            </div>
+          </div>
+          <!-- Mantenemos effectivenessScore oculto por compatibilidad DOM si algún script externo lo referencia -->
+          <div id="effectivenessScore" style="display: none;">100%</div>
+          <p id="effectivenessMsg" style="font-size: 0.88rem; color: var(--text-main); margin-top: 0.5rem; line-height: 1.5;"></p>
         </div>
       </div>
     </section>
@@ -1095,7 +1320,7 @@
         <div class="kpi-card">
           <span class="kpi-title">Total de diseños registrados</span>
           <span class="kpi-value" id="kpiTotal">0</span>
-          <span class="kpi-subtext">Estudiantes participantes</span>
+          <span class="kpi-subtext" id="kpiTotalSub">Estudiantes participantes</span>
         </div>
         <div class="kpi-card">
           <span class="kpi-title">Tendencia dominante</span>
@@ -1108,8 +1333,13 @@
           <span class="kpi-subtext" id="kpiMotivSub">58% vs 42% Extrínseca</span>
         </div>
         <div class="kpi-card">
-          <span class="kpi-title">Efectividad promedio</span>
-          <span class="kpi-value" id="kpiEffectiveness" style="color: var(--success);">100%</span>
+          <span class="kpi-title">Precisión 1.° intento → Dominio</span>
+          <span class="kpi-value" id="kpiEffectiveness" style="color: var(--success); font-size: 1.55rem;">--</span>
+          <span class="kpi-subtext" id="kpiPersistenceSub">Esperando calibraciones del grupo</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-title">Mecánica más difícil</span>
+          <span class="kpi-value" id="kpiHardestCardName" style="color: var(--black-hat-alt); font-size: 1.1rem; line-height: 1.25; margin: 0.15rem 0;">Sin errores aún</span>
           <span class="kpi-subtext" id="kpiHardestCard">Precisión diagnóstica del grupo</span>
         </div>
       </div>
@@ -1159,7 +1389,8 @@
                 <th>Fecha/hora</th>
                 <th>Estudiante</th>
                 <th>Mecánicas elegidas</th>
-                <th>Efectividad</th>
+                <th>Calibración (1.° → Dominio)</th>
+                <th>Persistencia y esfuerzo</th>
                 <th>Sombrero</th>
                 <th>Motivación</th>
               </tr>
@@ -1276,9 +1507,9 @@
 
     /* MOCK STORAGE (Datos Simulados para el Dashboard si no hay Webhook) */
     let localSubmissionsStore = [
-      { submissionId: "sub_mock_1", estudiante: "Camila R.", fecha: "10:15 AM", CD1: 5, CD2: 10, CD3: 5, CD4: 0, CD5: 5, CD6: 0, CD7: 0, CD8: 0, pct_sombrero_blanco: 100, pct_sombrero_negro: 0, pct_intrinseca: 50, pct_extrinseca: 50, pct_efectividad: 100, mecanicas_elegidas: ["Desafíos de comprensión escalonados", "Certificado de experto de la sesión", "Lectura en parejas (Buddy System)", "Rol de investigador secreto"] },
-      { submissionId: "sub_mock_2", estudiante: "Mateo S.", fecha: "10:22 AM", CD1: 0, CD2: 5, CD3: 0, CD4: 0, CD5: 0, CD6: 5, CD7: 5, CD8: 10, pct_sombrero_blanco: 20, pct_sombrero_negro: 80, pct_intrinseca: 33, pct_extrinseca: 67, pct_efectividad: 65, mecanicas_elegidas: ["Pase de entrada (Pop quiz)", "Descuento de vidas de equipo", "Ventana de lectura limitada", "Ruleta de comprobación"] },
-      { submissionId: "sub_mock_3", estudiante: "Valeria M.", fecha: "10:35 AM", CD1: 5, CD2: 0, CD3: 10, CD4: 5, CD5: 5, CD6: 0, CD7: 0, CD8: 0, pct_sombrero_blanco: 100, pct_sombrero_negro: 0, pct_intrinseca: 75, pct_extrinseca: 25, pct_efectividad: 90, mecanicas_elegidas: ["Rutas de lectura opcionales", "Creador de hipótesis libre", "Muro de citas y debates", "Misión de impacto real"] }
+      { submissionId: "sub_mock_1", estudiante: "Camila R.", fecha: "10:15 AM", CD1: 5, CD2: 10, CD3: 5, CD4: 0, CD5: 5, CD6: 0, CD7: 0, CD8: 0, pct_sombrero_blanco: 100, pct_sombrero_negro: 0, pct_intrinseca: 50, pct_extrinseca: 50, pct_efectividad: 100, mecanicas_elegidas: ["Desafíos de comprensión escalonados", "Certificado de experto de la sesión", "Lectura en parejas (Buddy System)", "Rol de investigador secreto", "[Calib-> ini:100|lote1:100|dom:100|int:2|lotes:2|lotecmp:2|perfil:directo|eval:4.6.13.1.10.16.2.7.14.19.22.24|err1:]"] },
+      { submissionId: "sub_mock_2", estudiante: "Mateo S.", fecha: "10:22 AM", CD1: 0, CD2: 5, CD3: 0, CD4: 0, CD5: 0, CD6: 5, CD7: 5, CD8: 10, pct_sombrero_blanco: 20, pct_sombrero_negro: 80, pct_intrinseca: 33, pct_extrinseca: 67, pct_efectividad: 67, mecanicas_elegidas: ["Pase de entrada (Pop quiz)", "Descuento de vidas de equipo", "Ventana de lectura limitada", "Ruleta de comprobación", "[Errores-> Ventana de lectura limitada:1 | Pase de entrada (Pop quiz):1]", "[Calib-> ini:67|lote1:67|dom:100|int:2|lotes:1|lotecmp:1|perfil:reflexivo|eval:23.24.16.20.5.11|err1:16.23]"] },
+      { submissionId: "sub_mock_3", estudiante: "Valeria M.", fecha: "10:35 AM", CD1: 5, CD2: 0, CD3: 10, CD4: 5, CD5: 5, CD6: 0, CD7: 0, CD8: 0, pct_sombrero_blanco: 100, pct_sombrero_negro: 0, pct_intrinseca: 75, pct_extrinseca: 25, pct_efectividad: 50, mecanicas_elegidas: ["Rutas de lectura opcionales", "Creador de hipótesis libre", "Muro de citas y debates", "Misión de impacto real", "[Errores-> Ventana de lectura limitada:3 | Creador de hipótesis libre:2 | Cupos limitados de expositores:2]", "[Calib-> ini:50|lote1:50|dom:100|int:5|lotes:1|lotecmp:1|perfil:tanteo|eval:7.8.14.2.16.17|err1:8.16.17]"] }
     ];
 
     /* ESTADO DE LA APLICACIÓN Y BARAJA DE CICLO COMPLETO */
@@ -1289,6 +1520,17 @@
     let currentCalibrationEffectiveness = null;
     let classificationAttemptsMap = {}; // Intentos fallidos por mecánica
     window.currentCalibrationBatch = [];
+
+    // Estado multicapa de calibración por lotes sin repetición (hasta 4 lotes = 24 mecánicas)
+    let calibrationState = {
+      unlocked: false,
+      usedMechIds: [],
+      batches: [],
+      currentBatchIdx: -1,
+      attemptsByMechId: {},
+      evaluatedMechIds: [],
+      firstTryErrorMechIds: []
+    };
 
     // Generar un ID único de sesión por pestaña de usuario para evitar duplicados en reintentos
     const userSessionToken = 'session_' + Math.random().toString(36).substring(2, 9);
@@ -1578,7 +1820,7 @@
     }
 
     /* ==================================================================
-       FASE 3: LOTE CALIBRADO ESTANDARIZADO DE 6 TARJETAS (ELEGIDAS + NO ELEGIDAS)
+       FASE 3: LOTE CALIBRADO ESTANDARIZADO DE 6 TARJETAS (REINTENTO POR LOTE + MULTILOTE SIN REPETICIÓN)
        ================================================================== */
     function unlockPhase2(e) {
       if (e) e.preventDefault();
@@ -1591,6 +1833,7 @@
         .trim();
 
       if (PHASE2_UNLOCK_CODES.includes(normalized)) {
+        calibrationState.unlocked = true;
         document.getElementById('phaseGateBox').style.display = 'none';
         const box = document.getElementById('classificationBox');
         box.style.display = 'block';
@@ -1604,19 +1847,31 @@
     }
 
     function renderClassificationChallenge() {
-      const container = document.getElementById('classificationCardsGrid');
       const box = document.getElementById('classificationBox');
       const gateBox = document.getElementById('phaseGateBox');
-      if (gateBox) gateBox.style.display = 'block';
-      box.style.display = 'none';
-      container.innerHTML = '';
-      classificationAttemptsMap = {};
 
-      // Crear un lote de calibración estandarizado de EXACTAMENTE 6 TARJETAS:
-      // Si el alumno eligió 5 o 6, se incluyen 4 de sus elecciones y 2 tarjetas no elegidas para garantizar mezcla
+      if (calibrationState.unlocked) {
+        if (gateBox) gateBox.style.display = 'none';
+        box.style.display = 'block';
+      } else {
+        if (gateBox) gateBox.style.display = 'block';
+        box.style.display = 'none';
+      }
+
+      // Reiniciar estado de lotes de calibración
+      classificationAttemptsMap = {};
+      currentCalibrationEffectiveness = null;
+      calibrationState.usedMechIds = [];
+      calibrationState.batches = [];
+      calibrationState.currentBatchIdx = 0;
+      calibrationState.attemptsByMechId = {};
+      calibrationState.evaluatedMechIds = [];
+      calibrationState.firstTryErrorMechIds = [];
+
+      // Construir Lote 1 estandarizado de 6 tarjetas (hasta 4 elegidas + complementarias no elegidas)
       const selected = [...selectedMechanics];
       const unselected = MECHANICS_DB.filter(m => !selected.some(s => s.id === m.id));
-      
+
       let chosenToInclude = [];
       if (selected.length <= 4) {
         chosenToInclude = selected;
@@ -1626,94 +1881,474 @@
 
       const neededExtra = 6 - chosenToInclude.length;
       const extraPicked = shuffleArray(unselected).slice(0, neededExtra);
-      
-      const calibrationBatch = shuffleArray([...chosenToInclude, ...extraPicked]);
-      window.currentCalibrationBatch = calibrationBatch;
+      const firstBatchCards = shuffleArray([...chosenToInclude, ...extraPicked]);
 
-      calibrationBatch.forEach(mech => {
-        classificationAttemptsMap[mech.id] = 0;
+      firstBatchCards.forEach(m => {
+        calibrationState.usedMechIds.push(m.id);
+        classificationAttemptsMap[m.id] = 0;
+        calibrationState.attemptsByMechId[m.id] = 0;
+      });
 
-        const isChosen = selected.some(s => s.id === mech.id);
+      calibrationState.batches.push({
+        batchNumber: 1,
+        cards: firstBatchCards,
+        attempts: 0,
+        firstAttemptCorrect: null,
+        currentCorrect: 0,
+        completed: false,
+        lockedCardIds: [],
+        selections: {},
+        needsModification: false
+      });
+
+      window.currentCalibrationBatch = firstBatchCards;
+
+      const resBox = document.getElementById('classificationResultBox');
+      if (resBox) resBox.style.display = 'none';
+
+      renderActiveCalibrationBatch();
+    }
+
+    function switchCalibrationBatchView(idx) {
+      if (idx < 0 || idx >= calibrationState.batches.length) return;
+      calibrationState.currentBatchIdx = idx;
+      window.currentCalibrationBatch = calibrationState.batches[idx].cards;
+      const warn = document.getElementById('classificationValidationWarn');
+      if (warn) warn.style.display = 'none';
+      renderActiveCalibrationBatch();
+    }
+
+    function loadNextCalibrationBatch() {
+      const latestIdx = calibrationState.batches.length - 1;
+      const latestBatch = calibrationState.batches[latestIdx];
+      if (!latestBatch) return;
+
+      // Si el alumno estaba revisando un lote anterior completado y ya tiene un lote nuevo en curso, llevarlo a ese lote
+      if (calibrationState.currentBatchIdx !== latestIdx && !latestBatch.completed) {
+        switchCalibrationBatchView(latestIdx);
+        return;
+      }
+
+      if (!latestBatch.completed) return;
+
+      const remaining = MECHANICS_DB.filter(m => !calibrationState.usedMechIds.includes(m.id));
+      if (remaining.length === 0) return;
+
+      const nextCards = shuffleArray(remaining).slice(0, 6);
+      nextCards.forEach(m => {
+        calibrationState.usedMechIds.push(m.id);
+        if (classificationAttemptsMap[m.id] === undefined) classificationAttemptsMap[m.id] = 0;
+        if (calibrationState.attemptsByMechId[m.id] === undefined) calibrationState.attemptsByMechId[m.id] = 0;
+      });
+
+      const newBatchNumber = calibrationState.batches.length + 1;
+      calibrationState.batches.push({
+        batchNumber: newBatchNumber,
+        cards: nextCards,
+        attempts: 0,
+        firstAttemptCorrect: null,
+        currentCorrect: 0,
+        completed: false,
+        lockedCardIds: [],
+        selections: {},
+        needsModification: false
+      });
+
+      calibrationState.currentBatchIdx = calibrationState.batches.length - 1;
+      window.currentCalibrationBatch = nextCards;
+
+      const warn = document.getElementById('classificationValidationWarn');
+      if (warn) warn.style.display = 'none';
+
+      renderActiveCalibrationBatch();
+      document.getElementById('classificationBox').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function onCalibrationSelectChange(mechId, rawVal) {
+      const batch = calibrationState.batches[calibrationState.currentBatchIdx];
+      if (!batch || batch.completed) return;
+
+      batch.selections[mechId] = parseInt(rawVal, 10) || 0;
+      batch.needsModification = false;
+
+      const warn = document.getElementById('classificationValidationWarn');
+      if (warn) warn.style.display = 'none';
+
+      const select = document.getElementById(`select_cd_${mechId}`);
+      const card = document.getElementById(`classif_card_${mechId}`);
+      const feedback = document.getElementById(`feedback_cd_${mechId}`);
+      if (select) select.style.borderColor = 'var(--white-hat)';
+      if (card) card.classList.remove('has-error');
+      if (feedback && batch.attempts > 0 && !batch.lockedCardIds.includes(mechId)) {
+        feedback.style.color = 'var(--text-muted)';
+        feedback.textContent = '↻ Opción modificada, lista para validar.';
+      }
+
+      const btn = document.getElementById('validateClassifBtn');
+      if (btn) btn.disabled = false;
+    }
+
+    function renderActiveCalibrationBatch() {
+      const batch = calibrationState.batches[calibrationState.currentBatchIdx];
+      if (!batch) return;
+
+      // 1. Renderizar píldoras de lotes (1 a 4)
+      const pillsContainer = document.getElementById('batchPillsContainer');
+      if (pillsContainer) {
+        let pillsHtml = '';
+        for (let i = 0; i < 4; i++) {
+          const existingBatch = calibrationState.batches[i];
+          const isCurrent = (i === calibrationState.currentBatchIdx);
+          const labelBase = i === 0 ? 'Lote 1 (Base)' : `Lote ${i + 1}`;
+          if (existingBatch) {
+            if (existingBatch.completed) {
+              const firstPct = Math.round((existingBatch.firstAttemptCorrect / existingBatch.cards.length) * 100);
+              pillsHtml += `<span class="batch-pill done clickable ${isCurrent ? 'active' : ''}" onclick="switchCalibrationBatchView(${i})" title="Haz clic para ver este lote">✅ ${labelBase}: 100% (1.°: ${firstPct}% · ${existingBatch.attempts} int.)</span>`;
+            } else if (existingBatch.attempts > 0) {
+              pillsHtml += `<span class="batch-pill clickable ${isCurrent ? 'active' : ''}" onclick="switchCalibrationBatchView(${i})">🎯 ${labelBase}: ${existingBatch.currentCorrect}/6 (Intento #${existingBatch.attempts})</span>`;
+            } else {
+              pillsHtml += `<span class="batch-pill clickable ${isCurrent ? 'active' : ''}" onclick="switchCalibrationBatchView(${i})">🎯 ${labelBase}: En curso</span>`;
+            }
+          } else {
+            pillsHtml += `<span class="batch-pill">🔒 ${labelBase}</span>`;
+          }
+        }
+        pillsContainer.innerHTML = pillsHtml;
+      }
+
+      const covText = document.getElementById('batchCoverageText');
+      if (covText) {
+        const compCount = calibrationState.batches.filter(b => b.completed).length;
+        covText.textContent = `Cobertura: ${calibrationState.usedMechIds.length} / 24 mecánicas · ${compCount}/4 lotes dominados`;
+      }
+
+      // 2. Renderizar las 6 tarjetas del lote activo
+      const container = document.getElementById('classificationCardsGrid');
+      container.innerHTML = '';
+
+      batch.cards.forEach(mech => {
+        const isChosen = selectedMechanics.some(s => s.id === mech.id);
+        const isLocked = batch.lockedCardIds.includes(mech.id) || batch.completed;
+        const selectedVal = isLocked ? mech.cd : (batch.selections[mech.id] || 0);
+        const hadErrorInAttempt = batch.attempts > 0 && !isLocked;
 
         const card = document.createElement('div');
-        card.className = 'classif-card';
+        card.id = `classif_card_${mech.id}`;
+        card.className = `classif-card ${isLocked ? 'locked-correct' : (hadErrorInAttempt ? 'has-error' : '')}`;
+
+        let feedbackHtml = '';
+        if (isLocked) {
+          feedbackHtml = `<div id="feedback_cd_${mech.id}" style="font-size: 0.76rem; font-weight: 700; margin-top: 5px; color: var(--success);">✓ ¡Correcto! (Fijada)</div>`;
+        } else if (hadErrorInAttempt) {
+          feedbackHtml = `<div id="feedback_cd_${mech.id}" style="font-size: 0.76rem; font-weight: 600; margin-top: 5px; color: var(--black-hat);">✗ Incorrecto (Intento #${batch.attempts}). Revisa e intenta con otro Core Drive.</div>`;
+        } else {
+          feedbackHtml = `<div id="feedback_cd_${mech.id}" style="font-size: 0.75rem; font-weight: 600; margin-top: 5px;"></div>`;
+        }
+
         card.innerHTML = `
           <div>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.4rem; margin-bottom: 0.35rem;">
               <h4 style="font-size: 0.95rem; color: var(--text-main);">${mech.name}</h4>
-              ${isChosen ? '<span style="font-size: 0.7rem; background: rgba(6, 182, 212, 0.15); color: var(--white-hat); padding: 2px 6px; border-radius: 4px; font-weight: 600;">Elegida en tu diseño</span>' : '<span style="font-size: 0.7rem; background: rgba(148, 163, 184, 0.15); color: var(--text-muted); padding: 2px 6px; border-radius: 4px;">Tarjeta de calibración</span>'}
+              ${isChosen
+                ? '<span style="font-size: 0.68rem; white-space: nowrap; background: rgba(6, 182, 212, 0.15); color: var(--white-hat); padding: 2px 6px; border-radius: 4px; font-weight: 600;">Elegida en tu diseño</span>'
+                : '<span style="font-size: 0.68rem; white-space: nowrap; background: rgba(148, 163, 184, 0.15); color: var(--text-muted); padding: 2px 6px; border-radius: 4px;">Tarjeta de calibración</span>'}
             </div>
             <p style="font-size: 0.8rem; color: var(--text-muted);">${mech.desc}</p>
           </div>
           <div>
             <label style="font-size: 0.75rem; color: var(--text-dim); font-weight: 600; display: block; margin-bottom: 4px;">¿A qué Core Drive pertenece?</label>
-            <select class="classif-select" id="select_cd_${mech.id}">
-              <option value="0">-- Selecciona un impulsador --</option>
-              <option value="1">CD1: Significado épico y vocación</option>
-              <option value="2">CD2: Desarrollo y logro</option>
-              <option value="3">CD3: Empoderamiento de la creatividad</option>
-              <option value="4">CD4: Propiedad y posesión</option>
-              <option value="5">CD5: Influencia social y afinidad</option>
-              <option value="6">CD6: Escasez e impaciencia</option>
-              <option value="7">CD7: Impredecibilidad y curiosidad</option>
-              <option value="8">CD8: Pérdida y evitación</option>
+            <select class="classif-select" id="select_cd_${mech.id}" ${isLocked ? 'disabled' : ''} onchange="onCalibrationSelectChange(${mech.id}, this.value)" style="${hadErrorInAttempt ? 'border-color: var(--black-hat);' : ''}">
+              <option value="0" ${selectedVal === 0 ? 'selected' : ''}>-- Selecciona un impulsador --</option>
+              <option value="1" ${selectedVal === 1 ? 'selected' : ''}>CD1: Significado épico y vocación</option>
+              <option value="2" ${selectedVal === 2 ? 'selected' : ''}>CD2: Desarrollo y logro</option>
+              <option value="3" ${selectedVal === 3 ? 'selected' : ''}>CD3: Empoderamiento de la creatividad</option>
+              <option value="4" ${selectedVal === 4 ? 'selected' : ''}>CD4: Propiedad y posesión</option>
+              <option value="5" ${selectedVal === 5 ? 'selected' : ''}>CD5: Influencia social y afinidad</option>
+              <option value="6" ${selectedVal === 6 ? 'selected' : ''}>CD6: Escasez e impaciencia</option>
+              <option value="7" ${selectedVal === 7 ? 'selected' : ''}>CD7: Impredecibilidad y curiosidad</option>
+              <option value="8" ${selectedVal === 8 ? 'selected' : ''}>CD8: Pérdida y evitación</option>
             </select>
-            <div id="feedback_cd_${mech.id}" style="font-size: 0.75rem; font-weight: 600; margin-top: 4px;"></div>
+            ${feedbackHtml}
           </div>
         `;
         container.appendChild(card);
       });
 
-      document.getElementById('classificationResultBox').style.display = 'none';
+      // 3. Actualizar botones de acción del lote
+      const validateBtn = document.getElementById('validateClassifBtn');
+      const nextBatchBtn = document.getElementById('nextBatchBtn');
+      const latestBatch = calibrationState.batches[calibrationState.batches.length - 1];
+      const remainingCardsCount = MECHANICS_DB.length - calibrationState.usedMechIds.length;
+
+      if (validateBtn) {
+        if (batch.completed) {
+          validateBtn.disabled = true;
+          validateBtn.textContent = `✅ Lote ${batch.batchNumber} dominado al 100%`;
+        } else if (batch.attempts === 0) {
+          validateBtn.disabled = false;
+          validateBtn.textContent = `✅ Validar lote ${batch.batchNumber}`;
+        } else {
+          const pendingCount = batch.cards.length - batch.currentCorrect;
+          validateBtn.disabled = false;
+          validateBtn.textContent = `🔄 Reintentar tarjetas pendientes (${pendingCount} por corregir)`;
+        }
+      }
+
+      if (nextBatchBtn) {
+        const latestIdx = calibrationState.batches.length - 1;
+        if (calibrationState.currentBatchIdx !== latestIdx && latestBatch && !latestBatch.completed) {
+          nextBatchBtn.disabled = false;
+          nextBatchBtn.textContent = `➡️ Volver al Lote ${latestBatch.batchNumber} en curso`;
+        } else if (remainingCardsCount === 0 && latestBatch && latestBatch.completed) {
+          nextBatchBtn.disabled = true;
+          nextBatchBtn.textContent = '🏆 ¡4 de 4 lotes completados (24/24 mecánicas)!';
+        } else if (latestBatch && latestBatch.completed) {
+          nextBatchBtn.disabled = false;
+          const nextNum = calibrationState.batches.length + 1;
+          nextBatchBtn.textContent = `🎲 Practicar con nuevo lote (6 tarjetas nuevas — Lote ${nextNum}/4)`;
+        } else {
+          nextBatchBtn.disabled = true;
+          const activeNum = latestBatch ? latestBatch.batchNumber : 1;
+          nextBatchBtn.textContent = `🔒 Completa el 100% del Lote ${activeNum} para desbloquear otro lote`;
+        }
+      }
+
+      updateStudentCalibrationSummary();
+    }
+
+    function getStudentCalibrationStats() {
+      const validatedBatches = calibrationState.batches.filter(b => b.attempts > 0);
+      if (validatedBatches.length === 0) return null;
+
+      const batch1 = validatedBatches[0];
+      const lote1FirstPct = Math.round(((batch1.firstAttemptCorrect || 0) / batch1.cards.length) * 100);
+
+      const totalCardsEvaluated = validatedBatches.reduce((acc, b) => acc + b.cards.length, 0);
+      const totalFirstCorrect = validatedBatches.reduce((acc, b) => acc + (b.firstAttemptCorrect || 0), 0);
+      const globalFirstPct = Math.round((totalFirstCorrect / totalCardsEvaluated) * 100);
+
+      const totalCurrentCorrect = validatedBatches.reduce((acc, b) => acc + b.currentCorrect, 0);
+      const globalMasteryPct = Math.round((totalCurrentCorrect / totalCardsEvaluated) * 100);
+
+      const totalAttempts = validatedBatches.reduce((acc, b) => acc + b.attempts, 0);
+      const completedBatches = validatedBatches.filter(b => b.completed);
+      const completedBatchesCount = completedBatches.length;
+      const avgAttemptsPerBatch = Math.round((totalAttempts / validatedBatches.length) * 10) / 10;
+
+      // Determinar perfil de persistencia y esfuerzo
+      let profileCode = 'incompleto';
+      let profileLabel = '⏳ En calibración';
+      let profileClass = 'profile-incompleto';
+
+      if (batch1.completed) {
+        const compCards = completedBatches.reduce((acc, b) => acc + b.cards.length, 0);
+        const compFirstCorrect = completedBatches.reduce((acc, b) => acc + (b.firstAttemptCorrect || 0), 0);
+        const compAttempts = completedBatches.reduce((acc, b) => acc + b.attempts, 0);
+        const compAvgAttempts = compAttempts / completedBatches.length;
+
+        if (compFirstCorrect === compCards && compAvgAttempts === 1) {
+          profileCode = 'directo';
+          profileLabel = '🌟 Dominio directo';
+          profileClass = 'profile-directo';
+        } else if (compAvgAttempts <= 3) {
+          profileCode = 'reflexivo';
+          profileLabel = '💪 Persistencia reflexiva';
+          profileClass = 'profile-reflexivo';
+        } else {
+          profileCode = 'tanteo';
+          profileLabel = '🎲 Ensayo y error';
+          profileClass = 'profile-tanteo';
+        }
+      }
+
+      return {
+        lote1FirstPct,
+        globalFirstPct,
+        globalMasteryPct,
+        totalCardsEvaluated,
+        totalFirstCorrect,
+        totalCurrentCorrect,
+        totalAttempts,
+        batchesStarted: validatedBatches.length,
+        completedBatchesCount,
+        avgAttemptsPerBatch,
+        profileCode,
+        profileLabel,
+        profileClass
+      };
+    }
+
+    function updateStudentCalibrationSummary() {
+      const stats = getStudentCalibrationStats();
+      const resBox = document.getElementById('classificationResultBox');
+      if (!stats || !resBox) {
+        if (resBox) resBox.style.display = 'none';
+        return;
+      }
+
+      resBox.style.display = 'block';
+      const activeBatch = calibrationState.batches[calibrationState.currentBatchIdx];
+
+      const firstScoreEl = document.getElementById('studentFirstTryScore');
+      const firstSubEl = document.getElementById('studentFirstTrySub');
+      const masteryScoreEl = document.getElementById('studentMasteryScore');
+      const masterySubEl = document.getElementById('studentMasterySub');
+      const effortScoreEl = document.getElementById('studentEffortScore');
+      const effortBadgeWrap = document.getElementById('studentEffortBadgeWrap');
+      const effortSubEl = document.getElementById('studentEffortSub');
+      const msgElem = document.getElementById('effectivenessMsg');
+      const legacyScoreElem = document.getElementById('effectivenessScore');
+
+      if (legacyScoreElem) legacyScoreElem.textContent = `${stats.globalFirstPct}%`;
+
+      if (firstScoreEl) {
+        firstScoreEl.textContent = `${stats.globalFirstPct}%`;
+        firstScoreEl.style.color = stats.globalFirstPct >= 70 ? 'var(--white-hat)' : 'var(--black-hat-alt)';
+      }
+      if (firstSubEl) {
+        firstSubEl.textContent = `${stats.totalFirstCorrect} de ${stats.totalCardsEvaluated} aciertos en el 1.er intento`;
+      }
+
+      if (masteryScoreEl) {
+        masteryScoreEl.textContent = `${stats.globalMasteryPct}%`;
+        masteryScoreEl.style.color = stats.globalMasteryPct === 100 ? 'var(--success)' : 'var(--black-hat-alt)';
+      }
+      if (masterySubEl) {
+        masterySubEl.textContent = `${stats.completedBatchesCount} de ${stats.batchesStarted} lote(s) al 100% (${stats.totalCurrentCorrect}/${stats.totalCardsEvaluated} tarjetas)`;
+      }
+
+      if (effortScoreEl) {
+        if (stats.batchesStarted === 1) {
+          effortScoreEl.textContent = `${stats.totalAttempts} ${stats.totalAttempts === 1 ? 'intento' : 'intentos'}`;
+        } else {
+          effortScoreEl.textContent = `${stats.totalAttempts} int. (${stats.avgAttemptsPerBatch}/lote)`;
+        }
+      }
+      if (effortBadgeWrap) {
+        effortBadgeWrap.innerHTML = `<span class="profile-badge ${stats.profileClass}">${stats.profileLabel}</span>`;
+      }
+      if (effortSubEl) {
+        if (stats.profileCode === 'directo') {
+          effortSubEl.textContent = 'Efectivo sin errores iniciales';
+        } else if (stats.profileCode === 'reflexivo') {
+          effortSubEl.textContent = 'Persistencia efectiva tras revisar errores';
+        } else if (stats.profileCode === 'tanteo') {
+          effortSubEl.textContent = 'Múltiples reintentos por descarte';
+        } else {
+          effortSubEl.textContent = `Lote ${activeBatch.batchNumber} en progreso (${activeBatch.currentCorrect}/6)`;
+        }
+      }
+
+      if (msgElem && activeBatch) {
+        if (activeBatch.completed) {
+          const remaining = MECHANICS_DB.length - calibrationState.usedMechIds.length;
+          const extraBatchHint = remaining > 0
+            ? ' Si deseas seguir desafiándote, puedes pulsar «Practicar con nuevo lote» para calibrar otras 6 mecánicas sin repetir.'
+            : ' ¡Has recorrido las 24 mecánicas completas del simulador!';
+
+          if (activeBatch.attempts === 1) {
+            msgElem.innerHTML = `🎉 <strong>¡Dominio directo en el Lote ${activeBatch.batchNumber}!</strong> Clasificaste las 6 mecánicas correctamente en el 1.er intento sin necesidad de reintentos.${extraBatchHint}`;
+          } else if (activeBatch.attempts <= 3) {
+            const firstPct = Math.round(((activeBatch.firstAttemptCorrect || 0) / activeBatch.cards.length) * 100);
+            msgElem.innerHTML = `💪 <strong>¡Excelente persistencia reflexiva en el Lote ${activeBatch.batchNumber}!</strong> Partiste de <strong>${firstPct}%</strong> en el primer intento y corregiste tus dudas hasta alcanzar el <strong>100% de dominio</strong> en ${activeBatch.attempts} intentos.${extraBatchHint}`;
+          } else {
+            const firstPct = Math.round(((activeBatch.firstAttemptCorrect || 0) / activeBatch.cards.length) * 100);
+            msgElem.innerHTML = `✅ <strong>Lote ${activeBatch.batchNumber} completado al 100% en ${activeBatch.attempts} intentos</strong> (precisión inicial: ${firstPct}%). Se observó búsqueda por ensayo y error; te recomendamos repasar los vértices del octágono superior.${extraBatchHint}`;
+          }
+        } else {
+          const pending = activeBatch.cards.length - activeBatch.currentCorrect;
+          msgElem.innerHTML = `Has acertado <strong>${activeBatch.currentCorrect} de ${activeBatch.cards.length}</strong> mecánicas en el Lote ${activeBatch.batchNumber} (tus aciertos ya quedaron fijados en verde). Revisa las <strong>${pending} tarjetas pendientes</strong> en rojo, consulta los vértices del octágono superior y vuelve a validar.`;
+        }
+      }
     }
 
     function validateClassification() {
-      const btn = document.getElementById('validateClassifBtn');
-      if (btn) btn.disabled = true;
-      const batch = window.currentCalibrationBatch || selectedMechanics;
-      let correctCount = 0;
-      let totalMechanics = batch.length;
-      let extraWrongAttempts = 0;
+      const batch = calibrationState.batches[calibrationState.currentBatchIdx];
+      if (!batch || batch.completed) return;
 
-      batch.forEach(mech => {
+      const warn = document.getElementById('classificationValidationWarn');
+
+      // 1. Verificar que las 6 tarjetas tengan un Core Drive seleccionado
+      let missingCount = 0;
+      batch.cards.forEach(mech => {
+        if (batch.lockedCardIds.includes(mech.id)) return;
         const select = document.getElementById(`select_cd_${mech.id}`);
-        const feedback = document.getElementById(`feedback_cd_${mech.id}`);
-        const val = parseInt(select.value, 10);
-
-        if (val === mech.cd) {
-          correctCount++;
-          feedback.style.color = 'var(--success)';
-          feedback.textContent = '✓ ¡Correcto!';
-          select.style.borderColor = 'var(--success)';
-        } else {
-          classificationAttemptsMap[mech.id]++;
-          extraWrongAttempts++;
-          feedback.style.color = 'var(--black-hat)';
-          feedback.textContent = '✗ Incorrecto, intenta de nuevo.';
-          select.style.borderColor = 'var(--black-hat)';
+        const val = select ? parseInt(select.value, 10) : 0;
+        batch.selections[mech.id] = val;
+        if (!val || val === 0) {
+          missingCount++;
+          if (select) select.style.borderColor = 'var(--black-hat-alt)';
         }
       });
 
-      // Cálculo de Efectividad basado en el intento actual (Aciertos / Total)
-      let effectiveness = Math.round((correctCount / totalMechanics) * 100);
-      currentCalibrationEffectiveness = effectiveness;
-
-      const resBox = document.getElementById('classificationResultBox');
-      const scoreElem = document.getElementById('effectivenessScore');
-      const msgElem = document.getElementById('effectivenessMsg');
-
-      resBox.style.display = 'block';
-      scoreElem.textContent = `${effectiveness}%`;
-
-      if (correctCount === totalMechanics) {
-        scoreElem.style.color = 'var(--success)';
-        msgElem.textContent = '🎉 ¡Felicitaciones! Has clasificado correctamente todas las mecánicas del lote de calibración.';
-      } else {
-        scoreElem.style.color = 'var(--black-hat-alt)';
-        msgElem.textContent = `Has acertado ${correctCount} de ${totalMechanics} mecánicas. Revisa las sugerencias e intenta nuevamente.`;
+      if (missingCount > 0) {
+        if (warn) {
+          warn.style.display = 'block';
+          warn.textContent = `⚠️ Selecciona un impulsador (Core Drive) en todas las tarjetas antes de validar el lote (faltan ${missingCount}).`;
+        }
+        return;
       }
 
-      // Re-enviar actualización al Webhook incluyendo la efectividad calculada
+      // 2. Evitar doble clic accidental si no ha modificado ninguna tarjeta errónea desde el intento previo
+      if (batch.attempts > 0 && batch.needsModification) {
+        if (warn) {
+          warn.style.display = 'block';
+          warn.textContent = '💡 Modifica al menos una de las tarjetas marcadas con ✗ antes de reintentar el lote.';
+        }
+        return;
+      }
+
+      if (warn) warn.style.display = 'none';
+
+      // 3. Evaluar el intento del lote
+      batch.attempts++;
+      let correctCount = 0;
+
+      batch.cards.forEach(mech => {
+        const select = document.getElementById(`select_cd_${mech.id}`);
+        const val = batch.lockedCardIds.includes(mech.id)
+          ? mech.cd
+          : (select ? parseInt(select.value, 10) : (batch.selections[mech.id] || 0));
+
+        batch.selections[mech.id] = val;
+
+        const isFirstTimeForCard = !calibrationState.evaluatedMechIds.includes(mech.id);
+        if (isFirstTimeForCard) {
+          calibrationState.evaluatedMechIds.push(mech.id);
+          if (val !== mech.cd) {
+            calibrationState.firstTryErrorMechIds.push(mech.id);
+          }
+        }
+
+        if (val === mech.cd) {
+          correctCount++;
+          if (!batch.lockedCardIds.includes(mech.id)) {
+            batch.lockedCardIds.push(mech.id);
+          }
+        } else {
+          classificationAttemptsMap[mech.id] = (classificationAttemptsMap[mech.id] || 0) + 1;
+          calibrationState.attemptsByMechId[mech.id] = (calibrationState.attemptsByMechId[mech.id] || 0) + 1;
+        }
+      });
+
+      if (batch.attempts === 1) {
+        batch.firstAttemptCorrect = correctCount;
+      }
+      batch.currentCorrect = correctCount;
+
+      if (correctCount === batch.cards.length) {
+        batch.completed = true;
+        batch.needsModification = false;
+      } else {
+        batch.needsModification = true;
+      }
+
+      const stats = getStudentCalibrationStats();
+      currentCalibrationEffectiveness = stats ? stats.globalFirstPct : Math.round((correctCount / batch.cards.length) * 100);
+
+      renderActiveCalibrationBatch();
+
+      // 4. Sincronizar con el Webhook y el almacenamiento local
       if (currentDiagnosis) {
         sendPayloadToWebhook(
           currentDiagnosis.cdTotals,
@@ -1726,11 +2361,12 @@
       }
     }
 
-    /* ENVÍO CON DESDUPLICACIÓN Y REINTENTO CON BACKOFF */
+    /* ENVÍO CON DESDUPLICACIÓN Y METADATOS DE CALIBRACIÓN */
     function sendPayloadToWebhook(cdTotals, pctWhite, pctBlack, pctIntrinsic, pctExtrinsic, effectiveness = null) {
       const userName = document.getElementById('userNameInput').value.trim() || `Diseñador #${Math.floor(Math.random() * 899 + 100)}`;
       const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
       const uniqueSubId = `${userSessionToken}_${Date.now()}`;
+      const calibStats = getStudentCalibrationStats();
 
       const payload = {
         submissionId: uniqueSubId,
@@ -1742,13 +2378,24 @@
         pct_sombrero_negro: pctBlack,
         pct_intrinseca: pctIntrinsic,
         pct_extrinseca: pctExtrinsic,
-        pct_efectividad: effectiveness,
+        pct_efectividad: calibStats ? calibStats.globalFirstPct : effectiveness,
         mecanicas_elegidas: (() => {
           const names = selectedMechanics.map(m => m.name);
           const errs = Object.entries(classificationAttemptsMap)
             .filter(([id, count]) => count > 0)
-            .map(([id, count]) => `${MECHANICS_DB.find(m => m.id == id).name}:${count}`);
-          if (errs.length > 0) names.push(`[Errores-> ${errs.join(" | ")}]`);
+            .map(([id, count]) => {
+              const found = MECHANICS_DB.find(m => m.id == id);
+              return found ? `${found.name}:${count}` : null;
+            })
+            .filter(Boolean);
+          if (errs.length > 0) {
+            names.push(`[Errores-> ${errs.join(" | ")}]`);
+          }
+          if (calibStats) {
+            const evalStr = calibrationState.evaluatedMechIds.join('.');
+            const err1Str = calibrationState.firstTryErrorMechIds.join('.');
+            names.push(`[Calib-> ini:${calibStats.globalFirstPct}|lote1:${calibStats.lote1FirstPct}|dom:${calibStats.globalMasteryPct}|int:${calibStats.totalAttempts}|lotes:${calibStats.batchesStarted}|lotecmp:${calibStats.completedBatchesCount}|perfil:${calibStats.profileCode}|eval:${evalStr}|err1:${err1Str}]`);
+          }
           return names;
         })()
       };
@@ -1947,6 +2594,104 @@
       }
     }
 
+    /* PARSER COMPATIBLE CON ARRAYS LOCALES Y STRINGS DE GOOGLE SHEETS */
+    function parseSubmissionCalibration(item) {
+      const rawMecsStr = Array.isArray(item.mecanicas_elegidas)
+        ? item.mecanicas_elegidas.join(', ')
+        : String(item.mecanicas_elegidas || '');
+
+      const errorsByCard = {};
+      const errMatch = rawMecsStr.match(/\[Errores->\s*([^\]]+)\]/);
+      if (errMatch && errMatch[1]) {
+        const pairs = errMatch[1].split('|');
+        pairs.forEach(pair => {
+          const idx = pair.lastIndexOf(':');
+          if (idx > 0) {
+            const mName = pair.substring(0, idx).trim();
+            const cnt = parseInt(pair.substring(idx + 1).trim(), 10);
+            if (mName && !isNaN(cnt) && cnt > 0) {
+              errorsByCard[mName] = (errorsByCard[mName] || 0) + cnt;
+            }
+          }
+        });
+      }
+
+      const kv = {};
+      const calibMatch = rawMecsStr.match(/\[Calib->\s*([^\]]+)\]/);
+      if (calibMatch && calibMatch[1]) {
+        calibMatch[1].split('|').forEach(part => {
+          const [k, v] = part.split(':');
+          if (k !== undefined && v !== undefined) {
+            kv[k.trim()] = v.trim();
+          }
+        });
+      }
+
+      const cleanMechanics = rawMecsStr
+        .replace(/,?\s*\[Errores->[^\]]*\]/g, '')
+        .replace(/,?\s*\[Calib->[^\]]*\]/g, '')
+        .replace(/^,\s*|\s*,\s*$/g, '')
+        .trim() || 'No reportado';
+
+      let effNum = null;
+      if (typeof item.pct_efectividad === 'number' && !isNaN(item.pct_efectividad)) {
+        effNum = item.pct_efectividad;
+      } else if (typeof item.pct_efectividad === 'string' && item.pct_efectividad !== '' && item.pct_efectividad !== 'Pendiente' && !isNaN(Number(item.pct_efectividad))) {
+        effNum = Number(item.pct_efectividad);
+      }
+
+      let hasCalibrated = false;
+      let firstTryPct = null;
+      let lote1FirstPct = null;
+      let masteryPct = null;
+      let totalAttempts = 0;
+      let batchesStarted = 0;
+      let batchesCompleted = 0;
+      let profileCode = 'pendiente';
+      let evaluatedIds = [];
+      let firstTryErrorIds = [];
+
+      if (Object.keys(kv).length > 0 && kv.ini !== undefined) {
+        hasCalibrated = true;
+        firstTryPct = Number(kv.ini);
+        lote1FirstPct = kv.lote1 !== undefined ? Number(kv.lote1) : firstTryPct;
+        masteryPct = kv.dom !== undefined ? Number(kv.dom) : firstTryPct;
+        totalAttempts = Number(kv.int) || 1;
+        batchesStarted = Number(kv.lotes) || 1;
+        batchesCompleted = kv.lotecmp !== undefined ? Number(kv.lotecmp) : (masteryPct === 100 ? batchesStarted : 0);
+        evaluatedIds = kv.eval ? kv.eval.split('.').map(n => parseInt(n, 10)).filter(Boolean) : [];
+        firstTryErrorIds = kv.err1 ? kv.err1.split('.').map(n => parseInt(n, 10)).filter(Boolean) : [];
+        profileCode = kv.perfil || (masteryPct === 100 ? (firstTryPct === 100 ? 'directo' : (totalAttempts / batchesStarted <= 3 ? 'reflexivo' : 'tanteo')) : 'incompleto');
+      } else if (effNum !== null) {
+        hasCalibrated = true;
+        firstTryPct = effNum;
+        lote1FirstPct = effNum;
+        masteryPct = effNum;
+        totalAttempts = 1;
+        batchesStarted = 1;
+        batchesCompleted = effNum === 100 ? 1 : 0;
+        profileCode = effNum === 100 ? 'directo' : 'incompleto';
+      }
+
+      const avgAttemptsPerBatch = batchesStarted > 0 ? Math.round((totalAttempts / batchesStarted) * 10) / 10 : 0;
+
+      return {
+        cleanMechanics,
+        errorsByCard,
+        hasCalibrated,
+        firstTryPct,
+        lote1FirstPct,
+        masteryPct,
+        totalAttempts,
+        batchesStarted,
+        batchesCompleted,
+        avgAttemptsPerBatch,
+        profileCode,
+        evaluatedIds,
+        firstTryErrorIds
+      };
+    }
+
     function renderTeacherDashboard() {
       // Desduplicar registros para mostrar la última respuesta de cada alumno
       const uniqueData = getUniqueSubmissions(localSubmissionsStore);
@@ -1955,48 +2700,99 @@
       document.getElementById('kpiTotal').textContent = total;
 
       if (total === 0) {
+        const totalSub = document.getElementById('kpiTotalSub');
+        if (totalSub) totalSub.textContent = 'Estudiantes participantes';
+        document.getElementById('kpiEffectiveness').textContent = '--';
+        const persSub = document.getElementById('kpiPersistenceSub');
+        if (persSub) persSub.textContent = 'Esperando calibraciones del grupo';
+        const hardName = document.getElementById('kpiHardestCardName');
+        if (hardName) hardName.textContent = 'Sin datos aún';
+        document.getElementById('kpiHardestCard').textContent = 'Precisión diagnóstica del grupo';
         renderSubmissionsTable([]);
         return;
       }
 
-      // Promedios Colectivos
-      let avgWhite = 0, avgBlack = 0, avgIntrin = 0, avgExtrin = 0, avgEffectSum = 0, avgEffectCount = 0;
+      // Promedios Colectivos y Estadísticas de Calibración
+      let avgWhite = 0, avgBlack = 0, avgIntrin = 0, avgExtrin = 0;
+      let firstTrySum = 0, masterySum = 0, avgAttemptsSum = 0, calibratedCount = 0;
+      let profileCounts = { directo: 0, reflexivo: 0, tanteo: 0, incompleto: 0 };
+      let multiBatchStudents = 0;
+
       const classCDs = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 };
+      const cardDifficultyMap = {}; // { [mechName]: { totalErrors, studentsFailed, evaluatedCount, cd } }
+
+      MECHANICS_DB.forEach(m => {
+        cardDifficultyMap[m.name] = { name: m.name, cd: m.cd, totalErrors: 0, studentsFailed: 0, evaluatedCount: 0 };
+      });
 
       uniqueData.forEach(item => {
         avgWhite += Number(item.pct_sombrero_blanco) || 0;
         avgBlack += Number(item.pct_sombrero_negro) || 0;
         avgIntrin += Number(item.pct_intrinseca) || 0;
         avgExtrin += Number(item.pct_extrinseca) || 0;
-        
-        let effNum = null;
-        if (typeof item.pct_efectividad === 'number' && !isNaN(item.pct_efectividad)) {
-          effNum = item.pct_efectividad;
-        } else if (typeof item.pct_efectividad === 'string' && item.pct_efectividad !== '' && item.pct_efectividad !== 'Pendiente' && !isNaN(Number(item.pct_efectividad))) {
-          effNum = Number(item.pct_efectividad);
-        }
-
-        if (effNum !== null) {
-          avgEffectSum += effNum;
-          avgEffectCount++;
-        }
 
         for (let i = 1; i <= 8; i++) {
           classCDs[i] += (Number(item[`CD${i}`]) || 0);
         }
+
+        const cal = parseSubmissionCalibration(item);
+        if (cal.hasCalibrated) {
+          calibratedCount++;
+          firstTrySum += cal.firstTryPct;
+          masterySum += cal.masteryPct;
+          avgAttemptsSum += cal.avgAttemptsPerBatch;
+          if (profileCounts[cal.profileCode] !== undefined) {
+            profileCounts[cal.profileCode]++;
+          }
+          if (cal.batchesStarted > 1) {
+            multiBatchStudents++;
+          }
+        }
+
+        // Registrar apariciones de tarjetas evaluadas
+        cal.evaluatedIds.forEach(id => {
+          const m = MECHANICS_DB.find(x => x.id === id);
+          if (m && cardDifficultyMap[m.name]) {
+            cardDifficultyMap[m.name].evaluatedCount++;
+          }
+        });
+
+        // Registrar errores por tarjeta
+        Object.entries(cal.errorsByCard).forEach(([mechName, errCount]) => {
+          if (!cardDifficultyMap[mechName]) {
+            const found = MECHANICS_DB.find(x => x.name.toLowerCase() === mechName.toLowerCase());
+            cardDifficultyMap[mechName] = {
+              name: mechName,
+              cd: found ? found.cd : null,
+              totalErrors: 0,
+              studentsFailed: 0,
+              evaluatedCount: 0
+            };
+          }
+          cardDifficultyMap[mechName].totalErrors += errCount;
+          cardDifficultyMap[mechName].studentsFailed += 1;
+        });
       });
 
       avgWhite = Math.round(avgWhite / total);
       avgBlack = Math.round(avgBlack / total);
       avgIntrin = Math.round(avgIntrin / total);
       avgExtrin = Math.round(avgExtrin / total);
-      const avgEffect = avgEffectCount > 0 ? Math.round(avgEffectSum / avgEffectCount) : 0;
+
+      const avgFirstTry = calibratedCount > 0 ? Math.round(firstTrySum / calibratedCount) : null;
+      const avgMastery = calibratedCount > 0 ? Math.round(masterySum / calibratedCount) : null;
+      const avgGroupAttempts = calibratedCount > 0 ? Math.round((avgAttemptsSum / calibratedCount) * 10) / 10 : 0;
 
       for (let i = 1; i <= 8; i++) {
         classCDs[i] = Math.round((classCDs[i] / total) * 10) / 10;
       }
 
-      // Actualizar KPIs
+      const totalSubEl = document.getElementById('kpiTotalSub');
+      if (totalSubEl) {
+        totalSubEl.textContent = `${calibratedCount} de ${total} con calibración registrada`;
+      }
+
+      // Actualizar KPIs Sombrero y Motivación
       let hatTrend = 'Equilibrado';
       let hatColor = '#94a3b8';
       if (avgWhite > avgBlack + 10) {
@@ -2023,43 +2819,54 @@
       document.getElementById('kpiMotivTrend').style.color = motivColor;
       document.getElementById('kpiMotivSub').textContent = `${avgIntrin}% Intrínseca vs ${avgExtrin}% Extrínseca`;
 
-      document.getElementById('kpiEffectiveness').textContent = `${avgEffect}%`;
-      
-      // Agregar lógica de la carta más difícil
-      const errorMap = {};
-      uniqueData.forEach(item => {
-        if (Array.isArray(item.mecanicas_elegidas)) {
-          const errStr = item.mecanicas_elegidas.find(m => typeof m === 'string' && m.includes('[Errores->'));
-          if (errStr) {
-            const content = errStr.substring(errStr.indexOf('->') + 2, errStr.lastIndexOf(']')).trim();
-            if (content) {
-              const pairs = content.split(' | ');
-              pairs.forEach(pair => {
-                const [mechName, count] = pair.split(':');
-                if (mechName && count) {
-                  errorMap[mechName.trim()] = (errorMap[mechName.trim()] || 0) + parseInt(count, 10);
-                }
-              });
-            }
-          }
+      // KPI 4: Precisión 1.er intento -> Dominio final y Persistencia
+      const effElem = document.getElementById('kpiEffectiveness');
+      const persSubElem = document.getElementById('kpiPersistenceSub');
+      if (calibratedCount > 0) {
+        effElem.textContent = `${avgFirstTry}% → ${avgMastery}%`;
+        effElem.style.color = avgMastery >= 85 ? 'var(--success)' : 'var(--white-hat)';
+        if (persSubElem) {
+          const extraNote = multiBatchStudents > 0 ? ` · ${multiBatchStudents} en multilote` : '';
+          persSubElem.textContent = `Prom: ${avgGroupAttempts} int/lote (${profileCounts.directo} directo, ${profileCounts.reflexivo} reflexivo, ${profileCounts.tanteo} tanteo)${extraNote}`;
         }
-      });
-      
-      let hardestCard = 'N/A';
-      let maxErrors = 0;
-      Object.entries(errorMap).forEach(([name, count]) => {
-        if (count > maxErrors) {
-          maxErrors = count;
-          hardestCard = name;
-        }
-      });
-      
-      if (maxErrors > 0) {
-        document.getElementById('kpiHardestCard').textContent = `${hardestCard} (${maxErrors} err)`;
-        document.getElementById('kpiHardestCard').style.color = 'var(--black-hat)';
       } else {
-        document.getElementById('kpiHardestCard').textContent = `Precisión diagnóstica del grupo`;
-        document.getElementById('kpiHardestCard').style.color = '#94a3b8';
+        effElem.textContent = '⏳ Pendiente';
+        effElem.style.color = '#94a3b8';
+        if (persSubElem) persSubElem.textContent = 'Esperando que el grupo valide su calibración';
+      }
+
+      // KPI 5: Identificar la mecánica más difícil de clasificar
+      const failedCardsList = Object.values(cardDifficultyMap)
+        .filter(c => c.totalErrors > 0)
+        .sort((a, b) => {
+          if (b.studentsFailed !== a.studentsFailed) return b.studentsFailed - a.studentsFailed;
+          return b.totalErrors - a.totalErrors;
+        });
+
+      const hardNameEl = document.getElementById('kpiHardestCardName');
+      const hardSubEl = document.getElementById('kpiHardestCard');
+      const hardestObj = failedCardsList.length > 0 ? failedCardsList[0] : null;
+      const secondHardestObj = failedCardsList.length > 1 ? failedCardsList[1] : null;
+
+      if (hardestObj) {
+        const evalBase = Math.max(hardestObj.evaluatedCount, hardestObj.studentsFailed);
+        const failRatePct = evalBase > 0 ? Math.round((hardestObj.studentsFailed / evalBase) * 100) : null;
+        const rateStr = (hardestObj.evaluatedCount > 0 && failRatePct !== null) ? ` · ${failRatePct}% fallo` : '';
+        const cdStr = hardestObj.cd ? ` [CD${hardestObj.cd}]` : '';
+
+        if (hardNameEl) {
+          hardNameEl.textContent = `${hardestObj.name}${cdStr}`;
+          hardNameEl.style.color = 'var(--black-hat)';
+        }
+        hardSubEl.textContent = `Fallaron ${hardestObj.studentsFailed} alum. (${hardestObj.totalErrors} err. totales${rateStr})`;
+        hardSubEl.style.color = 'var(--black-hat-alt)';
+      } else {
+        if (hardNameEl) {
+          hardNameEl.textContent = calibratedCount > 0 ? '¡0 errores!' : 'Sin errores aún';
+          hardNameEl.style.color = calibratedCount > 0 ? 'var(--success)' : '#94a3b8';
+        }
+        hardSubEl.textContent = calibratedCount > 0 ? 'Todas las tarjetas fueron acertadas al 1.er intento' : 'Se actualizará al validar la calibración';
+        hardSubEl.style.color = '#94a3b8';
       }
 
       // Canvas Radar Colectivo
@@ -2068,8 +2875,15 @@
       // Canvas Cuadrante 2D Scatter
       drawQuadrantScatter('quadrantCanvas', uniqueData);
 
-      // Renderizar Preguntas de Debate Automatizadas
-      renderDebateQuestions(avgWhite, avgBlack, avgIntrin, avgExtrin);
+      // Renderizar Preguntas de Debate Automatizadas (incluyendo hallazgos de calibración)
+      renderDebateQuestions(avgWhite, avgBlack, avgIntrin, avgExtrin, hardestObj, secondHardestObj, {
+        calibratedCount,
+        avgFirstTry,
+        avgMastery,
+        avgGroupAttempts,
+        profileCounts,
+        multiBatchStudents
+      });
 
       // Tabla de Envíos
       renderSubmissionsTable(uniqueData);
@@ -2143,7 +2957,7 @@
       });
     }
 
-    function renderDebateQuestions(white, black, intrin, extrin) {
+    function renderDebateQuestions(white, black, intrin, extrin, hardestObj = null, secondHardestObj = null, calibGroup = null) {
       const container = document.getElementById('debateQuestionsContainer');
       let html = '';
 
@@ -2193,6 +3007,19 @@
         `;
       }
 
+      if (hardestObj) {
+        const cdInfo = hardestObj.cd && CORE_DRIVES_INFO[hardestObj.cd] ? CORE_DRIVES_INFO[hardestObj.cd].title : `CD${hardestObj.cd || '?'}`;
+        const secondMention = secondHardestObj
+          ? ` (seguida de «${secondHardestObj.name}» con ${secondHardestObj.totalErrors} err.)`
+          : '';
+        html += `
+          <div class="question-item" style="border-left-color: var(--black-hat-alt);">
+            🧩 <strong>Foco de calibración — «${hardestObj.name}» (${cdInfo}):</strong> Fue la mecánica más difícil de clasificar (${hardestObj.studentsFailed} estudiante(s), ${hardestObj.totalErrors} errores acumulados)${secondMention}. 
+            <em>¿Por qué esta mecánica suele confundirse con otros impulsadores y qué matiz psicológico define que pertenezca a ${cdInfo}?</em>
+          </div>
+        `;
+      }
+
       container.innerHTML = html;
     }
 
@@ -2221,27 +3048,59 @@
       tbody.innerHTML = '';
 
       if (!data || data.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 1.5rem;">No hay respuestas registradas aún.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-muted); padding: 1.5rem;">No hay respuestas registradas aún.</td></tr>`;
         return;
       }
 
       data.forEach(sub => {
         const tr = document.createElement('tr');
+        const cal = parseSubmissionCalibration(sub);
 
-        let effNum = null;
-        if (typeof sub.pct_efectividad === 'number' && !isNaN(sub.pct_efectividad)) {
-          effNum = sub.pct_efectividad;
-        } else if (typeof sub.pct_efectividad === 'string' && sub.pct_efectividad !== '' && sub.pct_efectividad !== 'Pendiente' && !isNaN(Number(sub.pct_efectividad))) {
-          effNum = Number(sub.pct_efectividad);
+        let calibColHtml = `<span style="color: #eab308; font-size: 0.8rem; font-style: italic;">⏳ Pendiente</span>`;
+        let effortColHtml = `<span style="color: var(--text-dim); font-size: 0.78rem;">Sin validar aún</span>`;
+
+        if (cal.hasCalibrated) {
+          const iniColor = cal.firstTryPct >= 70 ? 'var(--white-hat)' : 'var(--black-hat-alt)';
+          const domColor = cal.masteryPct === 100 ? 'var(--success)' : 'var(--black-hat-alt)';
+          calibColHtml = `
+            <div style="font-size: 0.84rem; line-height: 1.35;">
+              <span>1.° int: <strong style="color: ${iniColor};">${cal.firstTryPct}%</strong></span>
+              <span style="color: var(--text-dim); margin: 0 3px;">→</span>
+              <span>Dom: <strong style="color: ${domColor};">${cal.masteryPct}%</strong></span>
+            </div>
+          `;
+
+          let badgeClass = 'profile-incompleto';
+          let badgeText = '⏳ Incompleto';
+          if (cal.profileCode === 'directo') {
+            badgeClass = 'profile-directo';
+            badgeText = '🌟 Dominio directo';
+          } else if (cal.profileCode === 'reflexivo') {
+            badgeClass = 'profile-reflexivo';
+            badgeText = '💪 Persistencia reflexiva';
+          } else if (cal.profileCode === 'tanteo') {
+            badgeClass = 'profile-tanteo';
+            badgeText = '🎲 Ensayo y error';
+          }
+
+          const lotesBadge = cal.batchesStarted > 1
+            ? ` · <strong style="color: var(--white-hat);">📚 ${cal.batchesCompleted}/${cal.batchesStarted} lotes</strong>`
+            : ` · Lote ${cal.batchesCompleted}/1`;
+
+          effortColHtml = `
+            <div style="line-height: 1.35;">
+              <span class="profile-badge ${badgeClass}" style="margin-top: 0;">${badgeText}</span>
+              <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 3px;">
+                ${cal.totalAttempts} ${cal.totalAttempts === 1 ? 'intento' : 'intentos'}${lotesBadge}
+              </div>
+            </div>
+          `;
         }
 
-        const effDisplay = (effNum !== null) 
-          ? `<strong style="color: ${effNum >= 70 ? 'var(--success)' : 'var(--black-hat-alt)'}">${effNum}%</strong>` 
-          : `<span style="color: #eab308; font-size: 0.8rem; font-style: italic;">⏳ Pendiente</span>`;
-
-        const mecs = Array.isArray(sub.mecanicas_elegidas) 
-          ? sub.mecanicas_elegidas.join(', ') 
-          : (sub.mecanicas_elegidas || 'No reportado');
+        const errEntries = Object.entries(cal.errorsByCard);
+        const errTagHtml = errEntries.length > 0
+          ? `<div style="margin-top: 4px; font-size: 0.72rem; color: var(--black-hat-alt);">⚠️ Dudas en: ${errEntries.map(([n, c]) => `${n} (${c})`).join(', ')}</div>`
+          : '';
 
         const white = Number(sub.pct_sombrero_blanco) || 0;
         const black = Number(sub.pct_sombrero_negro) || 0;
@@ -2250,8 +3109,12 @@
         tr.innerHTML = `
           <td><strong>${formatTimestamp(sub.fecha)}</strong></td>
           <td><strong>${sub.estudiante}</strong></td>
-          <td style="max-width: 250px; font-size: 0.8rem; color: var(--text-muted);">${mecs}</td>
-          <td>${effDisplay}</td>
+          <td style="max-width: 270px; font-size: 0.8rem; color: var(--text-muted);">
+            <div>${cal.cleanMechanics}</div>
+            ${errTagHtml}
+          </td>
+          <td>${calibColHtml}</td>
+          <td>${effortColHtml}</td>
           <td><span style="color: ${white >= black ? 'var(--white-hat)' : 'var(--black-hat)'}">Blanco: ${white}% / Negro: ${black}%</span></td>
           <td><span style="color: ${intrin >= 50 ? 'var(--intrinsic)' : 'var(--extrinsic)'}">Intrínseca: ${intrin}%</span></td>
         `;
