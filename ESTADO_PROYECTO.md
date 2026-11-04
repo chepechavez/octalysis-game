@@ -29,6 +29,7 @@ El simulador se encuentra **en producción y completamente funcional** para tall
    - Presupuesto máximo de **6 mecánicas seleccionadas**.
    - Gráfico **Radar Octagonal interactivo** en `<canvas>` con modales teóricos al hacer clic/toque en sus vértices.
    - Barras de equilibrio (**Sombrero Blanco vs. Negro** e **Intrínseca vs. Extrínseca**) y evaluación cualitativa automática.
+   - **Exportación del perfil individual:** Botones para descargar el perfil Octalysis (nombre, mecánicas elegidas, radar, barras de equilibrio y evaluación cualitativa) como **imagen `.PNG` de alta resolución (1200×760 px)** o **`.PDF`** de una página.
 3. **Compuerta de Transición de Fase (Phase Gate):**
    - Bloquea el acceso al ejercicio de calibración hasta que el docente indique la palabra clave en el taller.
    - Códigos aceptados (insensibles a mayúsculas/tildes): `octalysis`, `calibrar`, `8`.
@@ -41,6 +42,7 @@ El simulador se encuentra **en producción y completamente funcional** para tall
    - Polling cada 5 segundos al Webhook de Google Apps Script.
    - Desduplicación automática por nombre de participante (conserva siempre el último envío).
    - 5 KPIs en vivo, Radar Octalysis grupal, Cuadrante 2D de dispersión, disparadores de debate automatizados (incluyendo foco en las mecánicas con más errores) y tabla detallada con hora local formateada.
+   - **Exportación del informe docente completo:** Botones en la parte superior del panel para descargar todo el contenido de la página (KPIs, gráficos Radar y Cuadrante 2D convertidos a imágenes embebidas, disparadores de debate y tabla completa) en un archivo autónomo **`.HTML`** o imprimir/guardar en **`.PDF`**.
 6. **Diseño Responsivo (Móvil, Tablet y Escritorio):**
    - Grillas adaptables sin desborde horizontal en pantallas desde `320px`.
    - Prevención de recarga accidental por arrastre vertical en móviles (`overscroll-behavior-y: contain`).

@@ -1298,6 +1298,214 @@
         width: 100%;
         min-width: 0 !important;
       }
+
+      .report-actions {
+        width: 100%;
+      }
+
+      .btn-export,
+      .btn-export-secondary {
+        flex: 1;
+        justify-content: center;
+      }
+    }
+
+    /* ==========================================================================
+       ESTILOS DE DESCARGA DE INFORMES E IMPRESIÓN (PDF / PNG / HTML)
+       ========================================================================== */
+    .diag-header-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .teacher-toolbar {
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
+      border: 1px solid var(--border-color);
+      border-left: 4px solid var(--intrinsic);
+      border-radius: var(--radius-md);
+      padding: 1.1rem 1.4rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      box-shadow: var(--shadow-card);
+    }
+
+    .teacher-toolbar-info h2 {
+      font-family: var(--font-heading);
+      font-size: 1.15rem;
+      color: var(--text-main);
+      margin-bottom: 0.15rem;
+    }
+
+    .teacher-toolbar-info p {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .report-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .btn-export {
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.18), rgba(37, 99, 235, 0.25));
+      border: 1px solid var(--white-hat);
+      color: var(--text-main);
+      padding: 8px 14px;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-heading);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-export:hover {
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.3), rgba(37, 99, 235, 0.38));
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(6, 182, 212, 0.25);
+    }
+
+    .btn-export-secondary {
+      background: var(--bg-input);
+      border: 1px solid var(--border-accent);
+      color: var(--text-main);
+      padding: 8px 14px;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-heading);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-export-secondary:hover {
+      border-color: var(--white-hat);
+      color: var(--white-hat);
+      transform: translateY(-1px);
+    }
+
+    .profile-meta-strip {
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 0.9rem 1.15rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+
+    .profile-meta-top {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+    }
+
+    .profile-mech-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+
+    .profile-mech-chip {
+      background: rgba(6, 182, 212, 0.12);
+      border: 1px solid rgba(6, 182, 212, 0.35);
+      color: var(--text-main);
+      font-size: 0.76rem;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 20px;
+    }
+
+    @media print {
+      * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      body {
+        background-color: var(--bg-main) !important;
+        color: var(--text-main) !important;
+      }
+
+      header {
+        position: static !important;
+      }
+
+      .view-switcher,
+      .report-actions,
+      .btn-reset-inline,
+      .modal-backdrop {
+        display: none !important;
+      }
+
+      main {
+        max-width: 100% !important;
+        padding: 0.5rem !important;
+      }
+
+      /* Modo impresión Estudiante: exporta exclusivamente el perfil tras elegir mecánicas */
+      body.print-mode-student header,
+      body.print-mode-student .challenge-banner,
+      body.print-mode-student .selection-tray,
+      body.print-mode-student .deck-section-header,
+      body.print-mode-student #deckCardsGrid,
+      body.print-mode-student .action-bar,
+      body.print-mode-student #phaseGateBox,
+      body.print-mode-student #classificationBox,
+      body.print-mode-student #teacherView,
+      body.print-mode-student .radar-hint {
+        display: none !important;
+      }
+
+      body.print-mode-student #diagnosisBox {
+        display: block !important;
+        margin-top: 0 !important;
+        box-shadow: none !important;
+        border: 1px solid var(--border-color) !important;
+        break-inside: avoid;
+      }
+
+      /* Modo impresión Docente: exporta todo el contenido del panel colectivo */
+      body.print-mode-teacher #studentView {
+        display: none !important;
+      }
+
+      body.print-mode-teacher #teacherView {
+        display: block !important;
+      }
+
+      .table-container {
+        overflow: visible !important;
+      }
+
+      .dash-card,
+      .kpi-card,
+      .debate-box,
+      .radar-card,
+      .balance-box,
+      .qualitative-report {
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
     }
   </style>
 </head>
@@ -1390,8 +1598,25 @@
       <!-- REVELACIÓN Y DIAGNÓSTICO INTERACTIVO -->
       <div class="diagnosis-container" id="diagnosisBox">
         <div class="diag-header">
-          <h3>⚡ Diagnóstico de impacto psicopedagógico</h3>
-          <p style="font-size: 0.85rem; color: var(--text-muted);">Basado en la suma de Core Drives.</p>
+          <div class="diag-header-row">
+            <div>
+              <h3>⚡ Diagnóstico de impacto psicopedagógico</h3>
+              <p style="font-size: 0.85rem; color: var(--text-muted);">Basado en la suma de Core Drives.</p>
+            </div>
+            <div class="report-actions">
+              <button type="button" class="btn-export" onclick="downloadStudentProfilePNG()" title="Descargar imagen de alta resolución de tu perfil Octalysis">
+                🖼️ Descargar perfil (PNG)
+              </button>
+              <button type="button" class="btn-export-secondary" onclick="printStudentProfilePDF()" title="Guardar o imprimir el informe de tu perfil en PDF">
+                📄 Guardar PDF
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- RESUMEN DE DISEÑADOR Y MECÁNICAS ELEGIDAS EN EL PERFIL -->
+        <div class="profile-meta-strip" id="studentProfileMetaStrip">
+          <!-- Renderizado dinámico de autor y mecánicas elegidas -->
         </div>
 
         <div class="diag-grid">
@@ -1538,6 +1763,22 @@
          VISTA 2: TEACHER DASHBOARD (DIAGNÓSTICO COLECTIVO EN VIVO)
          =================================================================== -->
     <section id="teacherView" class="view-section">
+      <!-- BARRA SUPERIOR DE EXPORTACIÓN DE INFORME DOCENTE -->
+      <div class="teacher-toolbar">
+        <div class="teacher-toolbar-info">
+          <h2>📊 Informe consolidado del grupo</h2>
+          <p>Descarga el reporte completo con KPIs, gráficos colectivos, disparadores de debate y tabla de respuestas.</p>
+        </div>
+        <div class="report-actions">
+          <button type="button" class="btn-export" onclick="downloadTeacherReportHTML()" title="Descargar archivo HTML autónomo con todos los gráficos y tabla completa">
+            📥 Descargar informe (.HTML)
+          </button>
+          <button type="button" class="btn-export-secondary" onclick="printTeacherDashboardPDF()" title="Guardar o imprimir toda la página del panel docente en PDF">
+            📄 Guardar todo en PDF
+          </button>
+        </div>
+      </div>
+
       <!-- TARJETAS KPI -->
       <div class="kpi-row">
         <div class="kpi-card">
@@ -1931,6 +2172,7 @@
         document.getElementById('barExtrinsic').style.width = `${pctExtrinsic}%`;
 
         renderQualitativeReport(pctWhite, pctBlack, pctIntrinsic, pctExtrinsic);
+        updateStudentProfileMetaStrip();
         drawOctagonRadar('studentRadarCanvas', cdTotals, true);
 
         if (saved.calibrationState && Array.isArray(saved.calibrationState.batches) && saved.calibrationState.batches.length > 0) {
@@ -2258,6 +2500,7 @@
 
       // Renderizar Reporte Cualitativo
       renderQualitativeReport(pctWhite, pctBlack, pctIntrinsic, pctExtrinsic);
+      updateStudentProfileMetaStrip();
 
       // Renderizar Canvas Radar del Estudiante
       drawOctagonRadar('studentRadarCanvas', cdTotals, true);
@@ -3684,6 +3927,382 @@
 
     function closeModal() {
       document.getElementById('infoModal').classList.remove('active');
+    }
+
+    /* ==================================================================
+       8. EXPORTACIÓN Y DESCARGA DE INFORMES (ESTUDIANTE Y DOCENTE)
+       ================================================================== */
+    function sanitizeFilename(str) {
+      return (str || 'participante')
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9_-]+/g, '-')
+        .replace(/^-+|-+$/g, '') || 'participante';
+    }
+
+    function updateStudentProfileMetaStrip() {
+      const strip = document.getElementById('studentProfileMetaStrip');
+      if (!strip) return;
+      const userName = document.getElementById('userNameInput').value.trim() || 'Diseñador sin apodo';
+      const nowStr = new Date().toLocaleDateString('es-CO', { day: '2-digit', month: 'short', year: 'numeric' }) +
+        ' · ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      const chipsHtml = selectedMechanics.map(m =>
+        `<span class="profile-mech-chip">✦ ${m.name}</span>`
+      ).join('');
+
+      strip.innerHTML = `
+        <div class="profile-meta-top">
+          <div>👤 <strong>Diseñador:</strong> <span style="color: var(--white-hat); font-weight: 700;">${userName}</span></div>
+          <div style="color: var(--text-dim); font-size: 0.78rem;">📅 ${nowStr}</div>
+        </div>
+        <div style="font-size: 0.78rem; color: var(--text-muted); font-weight: 600;">
+          🎴 Mecánicas seleccionadas (${selectedMechanics.length}):
+        </div>
+        <div class="profile-mech-chips">${chipsHtml}</div>
+      `;
+    }
+
+    function printStudentProfilePDF() {
+      updateStudentProfileMetaStrip();
+      document.body.classList.remove('print-mode-teacher');
+      document.body.classList.add('print-mode-student');
+      window.print();
+      setTimeout(() => {
+        document.body.classList.remove('print-mode-student');
+      }, 600);
+    }
+
+    function printTeacherDashboardPDF() {
+      renderTeacherDashboard();
+      document.body.classList.remove('print-mode-student');
+      document.body.classList.add('print-mode-teacher');
+      window.print();
+      setTimeout(() => {
+        document.body.classList.remove('print-mode-teacher');
+      }, 600);
+    }
+
+    /* Auxiliar para texto multilínea en Canvas 2D */
+    function drawWrappedText(ctx, text, x, y, maxWidth, lineHeight) {
+      const words = String(text || '').split(/\s+/);
+      let line = '';
+      let currY = y;
+      for (let i = 0; i < words.length; i++) {
+        const testLine = line + words[i] + ' ';
+        const metrics = ctx.measureText(testLine);
+        if (metrics.width > maxWidth && i > 0) {
+          ctx.fillText(line.trim(), x, currY);
+          line = words[i] + ' ';
+          currY += lineHeight;
+        } else {
+          line = testLine;
+        }
+      }
+      if (line.trim()) {
+        ctx.fillText(line.trim(), x, currY);
+        currY += lineHeight;
+      }
+      return currY;
+    }
+
+    function drawRoundedRect(ctx, x, y, w, h, r, fill, stroke) {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.arcTo(x + w, y, x + w, y + h, r);
+      ctx.arcTo(x + w, y + h, x, y + h, r);
+      ctx.arcTo(x, y + h, x, y, r);
+      ctx.arcTo(x, y, x + w, y, r);
+      ctx.closePath();
+      if (fill) {
+        ctx.fillStyle = fill;
+        ctx.fill();
+      }
+      if (stroke) {
+        ctx.strokeStyle = stroke;
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+      }
+    }
+
+    /* Exportación en 1 clic del Perfil del Estudiante como Imagen PNG de alta resolución */
+    function downloadStudentProfilePNG() {
+      if (!currentDiagnosis) return;
+      const userName = document.getElementById('userNameInput').value.trim() || 'Diseñador';
+      const dateStr = new Date().toLocaleDateString('es-CO', { day: '2-digit', month: 'short', year: 'numeric' }) +
+        ' · ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      const { pctWhite, pctBlack, pctIntrinsic, pctExtrinsic } = currentDiagnosis;
+
+      const W = 1200;
+      const H = 760;
+      const outCanvas = document.createElement('canvas');
+      outCanvas.width = W;
+      outCanvas.height = H;
+      const ctx = outCanvas.getContext('2d');
+
+      // Fondo general
+      ctx.fillStyle = '#121826';
+      ctx.fillRect(0, 0, W, H);
+
+      // Contenedor principal
+      drawRoundedRect(ctx, 28, 24, W - 56, H - 48, 18, '#1e293b', '#334155');
+
+      // Encabezado
+      ctx.fillStyle = '#06b6d4';
+      ctx.font = '800 24px Outfit, Inter, sans-serif';
+      ctx.fillText('⚡ Diagnóstico de Impacto Psicopedagógico — Octalysis', 58, 70);
+
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = '500 14px Inter, sans-serif';
+      ctx.fillText(`Simulador de reglas y motivaciones  |  Fecha: ${dateStr}`, 58, 96);
+
+      // Badge Diseñador
+      ctx.textAlign = 'right';
+      ctx.fillStyle = '#f8fafc';
+      ctx.font = '700 17px Outfit, Inter, sans-serif';
+      ctx.fillText(`👤 Diseñador: ${userName}`, W - 58, 72);
+      ctx.textAlign = 'left';
+
+      // Línea divisoria
+      ctx.strokeStyle = '#334155';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(58, 114);
+      ctx.lineTo(W - 58, 114);
+      ctx.stroke();
+
+      // Tira de Mecánicas Elegidas
+      drawRoundedRect(ctx, 58, 128, W - 116, 78, 12, '#0f172a', '#334155');
+      ctx.fillStyle = '#06b6d4';
+      ctx.font = '700 13px Outfit, Inter, sans-serif';
+      ctx.fillText(`MECÁNICAS SELECCIONADAS (${selectedMechanics.length}/6):`, 76, 152);
+
+      const mechsLine = selectedMechanics.map(m => `✦ ${m.name}`).join('    ');
+      ctx.fillStyle = '#f8fafc';
+      ctx.font = '600 13.5px Inter, sans-serif';
+      drawWrappedText(ctx, mechsLine, 76, 175, W - 152, 20);
+
+      // Columna Izquierda: Tarjeta Radar Octagonal
+      const leftX = 58, colY = 224, leftW = 480, colH = 486;
+      drawRoundedRect(ctx, leftX, colY, leftW, colH, 14, '#0f172a', '#334155');
+
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = '700 15px Outfit, Inter, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('PERFIL OCTAGONAL (CD1 - CD8)', leftX + leftW / 2, colY + 34);
+      ctx.textAlign = 'left';
+
+      const srcRadar = document.getElementById('studentRadarCanvas');
+      if (srcRadar) {
+        const radarDrawSize = 410;
+        const rx = leftX + (leftW - radarDrawSize) / 2;
+        const ry = colY + 52;
+        ctx.drawImage(srcRadar, rx, ry, radarDrawSize, radarDrawSize);
+      }
+
+      // Columna Derecha: Ejes de Equilibrio y Evaluación Cualitativa
+      const rightX = 562, rightW = W - 562 - 58;
+
+      // Caja 1: Ejes de Equilibrio
+      drawRoundedRect(ctx, rightX, colY, rightW, 210, 14, '#0f172a', '#334155');
+      ctx.fillStyle = '#f8fafc';
+      ctx.font = '700 16px Outfit, Inter, sans-serif';
+      ctx.fillText('⚖️ Ejes de equilibrio motivacional', rightX + 24, colY + 36);
+
+      // Barra 1: Sombrero Blanco vs Negro
+      const barX = rightX + 24, barW = rightW - 48;
+      ctx.font = '600 13.5px Inter, sans-serif';
+      ctx.fillStyle = '#06b6d4';
+      ctx.fillText(`Sombrero blanco: ${pctWhite}%`, barX, colY + 72);
+      ctx.textAlign = 'right';
+      ctx.fillStyle = '#ef4444';
+      ctx.fillText(`Sombrero negro: ${pctBlack}%`, barX + barW, colY + 72);
+      ctx.textAlign = 'left';
+
+      drawRoundedRect(ctx, barX, colY + 82, barW, 14, 7, '#1e293b', null);
+      const whiteW = Math.round((pctWhite / 100) * barW);
+      if (whiteW > 0) {
+        ctx.fillStyle = '#06b6d4';
+        ctx.fillRect(barX, colY + 82, whiteW, 14);
+      }
+      if (barW - whiteW > 0) {
+        ctx.fillStyle = '#ef4444';
+        ctx.fillRect(barX + whiteW, colY + 82, barW - whiteW, 14);
+      }
+
+      // Barra 2: Intrínseca vs Extrínseca
+      ctx.fillStyle = '#a855f7';
+      ctx.fillText(`Intrínseca: ${pctIntrinsic}%`, barX, colY + 136);
+      ctx.textAlign = 'right';
+      ctx.fillStyle = '#3b82f6';
+      ctx.fillText(`Extrínseca: ${pctExtrinsic}%`, barX + barW, colY + 136);
+      ctx.textAlign = 'left';
+
+      drawRoundedRect(ctx, barX, colY + 146, barW, 14, 7, '#1e293b', null);
+      const intrinW = Math.round((pctIntrinsic / 100) * barW);
+      if (intrinW > 0) {
+        ctx.fillStyle = '#a855f7';
+        ctx.fillRect(barX, colY + 146, intrinW, 14);
+      }
+      if (barW - intrinW > 0) {
+        ctx.fillStyle = '#3b82f6';
+        ctx.fillRect(barX + intrinW, colY + 146, barW - intrinW, 14);
+      }
+
+      // Caja 2: Evaluación Cualitativa
+      const qualY = colY + 228, qualH = colH - 228;
+      drawRoundedRect(ctx, rightX, qualY, rightW, qualH, 14, '#0f172a', '#334155');
+      ctx.fillStyle = '#f8fafc';
+      ctx.font = '700 16px Outfit, Inter, sans-serif';
+      ctx.fillText('📝 Evaluación cualitativa del diseño', rightX + 24, qualY + 34);
+
+      let hatTitle = '', hatColor = '#06b6d4', hatText = '';
+      if (pctWhite > pctBlack + 15) {
+        hatTitle = `Dominancia Sombrero blanco (${pctWhite}%):`;
+        hatColor = '#10b981';
+        hatText = 'Tu propuesta genera alta satisfacción, compromiso ético y autonomía a largo plazo. Los estudiantes se sentirán empoderados y dueños de su aprendizaje.';
+      } else if (pctBlack > pctWhite + 15) {
+        hatTitle = `Dominancia Sombrero negro (${pctBlack}%):`;
+        hatColor = '#ef4444';
+        hatText = 'Genera acción y urgencia inmediata (cumplimiento a corto plazo). Sin embargo, existe riesgo de ansiedad, fatiga o resentimiento si no se modera.';
+      } else {
+        hatTitle = 'Sombreros equilibrados:';
+        hatColor = '#06b6d4';
+        hatText = 'Combina el propósito y la autonomía (Blanco) con la disciplina y el ritmo de entrega (Negro).';
+      }
+
+      let motTitle = '', motColor = '#a855f7', motText = '';
+      if (pctIntrinsic > pctExtrinsic + 15) {
+        motTitle = `Enfoque intrínseco predominante (${pctIntrinsic}%):`;
+        motColor = '#10b981';
+        motText = 'La actividad se disfruta por sí misma. El debate en aula florecerá de forma genuina por curiosidad, autonomía y conexión social.';
+      } else if (pctExtrinsic > pctIntrinsic + 15) {
+        motTitle = `Enfoque extrínseco predominante (${pctExtrinsic}%):`;
+        motColor = '#ef4444';
+        motText = 'Los alumnos responden principalmente a los premios, acumulación o urgencia. Si se retira la recompensa o la condición, la lectura podría cesar.';
+      } else {
+        motTitle = `Motivación equilibrada (${pctIntrinsic}% Intrínseca / ${pctExtrinsic}% Extrínseca):`;
+        motColor = '#a855f7';
+        motText = 'Diseño armónico: combina la tracción de metas y progreso tangible (Extrínseca) con el disfrute autónomo, colaborativo y curioso (Intrínseca).';
+      }
+
+      let textY = qualY + 66;
+      ctx.fillStyle = hatColor;
+      ctx.font = '700 13.5px Inter, sans-serif';
+      ctx.fillText(hatTitle, rightX + 24, textY);
+      textY += 20;
+      ctx.fillStyle = '#cbd5e1';
+      ctx.font = '400 13px Inter, sans-serif';
+      textY = drawWrappedText(ctx, hatText, rightX + 24, textY, rightW - 48, 19);
+
+      textY += 12;
+      ctx.fillStyle = motColor;
+      ctx.font = '700 13.5px Inter, sans-serif';
+      ctx.fillText(motTitle, rightX + 24, textY);
+      textY += 20;
+      ctx.fillStyle = '#cbd5e1';
+      ctx.font = '400 13px Inter, sans-serif';
+      drawWrappedText(ctx, motText, rightX + 24, textY, rightW - 48, 19);
+
+      // Descargar archivo PNG
+      const link = document.createElement('a');
+      link.download = `perfil-octalysis-${sanitizeFilename(userName)}.png`;
+      link.href = outCanvas.toDataURL('image/png');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    /* Exportación en 1 clic del Informe Completo del Profesor como documento HTML autónomo */
+    function downloadTeacherReportHTML() {
+      renderTeacherDashboard();
+
+      const radarCanvas = document.getElementById('classRadarCanvas');
+      const quadCanvas = document.getElementById('quadrantCanvas');
+      const radarImgUrl = radarCanvas ? radarCanvas.toDataURL('image/png') : '';
+      const quadImgUrl = quadCanvas ? quadCanvas.toDataURL('image/png') : '';
+
+      const now = new Date();
+      const dateStamp = now.toLocaleDateString('es-CO', { day: '2-digit', month: 'long', year: 'numeric' }) +
+        ' · ' + now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const fileDate = now.toISOString().slice(0, 10);
+
+      const kpiHtml = document.querySelector('#teacherView .kpi-row')?.outerHTML || '';
+      const debateHtml = document.querySelector('#teacherView .debate-box')?.outerHTML || '';
+      const tableHtml = document.querySelector('#teacherView .table-container')?.outerHTML || '';
+      const styleCss = document.querySelector('style')?.innerHTML || '';
+
+      const reportHtml = `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Informe Docente Octalysis — ${fileDate}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    ${styleCss}
+    body { padding-bottom: 3rem; }
+    .exported-img { width: 100%; max-width: 400px; height: auto; display: block; margin: 0 auto; }
+    @media print { .no-print-btn { display: none !important; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-container">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"/>
+          </svg>
+        </div>
+        <div class="brand-title">
+          <h1>Informe Docente — Simulador de reglas y motivaciones</h1>
+          <p>Exportado el ${dateStamp}</p>
+        </div>
+      </div>
+      <button class="btn-export no-print-btn" onclick="window.print()">🖨️ Imprimir / Guardar como PDF</button>
+    </div>
+  </header>
+  <main>
+    ${kpiHtml}
+    <div class="dash-grid">
+      <div class="dash-card">
+        <div class="dash-card-header">
+          <h3>🕸️ Radar Octalysis colectivo</h3>
+          <p>Promedio acumulado de todos los vectores de la clase</p>
+        </div>
+        <img class="exported-img" src="${radarImgUrl}" alt="Radar Octalysis Colectivo">
+      </div>
+      <div class="dash-card">
+        <div class="dash-card-header">
+          <h3>🗺️ Cuadrante de diseños (mapa colectivo)</h3>
+          <p>Eje X: Extrínseco (-X) / Intrínseco (+X) | Eje Y: Negro (-Y) / Blanco (+Y)</p>
+        </div>
+        <img class="exported-img" src="${quadImgUrl}" alt="Cuadrante Colectivo 2D">
+      </div>
+    </div>
+    ${debateHtml}
+    <div class="dash-card">
+      <div class="dash-card-header">
+        <h3>📋 Registro consolidado de respuestas</h3>
+      </div>
+      ${tableHtml}
+    </div>
+  </main>
+</body>
+</html>`;
+
+      const blob = new Blob([reportHtml], { type: 'text/html;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `informe-docente-octalysis-${fileDate}.html`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      setTimeout(() => URL.revokeObjectURL(url), 2000);
     }
   </script>
 </body>

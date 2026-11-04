@@ -31,6 +31,7 @@ A partir de este reto, los participantes diseñan una estrategia seleccionando m
     - *Sombrero Blanco* (`CD1 + CD2 + CD3`) vs. *Sombrero Negro* (`CD6 + CD7 + CD8`).
     - *Motivación Intrínseca / Lado Derecho* (`CD3 + CD5 + CD7`) vs. *Motivación Extrínseca / Lado Izquierdo* (`CD2 + CD4 + CD6`).
   - **Reporte cualitativo automatizado:** Retroalimentación sobre fortalezas, riesgos y balance motivacional.
+  - **Descarga del perfil individual:** El participante puede descargar su perfil Octalysis en un clic como **imagen de alta resolución (`.PNG`)** o guardarlo como **documento `.PDF`** limpio de una página.
 
 ### 3. Compuerta Pedagógica (Phase Gate)
 - Tras generar el diagnóstico de la Fase 1, la Fase de Calibración permanece bloqueada mediante una palabra clave controlada por el docente.
@@ -55,6 +56,7 @@ A partir de este reto, los participantes diseñan una estrategia seleccionando m
   5. **Mecánica más difícil:** Tarjeta con mayor número de estudiantes con error y conteo de fallos acumulados.
 - **Visualizaciones colectivas:** Radar Octalysis promedio de la clase y **Cuadrante 2D de dispersión** (`Eje X: Extrínseco ↔ Intrínseco`, `Eje Y: Sombrero Negro ↔ Sombrero Blanco`).
 - **Disparadores de debate automatizados:** Preguntas generadas dinámicamente según las tendencias y errores reales del grupo.
+- **Exportación del informe completo docente:** Permite descargar todo el contenido del panel (KPIs, gráficos Radar y Cuadrante 2D embebidos, preguntas de debate y tabla completa de respuestas) como **archivo autónomo `.HTML`** o **guardar todo en `.PDF`**.
 
 ---
 
